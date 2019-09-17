@@ -23,7 +23,7 @@ sudo apt-get install libqt5multimedia5-plugins
 
 Open Qtcreator and go to Help > about plugins and and untick Remote Linux
 
-gpu memory: in  /boot/config.txt: gnu_mem=128  # 128MB
+gpu memory: in  /boot/config.txt: gpu_mem=128  # 128MB
 
 sudo reboot
 
