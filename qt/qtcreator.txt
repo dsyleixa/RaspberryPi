@@ -23,7 +23,7 @@ sudo apt-get install libqt5multimedia5-plugins
 
 Open Qtcreator and go to Help > about plugins and and untick Remote Linux
 
-gpu speicher mit raspi-config auf 128MB stellen.
+gpu memory: in  /boot/config.txt: gnu_mem=128  # 128MB
 
 sudo reboot
 
@@ -49,13 +49,13 @@ ctrl-r to build and run (build menu).
 
 Hin und her wechseln zwischen Editor und Designer mit Shift+F4
 
-Im Designer Modus z.B. den auf die Form gezogenen Button mit rechts anklicken und "Slot anzeigen" wählen. 
+Im Designer Modus z.B. den auf die Form gezogenen Button mit rechts anklicken und "Slot anzeigen" wÃ¤hlen. 
 Dann geht ein Fenster auf mit Auswahl Button-Event (leftClick, rightClick, ButtonUp,...).
-Ist einer gewählt kommt man in den Editor an die Stelle im Code an dem man auf die  eigenen Methoden zeigen kannst.
+Ist einer gewÃ¤hlt kommt man in den Editor an die Stelle im Code an dem man auf die  eigenen Methoden zeigen kannst.
 
 
 
-Hinzufügen von  wiringPi GPIO functions:
+HinzufÃ¼gen von  wiringPi GPIO functions:
 
 insert into the .pro file the following three lines:
 
@@ -73,7 +73,7 @@ sudo apt install qtcreator
 
 
 
-2.) Tutorials und weiterführende Literatur: 
+2.) Tutorials und weiterfÃ¼hrende Literatur: 
 
 https://wiki.qt.io/Basic_Qt_Programming_Tutorial 
 
