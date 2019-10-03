@@ -10,7 +10,7 @@
 * 25: Output (red LED + resistor)  // LED is blinking while program runs
 *
 * Input 24 can be switched from INPUT_PULLUP (default) to INPUT_PULLDOWN
-* (beyond toolbar option Edit)
+* (beneath toolbar option Edit)
 * when  INPUT_PULLDOWN  is activated, the switch has to be re-wired
 * (GPIO24->switch->+3v3)
 *
