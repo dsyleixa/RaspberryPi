@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <wiringPi.h>
 
-
+/*
  * GPIO setup (BCM numbering):
  * 23: Output (green LED + resistor) // switchable by widget buttons)
  * 24: Input  (default: GPIO24->switch->GND)
