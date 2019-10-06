@@ -16,8 +16,8 @@
 *
 */
 
-#define  Qwrite1(t)   ui->setTextEdit1->appendPlainText(t)
-#define  Qwriteln1(t) ui->plainTextEdit1->appendPlainText(t)
+#define  Qwrite1(str)   ui->setTextEdit1->insertPlainText(str)
+#define  Qwriteln1(str) ui->plainTextEdit1->appendPlainText(str)
 
 
 
@@ -52,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
         exit(1);
 
     ui->plainTextEdit1->setStyleSheet("(color:black)");
+    ui->plainTextEdit1->setMaximumBlockCount(1000);
 
 
     pthread_create(&thread0, NULL, loop, NULL);
@@ -76,7 +77,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&updateTimer, SIGNAL(timeout()),
             this, SLOT(onUpdateTime()));
     // Start the timer
-    updateTimer.start(10);// in msec
+    updateTimer.start(50);// in msec
     // Go to the event loop...
 }
 
@@ -93,7 +94,7 @@ MainWindow::~MainWindow() {
 }
 
 
-// Invoked every 10ms
+// Invoked every 50ms
 void
 MainWindow::onUpdateTime() {
 
