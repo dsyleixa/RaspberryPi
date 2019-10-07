@@ -24,6 +24,7 @@
 int pinstate23=LOW, pinstate24=LOW, pinstate25=LOW;
 
 volatile bool TASKS_ACTIVE = true;
+pthread_t thread0;
 
 
 void* loop(void*)
@@ -39,7 +40,6 @@ void* loop(void*)
     return NULL;  //
 }
 
-pthread_t thread0;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -52,9 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
         exit(1);
 
     ui->plainTextEdit1->setStyleSheet("(color:black)");
-    ui->plainTextEdit1->setMaximumBlockCount(1000);
-
-
+    //ui->plainTextEdit1->setMaximumBlockCount(2000); // set in form editor
     pthread_create(&thread0, NULL, loop, NULL);
 
     pinMode(23, OUTPUT);
