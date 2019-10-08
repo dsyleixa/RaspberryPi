@@ -23,6 +23,18 @@
 
 int pinstate23=LOW, pinstate24=LOW, pinstate25=LOW;
 
+void GPIOreset() {
+    pinstate23 = LOW;
+    digitalWrite(23, pinstate23);
+
+    pinstate24 = LOW;
+    digitalWrite(24, pinstate24);
+
+    pinstate25 = LOW;
+    digitalWrite(25, pinstate25);
+}
+
+
 volatile bool TASKS_ACTIVE = true;
 pthread_t thread0;
 
@@ -53,19 +65,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->plainTextEdit1->setStyleSheet("(color:black)");
     //ui->plainTextEdit1->setMaximumBlockCount(2000); // set in form editor
-    pthread_create(&thread0, NULL, loop, NULL);
 
     pinMode(23, OUTPUT);
-    pinstate23 = LOW;
-    digitalWrite(23, pinstate23); // init, default
-    ui->pin23Label->setText(QString::number(pinstate23));
-
     pinMode(25, OUTPUT);
-    digitalWrite(25, LOW); // init, default
+    GPIOreset();
 
     pinMode(24, INPUT);
     pullUpDnControl(24, PUD_UP); // init, default
 
+    ui->pin23Label->setText(QString::number(pinstate23));
+
+    pthread_create(&thread0, NULL, loop, NULL);
 
     //on_lowButton_clicked();// Slots can be called also within the program
     onUpdateTime();
@@ -81,12 +91,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 MainWindow::~MainWindow() {
-    updateTimer.stop();
-    digitalWrite(23, LOW);
-    digitalWrite(25, LOW);
-
+    updateTimer.stop();    
     TASKS_ACTIVE = false;
     pthread_join(thread0, NULL);
+    GPIOreset();
 
     delete ui;
 }
@@ -128,8 +136,7 @@ MainWindow::on_lowButton_clicked() {
 
 void __attribute__((noreturn))
 MainWindow::on_quitButton_clicked() {
-    digitalWrite(23, LOW);
-    digitalWrite(25, LOW);
+    GPIOreset();
     exit(EXIT_SUCCESS);
 }
 
@@ -137,8 +144,7 @@ MainWindow::on_quitButton_clicked() {
 void MainWindow::on_actionQuit_triggered()
 {
     //ui->statusBar->showMessage("File Quit menu activated", 2000);
-    digitalWrite(23, LOW);
-    digitalWrite(25, LOW);
+    GPIOreset();
     exit(EXIT_SUCCESS);
 }
 
