@@ -35,8 +35,12 @@ void GPIOreset() {
 }
 
 
+void cleanup();
+
+
 volatile bool TASKS_ACTIVE = true;
 pthread_t thread0;
+
 
 
 void* loop(void*)
@@ -91,13 +95,20 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 MainWindow::~MainWindow() {
-    updateTimer.stop();    
+    updateTimer.stop();
+    cleanup();
+    delete ui;
+}
+
+
+
+void cleanup() {
     TASKS_ACTIVE = false;
     pthread_join(thread0, NULL);
     GPIOreset();
-
-    delete ui;
 }
+
+
 
 
 // Invoked every 50ms
@@ -136,9 +147,8 @@ MainWindow::on_lowButton_clicked() {
 
 void __attribute__((noreturn))
 MainWindow::on_quitButton_clicked() {
-    TASKS_ACTIVE = false;
-    pthread_join(thread0, NULL);
-    GPIOreset();
+    updateTimer.stop();
+    cleanup();
     exit(EXIT_SUCCESS);
 }
 
@@ -147,9 +157,8 @@ void
 MainWindow::on_actionQuit_triggered()
 {
     //ui->statusBar->showMessage("File Quit menu activated", 2000);
-    TASKS_ACTIVE = false;
-    pthread_join(thread0, NULL);
-    GPIOreset();
+    updateTimer.stop();
+    cleanup();
     exit(EXIT_SUCCESS);
 }
 
@@ -168,3 +177,5 @@ MainWindow::on_actionGPIO24_pulldown_triggered()
     ui->statusBar->showMessage("Test for GPIO pulldown activated ", 1000);
     pullUpDnControl(24, PUD_DOWN);
 }
+
+
