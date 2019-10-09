@@ -10,7 +10,7 @@
 * 25: Output (red LED + resistor)  // LED is blinking while program runs
 *
 * Input 24 can be switched from INPUT_PULLUP (default) to INPUT_PULLDOWN
-* (beneath toolbar option Edit)
+* (beyond toolbar option Edit)
 * when  INPUT_PULLDOWN  is activated, the switch has to be re-wired
 * (GPIO24->switch->+3v3)
 *
@@ -41,8 +41,6 @@ MainWindow::MainWindow(QWidget *parent)
     if( iores == -1 )
         exit(1);
 
-    pthread_create(&thread0, NULL, loop, NULL);
-
 
     pinMode(23, OUTPUT);
     digitalWrite(23, LOW); // init, default
@@ -55,6 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
     pinMode(24, INPUT);
     pullUpDnControl(24, PUD_UP); // init, default
 
+    pthread_create(&thread0, NULL, loop, NULL);
 
     //on_lowButton_clicked();// Slots can be called also within the program
     onUpdateTime();
@@ -71,11 +70,12 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() {
     updateTimer.stop();
-    digitalWrite(23, LOW);
-    digitalWrite(25, LOW);
 
     TASKS_ACTIVE = false;
     pthread_join(thread0, NULL);
+
+    digitalWrite(23, LOW);
+    digitalWrite(25, LOW);    
 
     delete ui;
 }
@@ -107,8 +107,14 @@ MainWindow::on_lowButton_clicked() {
 
 void __attribute__((noreturn))
 MainWindow::on_quitButton_clicked() {
+    updateTimer.stop();
+
+    TASKS_ACTIVE = false;
+    pthread_join(thread0, NULL);
+
     digitalWrite(23, LOW);
     digitalWrite(25, LOW);
+
     exit(EXIT_SUCCESS);
 }
 
@@ -116,8 +122,14 @@ MainWindow::on_quitButton_clicked() {
 void MainWindow::on_actionQuit_triggered()
 {
     //ui->statusBar->showMessage("File Quit menu activated", 2000);
+    updateTimer.stop();
+
+    TASKS_ACTIVE = false;
+    pthread_join(thread0, NULL);
+
     digitalWrite(23, LOW);
     digitalWrite(25, LOW);
+
     exit(EXIT_SUCCESS);
 }
 
