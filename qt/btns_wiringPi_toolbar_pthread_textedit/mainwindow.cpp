@@ -136,27 +136,34 @@ MainWindow::on_lowButton_clicked() {
 
 void __attribute__((noreturn))
 MainWindow::on_quitButton_clicked() {
+    TASKS_ACTIVE = false;
+    pthread_join(thread0, NULL);
     GPIOreset();
     exit(EXIT_SUCCESS);
 }
 
 
-void MainWindow::on_actionQuit_triggered()
+void
+MainWindow::on_actionQuit_triggered()
 {
     //ui->statusBar->showMessage("File Quit menu activated", 2000);
+    TASKS_ACTIVE = false;
+    pthread_join(thread0, NULL);
     GPIOreset();
     exit(EXIT_SUCCESS);
 }
 
 
-void MainWindow::on_actionGPIO24_pullup_triggered()
+void
+MainWindow::on_actionGPIO24_pullup_triggered()
 {
     ui->statusBar->showMessage("Test for GPIO pullup activated ", 1000);
     pullUpDnControl(24, PUD_UP);
 }
 
 
-void MainWindow::on_actionGPIO24_pulldown_triggered()
+void
+MainWindow::on_actionGPIO24_pulldown_triggered()
 {
     ui->statusBar->showMessage("Test for GPIO pulldown activated ", 1000);
     pullUpDnControl(24, PUD_DOWN);
