@@ -17,11 +17,6 @@ sudo apt install qt5-default
 #optional:
 sudo apt install qt5-qmltooling-plugins qt5-doc
 sudo apt-get install qtdeclarative5-dev
-sudo apt install libqt5serialbus5 
-sudo apt install libqt5serialbus5-dev
-
-sudo apt-get update libqtserialport5-dev
-sudo apt-get update qtmultimedia5-dev 
 sudo apt-get install libqt5multimedia5-plugins
 
 Open Qtcreator and go to Help > about plugins and and untick Remote Linux
