@@ -46,15 +46,21 @@ Im Designer Modus z.B. den auf die Form gezogenen Button mit rechts anklicken un
 Dann geht ein Fenster auf mit Auswahl Button-Event (leftClick, rightClick, ButtonUp,...).
 Ist einer gewählt kommt man in den Editor an die Stelle im Code an dem man auf die  eigenen Methoden zeigen kann.
 
-ctrl-r to build and run (build menu).
 
-Hinzufügen von  wiringPi GPIO functions:
+ctrl-r to build and run (build menu) or press green PLAY button down left  |> .
 
+
+add  wiringPi GPIO functions:
 insert into the .pro file the following three lines:
-
 INCLUDEPATH += /usr/local/include
 LIBS += -L"/usr/local/lib"
 LIBS += -lwiringPi
+in mainwindow.cpp: #include <wiringPi.h>
+
+add  pthread:
+insert into the .pro file the following line:
+LIBS += -lpthread
+in mainwindow.cpp: #include <pthread.h>
 
 
 
