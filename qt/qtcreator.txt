@@ -41,17 +41,12 @@ Tools->Form Editor->Switch Source/Form
 solves that (i.e. shift-f4) with "mainwindow.cpp" open (aka "mainwindow.ui")
 and now you can create forms.
 
-ctrl-r to build and run (build menu).
-
-
-
 Hin und her wechseln zwischen Editor und Designer mit Shift+F4
-
 Im Designer Modus z.B. den auf die Form gezogenen Button mit rechts anklicken und "Slot anzeigen" wählen. 
 Dann geht ein Fenster auf mit Auswahl Button-Event (leftClick, rightClick, ButtonUp,...).
-Ist einer gewählt kommt man in den Editor an die Stelle im Code an dem man auf die  eigenen Methoden zeigen kannst.
+Ist einer gewählt kommt man in den Editor an die Stelle im Code an dem man auf die  eigenen Methoden zeigen kann.
 
-
+ctrl-r to build and run (build menu).
 
 Hinzufügen von  wiringPi GPIO functions:
 
