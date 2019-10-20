@@ -9,4 +9,6 @@
 * when  INPUT_PULLDOWN  is activated, the switch has to be re-wired
 * (GPIO24->switch->+3v3)
 *
+* ui->plainTextEdit1->setMaximumBlockCount(2000); // set in form editor
+*
 */
