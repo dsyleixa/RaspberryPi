@@ -29,3 +29,49 @@ int main()
   
   /* Do stuff */
 }
+
+/*
+
+In main() after any initialisation put
+
+pthread_t thread0, thread1, thread2, thread3;
+const char *message0 = "Starting 0";
+const char *message1 = "Starting 1";
+const char *message2 = "Starting 2";
+const char *message3 = "Starting 3";
+int iret0, iret1, iret2, iret3;
+
+// Create independent threads each of which will execute function
+
+iret0 = pthread_create(&thread0, NULL, function0, (void*) message0);
+if (iret0)
+{
+fprintf(stderr,"Thread 0 return : %d\n",iret0);
+exit(EXIT_FAILURE);
+}
+
+Same for iret1, 2 and 3
+Then use :
+
+// All threads should never finish
+pthread_join(thread0, NULL);
+pthread_join(thread1, NULL);
+pthread_join(thread2, NULL);
+pthread_join(thread3, NULL);
+
+
+
+Then for each thread you want
+
+void *function0(void *ptr)
+{
+char *message = (char*) ptr;
+printf("%s \n", message);
+cpu_set_t cpuset;
+CPU_ZERO(&cpuset);
+CPU_SET(1,&cpuset);
+sched_setaffinity(0, sizeof(cpu_set_t), &cpuset);
+while (1)
+DoStuff();
+}
+*/
