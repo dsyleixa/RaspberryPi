@@ -74,4 +74,9 @@ sched_setaffinity(0, sizeof(cpu_set_t), &cpuset);
 while (1)
 DoStuff();
 }
+
+Finally you use isolcpu = 1,2,3 or whatever you need to isolate the time critical threads. 
+Put all your non-time critcal stuff in one of the threads you don't isolate and allow Linux to also use that CPU or of course you will have real problems.
+
+
 */
