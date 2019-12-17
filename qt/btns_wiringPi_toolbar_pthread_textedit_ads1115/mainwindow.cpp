@@ -119,6 +119,11 @@ void cleanup() {
     GPIOreset();
 }
 
+int32_t map(int32_t val, int32_t oldmax, int32_t newmax) {
+    if (!oldmax) return 0;
+    else  return (val*newmax)/oldmax;
+}
+
 
 
 
@@ -131,6 +136,9 @@ MainWindow::onUpdateTime() {
     Qwriteln1("pinstate24="+QString::number(pinstate24));
 
     analog0 = analogRead(PINBASE+0);
+    analog0 = map(analog0, 26390, 32767);
+    analog0 /=32;
+    if(analog0>1023) analog0=1023;
     //printf("analog1 = %d \n", analog0);
     ui->label_ads1115A0->setText(QString::number(analog0));
 
