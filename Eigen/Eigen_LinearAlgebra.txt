@@ -1,0 +1,8 @@
+getting started:
+https://eigen.tuxfamily.org/dox/GettingStarted.html
+
+Matrix Class Types
+http://eigen.tuxfamily.org/dox/group__TutorialMatrixClass.html
+
+Tutorial
+https://eigen.tuxfamily.org/dox/group__TutorialLinearAlgebra.html
