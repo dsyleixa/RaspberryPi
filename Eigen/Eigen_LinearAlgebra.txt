@@ -1,8 +1,23 @@
+Install:
+========
+sudo apt install libeigen3-dev pkg-config
+
+Compile/Build:
+==============
+Command Line Parameters
+g++ main.cpp $(pkg-config eigen3 --cflags) -o eigen-demo
+
+Geany Compile/Build Parameters (e.g.)
+g++  -Wall -I/opt/vc/include -o "%e" "%f" -pthread  -I/opt/vc/include  -lshapes  -lwiringPi –lpigpio -lrt $(pkg-config eigen3 --cflags)
+
+
+Tutorials, Manuals:
+===================
 getting started:
 https://eigen.tuxfamily.org/dox/GettingStarted.html
 
 Matrix Class Types
 http://eigen.tuxfamily.org/dox/group__TutorialMatrixClass.html
 
-Tutorial
+LA examples
 https://eigen.tuxfamily.org/dox/group__TutorialLinearAlgebra.html
