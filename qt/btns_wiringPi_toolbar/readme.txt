@@ -9,4 +9,9 @@
  * when  INPUT_PULLDOWN  is activated, the switch has to be re-wired
  * (GPIO24->switch->+3v3)
  *
+ 
+ * .pro file:
+   INCLUDEPATH += /usr/local/include
+   LIBS += -L"/usr/local/lib"
+   LIBS += -lwiringPi
 */
