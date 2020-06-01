@@ -74,6 +74,8 @@ sudo apt install qtcreator
 
 2.) Tutorials und weiterführende Literatur: 
 
+http://zetcode.com/gui/qt5/
+
 https://wiki.qt.io/Basic_Qt_Programming_Tutorial 
 
 http://www.elektronik.nmp24.de/?Einplatinenrechner:Raspberry_PI:GUI_mit_Qt_Creator_erstellen 
