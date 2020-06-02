@@ -51,12 +51,12 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
-#include <QOpenGLWidget>
+#include <QWidget>
 
 //! [0]
 class Helper;
 
-class GLWidget : public QOpenGLWidget
+class GLWidget : public QWidget
 {
     Q_OBJECT
 

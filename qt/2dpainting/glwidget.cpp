@@ -56,7 +56,7 @@
 
 
 GLWidget::GLWidget(Helper *helper, QWidget *parent)
-    : QOpenGLWidget(parent)
+    : QWidget(parent)
     , helper(helper)
 {
     elapsed = 0;
