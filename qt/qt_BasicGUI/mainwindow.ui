@@ -6,21 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>474</width>
+    <height>411</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pushButton1">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>110</y>
-      <width>101</width>
-      <height>31</height>
+      <x>160</x>
+      <y>270</y>
+      <width>129</width>
+      <height>38</height>
      </rect>
     </property>
     <property name="text">
@@ -33,16 +33,10 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>400</width>
-     <height>27</height>
+     <width>474</width>
+     <height>34</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuPress_Quit_to_terminate">
-    <property name="title">
-     <string>press &quot;Quit&quot; to terminate</string>
-    </property>
-   </widget>
-   <addaction name="menuPress_Quit_to_terminate"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -53,25 +47,24 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
+  <action name="action">
+   <property name="text">
+    <string/>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
- <connections>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>234</x>
-     <y>171</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>260</x>
-     <y>229</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
