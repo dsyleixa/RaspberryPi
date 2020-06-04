@@ -136,6 +136,10 @@ MainWindow::onUpdateTime() {
     Qwriteln1("pinstate24="+QString::number(pinstate24));
 
     analog0 = analogRead(PINBASE+0);
+    analog1 = analogRead(PINBASE+1);
+    analog2 = analogRead(PINBASE+2);
+    analog3 = analogRead(PINBASE+3);
+    
     analog0 = map(analog0, 26390, 32767);
     analog0 /=32;
     if(analog0>1023) analog0=1023;
