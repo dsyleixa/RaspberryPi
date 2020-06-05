@@ -17,7 +17,7 @@
 
 
 
-nWindow(QWidget *parent)
+MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
