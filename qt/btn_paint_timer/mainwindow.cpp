@@ -42,15 +42,17 @@ void
 MainWindow::onUpdateTime() {
     //--------------------------------------------------------------
     // Heater: Create a GraphicsScene and add it to the graphicsView    
-    // scene  = new QGraphicsScene(this); // see: --> MainWindow constructor!
+    // scene  = new QGraphicsScene(this);  // see: MainWindow constructor! 
     scene->clear();
+
     ui->graphicsView->setScene(scene);
     int r,s,x,y;
 
     // Heater: Create a blue and green brushes and outline pen
     QBrush blueBrush(Qt::blue);
     QBrush greenBrush(Qt::green);
-    QPen outlinePen(Qt::black);
+    QBrush redBrush(Qt::red);
+    QPen outlinePen(Qt::black);    
     outlinePen.setWidth(2);
 
     // Heater: Add a blue rectangle to our graphics scene.
@@ -62,6 +64,13 @@ MainWindow::onUpdateTime() {
     // addEllipse(x,y,w,h,pen,brush)
     ellipse = scene->addEllipse(50, 50, 300, 60, outlinePen, greenBrush);
 
+    x=rand()%100;
+    y=rand()%100;
+    r=rand()%200;
+    s=rand()%200;
+    ellipse = scene->addEllipse(x, y, r, s, outlinePen, redBrush);
+    ellipse->setPos(100, 100);
+
     // Heater: Add a some text to our graphics scene.
     text = scene->addText("Hi dsyleixa123!", QFont("Arial", 20) );
     text->setPos(80, 60);
@@ -70,5 +79,7 @@ MainWindow::onUpdateTime() {
     // Heater: Add a line
     line = scene->addLine(350, 0, 200, 200, outlinePen);
     line->setPos(0, 0);
+
+    ui->graphicsView->centerOn(200,200);  // <<<< not perfectly focussing yet
 
 }
