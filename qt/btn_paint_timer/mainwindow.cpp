@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-QTimer updateTimer;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -9,9 +8,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    scene  = new QGraphicsScene(this);
+
     //--------------------------------------------------------------
     // Timer
-    // QTimer updateTimer; // --> global!!!
+    // QTimer updateTimer;  // see: mainwindow.h
     // onUpdateTime(); // see: mainwindow.h
     // Every time the Timer will reach its terminal count
     // invoke the "slot" onUpdateTime()
@@ -40,8 +41,9 @@ void MainWindow::on_pushButton_clicked()
 void
 MainWindow::onUpdateTime() {
     //--------------------------------------------------------------
-    // Heater: Create a GraphicsScene and add it to the graphicsView
-    scene = new QGraphicsScene(this); // <<< causes memory hijacking after a while...
+    // Heater: Create a GraphicsScene and add it to the graphicsView    
+
+    scene->clear();
     ui->graphicsView->setScene(scene);
     int r,s,x,y;
 
@@ -66,6 +68,5 @@ MainWindow::onUpdateTime() {
     // Heater: Add a line
     line = scene->addLine(250, 0, 200, 200, outlinePen);
     line->setPos(0, 0);
-
 
 }
