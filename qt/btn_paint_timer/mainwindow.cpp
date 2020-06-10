@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+QTimer updateTimer;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -9,8 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     //--------------------------------------------------------------
     // Timer
-    QTimer updateTimer;
-    //onUpdateTime(); // see: mainwindow.h
+    // QTimer updateTimer; // --> global!!!
+    // onUpdateTime(); // see: mainwindow.h
     // Every time the Timer will reach its terminal count
     // invoke the "slot" onUpdateTime()
     connect(&updateTimer, SIGNAL(timeout()), this, SLOT(onUpdateTime()));
