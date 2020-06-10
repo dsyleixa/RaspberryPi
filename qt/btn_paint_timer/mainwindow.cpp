@@ -42,7 +42,7 @@ void
 MainWindow::onUpdateTime() {
     //--------------------------------------------------------------
     // Heater: Create a GraphicsScene and add it to the graphicsView    
-    //scene  = new QGraphicsScene(this); // --> see: mainWindow constructor!
+
     scene->clear();
     ui->graphicsView->setScene(scene);
     int r,s,x,y;
@@ -53,7 +53,7 @@ MainWindow::onUpdateTime() {
     QPen outlinePen(Qt::black);
     outlinePen.setWidth(2);
 
-    // Heater: Add a blue rectabgle to our graphics scene.
+    // Heater: Add a blue rectangle to our graphics scene.
     x=rand()%200;
     y=rand()%200;
     rectangle = scene->addRect(0, 0, x, y, outlinePen, blueBrush);
@@ -64,9 +64,11 @@ MainWindow::onUpdateTime() {
 
     // Heater: Add a some text to our graphics scene.
     text = scene->addText("Hi dsyleixa123!", QFont("Arial", 20) );
+    text->setPos(80, 60);
+
 
     // Heater: Add a line
-    line = scene->addLine(250, 0, 200, 200, outlinePen);
+    line = scene->addLine(350, 0, 200, 200, outlinePen);
     line->setPos(0, 0);
 
 }
