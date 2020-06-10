@@ -41,7 +41,7 @@ void
 MainWindow::onUpdateTime() {
     //--------------------------------------------------------------
     // Heater: Create a GraphicsScene and add it to the graphicsView
-    scene = new QGraphicsScene(this);
+    scene = new QGraphicsScene(this); // <<< causes memory hijacking after a while...
     ui->graphicsView->setScene(scene);
     int r,s,x,y;
 
