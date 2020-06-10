@@ -1,4 +1,4 @@
-// With friendly support from Heater, raspberrypi.org forums
+// with friendly support from Heater, raspberrypi.org forums
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -14,13 +14,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     //--------------------------------------------------------------
     // Timer
-    // QTimer updateTimer;  // see: mainwindow.h
-    // onUpdateTime(); // see: mainwindow.h
+    // QTimer updateTimer;  // see: mainwindow.h!
+    // onUpdateTime();      // see: mainwindow.h!
     // Every time the Timer will reach its terminal count
     // invoke the "slot" onUpdateTime()
     connect(&updateTimer, SIGNAL(timeout()), this, SLOT(onUpdateTime()));
     // Start the timer
     updateTimer.start(50);// in msec
+
  }
 
 
@@ -42,8 +43,9 @@ void MainWindow::on_pushButton_clicked()
 void
 MainWindow::onUpdateTime() {
     //--------------------------------------------------------------
-    // Create a GraphicsScene and add it to the graphicsView    
-    // scene  = new QGraphicsScene(this);  // see: MainWindow constructor! 
+    // Create a GraphicsScene and add it to the graphicsView
+    // scene  = new QGraphicsScene(this);  // see: MainWindow constructor!
+
     scene->clear();
 
     ui->graphicsView->setScene(scene);
