@@ -1,6 +1,3 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
 #include <QMainWindow>
 #include <QTimer>
 #include <QGraphicsLineItem>
@@ -24,6 +21,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QTimer updateTimer;
 
     // Heater: We are going to keep our grphics scene and some graphics items here.
     QGraphicsScene *scene;
