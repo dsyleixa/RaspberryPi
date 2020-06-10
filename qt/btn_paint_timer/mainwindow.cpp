@@ -42,7 +42,7 @@ void
 MainWindow::onUpdateTime() {
     //--------------------------------------------------------------
     // Heater: Create a GraphicsScene and add it to the graphicsView    
-
+    //scene  = new QGraphicsScene(this); // --> see: mainWindow constructor!
     scene->clear();
     ui->graphicsView->setScene(scene);
     int r,s,x,y;
