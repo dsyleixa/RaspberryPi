@@ -7,7 +7,7 @@ Open file or project 				Ctrl+O
 New file or project 				Ctrl+N
 Open in external editor 			Alt+V, Alt+I
 Select all 					Ctrl+A
-Delete 					Del
+Delete 						Del
 Cut 						Ctrl+X
 Copy 						Ctrl+C
 Paste 						Ctrl+V
@@ -15,35 +15,35 @@ Redo 						Ctrl+Y
 Print 						Ctrl+P
 Save 						Ctrl+S
 Save all 					Ctrl+Shift+S
-Close window 				Ctrl+W
+Close window 					Ctrl+W
 Close all 					Ctrl+Shift+W
 Close current file 				Ctrl+F4
 Go back 					Alt+Left
 Go forward 					Alt+Right
 Go to line 					Ctrl+L
-Next open document in history 		Ctrl+Shift+Tab
+Next open document in history 			Ctrl+Shift+Tab
 Go to other split 				Ctrl+E, O
-Previous open doc in history 		Ctrl+Tab
+Previous open doc in history 			Ctrl+Tab
 Activate Locator 				Ctrl+K
-Switch to Welcome mode 			Ctrl+1
-Switch to Edit mode 			Ctrl+2
-Switch to Design mode 			Ctrl+3
-Switch to Debug mode 			Ctrl+4
+Switch to Welcome mode 				Ctrl+1
+Switch to Edit mode 				Ctrl+2
+Switch to Design mode 				Ctrl+3
+Switch to Debug mode 				Ctrl+4	
 Switch to Projects mode 			Ctrl+5
-Switch to Help mode 			Ctrl+6
+Switch to Help mode 				Ctrl+6
 Toggle Issues pane 				Alt+1 (Cmd+1 on macOS)
-Toggle Search Results pane 		Alt+2 (Cmd+2 on macOS)
-Toggle Application Output pane 		Alt+3 (Cmd+3 on macOS)
-Toggle Compile Output pane 		Alt+4 (Cmd+4 on macOS)
+Toggle Search Results pane 			Alt+2 (Cmd+2 on macOS)
+Toggle Application Output pane 			Alt+3 (Cmd+3 on macOS)
+Toggle Compile Output pane 			Alt+4 (Cmd+4 on macOS)
 Toggle other output panes 			Alt+number (Cmd+number on macOS)
 							Where the number is the number of the output pane.
 Activate Bookmarks pane 			Alt+M
 Activate File System pane 			Alt+Y
-Activate Open Documents pane 		Alt+O
-Maximize output panes 			Alt+9
+Activate Open Documents pane 			Alt+O
+Maximize output panes 				Alt+9
 Moveto next item in outputpanes 		F6
 Moveto prev item in outputpanes 		Shift+F6
-Activate Projects pane 			Alt+X
+Activate Projects pane 				Alt+X
 Full screen 					Ctrl+Shift+F11
 Toggle the sidebar 				Alt+0 (Cmd+0 on macOS)
 Undo 						Ctrl+Z
