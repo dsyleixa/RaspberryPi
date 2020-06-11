@@ -1,3 +1,4 @@
+// ref: https://doc.qt.io/qt-5/qgraphicsview.html   
 // with friendly support from Heater, raspberrypi.org forums
 
 #include "mainwindow.h"
