@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     // invoke the "slot" onUpdateTime()
     connect(&updateTimer, SIGNAL(timeout()), this, SLOT(onUpdateTime()));
     // Start the timer
-    updateTimer.start(50);// in msec
+    updateTimer.start(50); // in msec
 
  }
 
