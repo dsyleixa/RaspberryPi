@@ -11,14 +11,15 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //--------------------------------------------------------------
+    // graphicsView QGraphicsScene
     scene  = new QGraphicsScene(this);
 
     //--------------------------------------------------------------
     // Timer
     // QTimer updateTimer;  // see: mainwindow.h!
     // onUpdateTime();      // see: mainwindow.h!
-    // Every time the Timer will reach its terminal count
-    // invoke the "slot" onUpdateTime()
+    // Every time the Timer will reach its terminal count invoke the "slot" onUpdateTime()
     connect(&updateTimer, SIGNAL(timeout()), this, SLOT(onUpdateTime()));
     // Start the timer
     updateTimer.start(50); // in msec
