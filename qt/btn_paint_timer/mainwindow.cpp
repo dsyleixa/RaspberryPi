@@ -52,7 +52,7 @@ MainWindow::onUpdateTime() {
     ui->graphicsView->setScene(scene);
     int r,s,x,y;
 
-    // Create a blue and green brushes and outline pen
+    // Create colored brushes and outline pen
     QBrush blueBrush(Qt::blue);
     QBrush greenBrush(Qt::green);
     QBrush redBrush(Qt::red);
