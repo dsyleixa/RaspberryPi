@@ -1,3 +1,5 @@
+// with friendly support from salvato and Paeryn, raspberrypi.org forums
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <wiringPi.h>
