@@ -42,9 +42,9 @@ solves that (i.e. shift-f4) with "mainwindow.cpp" open (aka "mainwindow.ui")
 and now you can create forms.
 
 Hin und her wechseln zwischen Editor und Designer mit Shift+F4
-Im Designer Modus z.B. den auf die Form gezogenen Button mit rechts anklicken und "Slot anzeigen" wählen. 
+Im Designer Modus z.B. den auf die Form gezogenen Button mit rechts anklicken und "Slot anzeigen" wÃ¤hlen. 
 Dann geht ein Fenster auf mit Auswahl Button-Event (leftClick, rightClick, ButtonUp,...).
-Ist einer gewählt kommt man in den Editor an die Stelle im Code an dem man auf die  eigenen Methoden zeigen kann.
+Ist einer gewÃ¤hlt kommt man in den Editor an die Stelle im Code an dem man auf die  eigenen Methoden zeigen kann.
 
 
 ctrl-r to build and run (build menu) or press green PLAY button down left  |> .
@@ -72,7 +72,7 @@ sudo apt install qtcreator
 
 
 
-2.) Tutorials und weiterführende Literatur: 
+2.) Tutorials und weiterfÃ¼hrende Literatur: 
 
 http://zetcode.com/gui/qt5/
 
@@ -90,5 +90,6 @@ https://www.matse.itc.rwth-aachen.de/di ... hp?id=8048
 
 qt webserver: http://stefanfrings.de/qtwebapp/index.html
 http://stefanfrings.de/qtwebapp/index.html
+https://github.com/StefanFrings/QtWebApp
 
 
