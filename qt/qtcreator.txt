@@ -1,5 +1,5 @@
 Qt : 
-1. a) Qt 5 Creator + Designer installieren 
+1.) Qt 5 Creator + Designer installieren 
 
 s.a.: https://wiki.ubuntuusers.de/Qt_Creator/ 
 - https://www.raspberrypi.org/forums/viewtopic.php?f=33&t=69163&p=1215892#p1043324  
@@ -63,12 +63,6 @@ LIBS += -lpthread
 in mainwindow.cpp: #include <pthread.h>
 
 
-
-
-b) Qt 4 und Qt Creator 4 installieren  
-
-sudo apt-get install qt4-dev-tools libqt4-dev libqt4-dev-bin qt4-qmake
-sudo apt install qtcreator
 
 
 
