@@ -1,8 +1,14 @@
 /*
 * GPIO setup (BCM numbering):
-* 23: Output (green LED + resistor) // switchable by widget buttons)
-* 24: Input  (default: GPIO24->switch->GND)
-* 25: Output (red LED + resistor)  // LED is blinking while program runs
+*   pinMode(18, OUTPUT);  // triggered by program (blink)
+    pinMode(23, OUTPUT);  // triggered vy GUI buttons (on/off)
+    pinMode(24, OUTPUT);  // yet unused
+
+    pinMode(6 , INPUT);  pullUpDnControl(6,  PUD_UP); // init, default
+    pinMode(16, INPUT);  pullUpDnControl(16, PUD_UP); // init, default
+    pinMode(20, INPUT);  pullUpDnControl(20, PUD_UP); // init, default
+    pinMode(21, INPUT);  pullUpDnControl(21, PUD_UP); // init, default
+    pinMode(25, INPUT);  pullUpDnControl(25, PUD_UP); // init, default
 *
 * Input 8 can be switched from INPUT_PULLUP (default) to INPUT_PULLDOWN
 * (beneath toolbar option Edit)
