@@ -8,6 +8,8 @@
 
 
 /*
+* ver 0.8
+*
 * GPIO setup (BCM numbering):
 * 23: Output (green LED + resistor) // switchable by widget buttons)
 * 24: Input  (default: GPIO24->switch->GND)
