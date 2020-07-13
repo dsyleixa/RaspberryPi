@@ -10,10 +10,10 @@
     pinMode(21, INPUT);  pullUpDnControl(21, PUD_UP); // init, default
     pinMode(25, INPUT);  pullUpDnControl(25, PUD_UP); // init, default
 *
-* Input 8 can be switched from INPUT_PULLUP (default) to INPUT_PULLDOWN
+* Input 25 can be switched from INPUT_PULLUP (default) to INPUT_PULLDOWN
 * (beneath toolbar option Edit)
 * when  INPUT_PULLDOWN  is activated, the switch has to be re-wired
-* (GPIO8->switch->+3v3)
+* (GPIO25->switch->+3v3)
 *
 * ads1115 at i2c-1
 * #include <wiringPi.h> 
