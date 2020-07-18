@@ -84,9 +84,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->plainTextEdit1->setStyleSheet("(color:black)");
     //ui->plainTextEdit1->setMaximumBlockCount(2000); // set in form editor
 
-    pinMode(18, OUTPUT);
-    pinMode(23, OUTPUT);
-    pinMode(24, OUTPUT);
+    pinMode(18, OUTPUT);  // triggered by program (blink)
+    pinMode(23, OUTPUT);  // triggered by GUI buttons (on/off)
+    pinMode(24, OUTPUT);  // yet unused
 
     pinMode(6 , INPUT);  pullUpDnControl(6,  PUD_UP); // init, default
     pinMode(16, INPUT);  pullUpDnControl(16, PUD_UP); // init, default
