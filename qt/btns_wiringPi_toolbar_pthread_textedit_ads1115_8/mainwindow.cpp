@@ -35,6 +35,19 @@ int analog0=0, analog1=0, analog2=0, analog3=0;
 
 
 
+
+void GPIOsetup() {
+    pinMode(18, OUTPUT);  // triggered by program (blink)
+    pinMode(23, OUTPUT);  // triggered by GUI buttons (on/off)
+    pinMode(24, OUTPUT);  // yet unused
+
+    pinMode(6 , INPUT);  pullUpDnControl(6,  PUD_UP); // init, default
+    pinMode(16, INPUT);  pullUpDnControl(16, PUD_UP); // init, default
+    pinMode(20, INPUT);  pullUpDnControl(20, PUD_UP); // init, default
+    pinMode(21, INPUT);  pullUpDnControl(21, PUD_UP); // init, default
+    pinMode(25, INPUT);  pullUpDnControl(25, PUD_UP); // init, default
+}
+
 void GPIOreset() {
     // outputs
     pinstate18 = LOW; digitalWrite(18, 0);
@@ -47,7 +60,6 @@ void GPIOreset() {
     pinstate21 = LOW; digitalWrite(21, 0);
     pinstate25 = LOW; digitalWrite(25, 0);
 }
-
 
 void cleanup();
 
@@ -84,16 +96,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->plainTextEdit1->setStyleSheet("(color:black)");
     //ui->plainTextEdit1->setMaximumBlockCount(2000); // set in form editor
 
-    pinMode(18, OUTPUT);  // triggered by program (blink)
-    pinMode(23, OUTPUT);  // triggered by GUI buttons (on/off)
-    pinMode(24, OUTPUT);  // yet unused
-
-    pinMode(6 , INPUT);  pullUpDnControl(6,  PUD_UP); // init, default
-    pinMode(16, INPUT);  pullUpDnControl(16, PUD_UP); // init, default
-    pinMode(20, INPUT);  pullUpDnControl(20, PUD_UP); // init, default
-    pinMode(21, INPUT);  pullUpDnControl(21, PUD_UP); // init, default
-    pinMode(25, INPUT);  pullUpDnControl(25, PUD_UP); // init, default
-
+    GPIOsetup();
     GPIOreset();
 
     pullUpDnControl(8, PUD_UP); // init, default
