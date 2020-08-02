@@ -8,7 +8,7 @@
 
 
 /*
-* ver 0.8
+* ver 0.8a
 *
 * GPIO setup (BCM numbering):
 * 23: Output (green LED + resistor) // switchable by widget buttons)
@@ -29,9 +29,8 @@
 #define  ADS_ADDR 0x48
 
 
-int pinstate18=LOW, pinstate23=LOW, pinstate24=LOW;
-int pinstate6=LOW, pinstate16=LOW, pinstate20=LOW, pinstate21=LOW, pinstate25=LOW;
 int analog0=0, analog1=0, analog2=0, analog3=0;
+int pinstate[80];
 
 
 
@@ -49,16 +48,11 @@ void GPIOsetup() {
 }
 
 void GPIOreset() {
+	for(int i=0; i<40; i++) { pinstate[i] = 0; }
     // outputs
-    pinstate18 = LOW; digitalWrite(18, 0);
-    pinstate23 = LOW; digitalWrite(23, 0);
-    pinstate24 = LOW; digitalWrite(24, 0);
-    // input switch
-    pinstate6  = LOW; digitalWrite(6 , 0);
-    pinstate16 = LOW; digitalWrite(16, 0);
-    pinstate20 = LOW; digitalWrite(20, 0);
-    pinstate21 = LOW; digitalWrite(21, 0);
-    pinstate25 = LOW; digitalWrite(25, 0);
+    digitalWrite(18, 0);
+    digitalWrite(23, 0);
+    digitalWrite(24, 0);
 }
 
 void cleanup();
@@ -72,11 +66,11 @@ pthread_t thread0;
 void* loop(void*)
 {
     while(TASKS_ACTIVE )  {  // blink loop
-        pinstate23=LOW;
-        digitalWrite(23, pinstate23);
+        pinstate[23]=LOW;
+        digitalWrite(23, pinstate[23]);
         delay(500);
-        pinstate23=HIGH;
-        digitalWrite(23, pinstate23);
+        pinstate[23]=HIGH;
+        digitalWrite(23, pinstate[23]);
         delay(500);
     }
     return NULL;  //
@@ -103,7 +97,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ads1115Setup ( PINBASE, ADS_ADDR );
 
-    ui->pin25Label->setText(QString::number(pinstate25));
+    ui->pin25Label->setText(QString::number(pinstate[25]));
 
     pthread_create(&thread0, NULL, loop, NULL);
 
@@ -134,9 +128,12 @@ void cleanup() {
     GPIOreset();
 }
 
+
 int32_t map(int32_t val, int32_t oldmax, int32_t newmax) {
     if (oldmax==0) return 0;
-    else  return (val*newmax)/oldmax;
+    int newval= (val*newmax)/oldmax;
+    if(newval>newmax) newval=newmax;
+    return newval;
 }
 
 
@@ -155,39 +152,40 @@ int32_t adc16To10bit(int pinbase, int channel, int actmax) {
 void
 MainWindow::onUpdateTime() {
 
-    pinstate6 = digitalRead(6);
-    ui->pin6Label->setText(QString::number(pinstate6));
-    Qwriteln1("pinstate6="+QString::number(pinstate21));
+    pinstate[6] = digitalRead(6);
+    ui->pin6Label->setText(QString::number(pinstate[6]));
+    Qwriteln1("pinstate[6]="+QString::number(pinstate[21]));
 
-    pinstate16 = digitalRead(16);
-    ui->pin16Label->setText(QString::number(pinstate16));
-    Qwriteln1("pinstate16="+QString::number(pinstate16));
+    pinstate[16] = digitalRead(16);
+    ui->pin16Label->setText(QString::number(pinstate[16]));
+    Qwriteln1("pinstate[16]="+QString::number(pinstate[16]));
 
-    pinstate20 = digitalRead(20);
-    ui->pin20Label->setText(QString::number(pinstate20));
-    Qwriteln1("pinstate20="+QString::number(pinstate20));
+    pinstate[20] = digitalRead(20);
+    ui->pin20Label->setText(QString::number(pinstate[20]));
+    Qwriteln1("pinstate[20]="+QString::number(pinstate[20]));
 
-    pinstate21 = digitalRead(21);
-    ui->pin21Label->setText(QString::number(pinstate21));
-    Qwriteln1("pinstate21="+QString::number(pinstate21));
+    pinstate[21] = digitalRead(21);
+    ui->pin21Label->setText(QString::number(pinstate[21]));
+    Qwriteln1("pinstate[21]="+QString::number(pinstate[21]));
 
-    pinstate25 = digitalRead(25);
-    ui->pin25Label->setText(QString::number(pinstate25));
-    Qwriteln1("pinstate25="+QString::number(pinstate25));
+    pinstate[25] = digitalRead(25);
+    ui->pin25Label->setText(QString::number(pinstate[25]));
+    Qwriteln1("pinstate[25]="+QString::number(pinstate[25]));
 
     // program-triggered
-    ui->pin18Label->setText(QString::number(pinstate18));
-    ui->label_p1->setText(QString::number(pinstate23));
+    ui->pin18Label->setText(QString::number(pinstate[18]));
+    ui->label_p1->setText(QString::number(pinstate[23]));
 
-    Qwriteln1("pinstate18="+QString::number(pinstate18));
-    Qwriteln1("pinstate23="+QString::number(pinstate23));
-    Qwriteln1("pinstate25="+QString::number(pinstate25));
+    Qwriteln1("pinstate[18]="+QString::number(pinstate[18]));
+    Qwriteln1("pinstate[23]="+QString::number(pinstate[23]));
+    Qwriteln1("pinstate[25]="+QString::number(pinstate[25]));
 
-    analog0 = adc16To10bit(PINBASE, 0, 26340);  // adjust for actual potentiometer max
-    //analog0 = analogRead(PINBASE + 0);
-    analog1 = adc16To10bit(PINBASE, 1, 26340);
-    analog2 = adc16To10bit(PINBASE, 2, 26340);
-    analog3 = adc16To10bit(PINBASE, 3, 26340);
+    //analog0 = analogRead(PINBASE + 0);          // debug
+    //analog1 = analogRead(PINBASE + 1);          // debug
+    analog0 = adc16To10bit(PINBASE, 0, 26243);  // adjust to actual potentiometer max
+    analog1 = adc16To10bit(PINBASE, 1, 26243);
+    analog2 = adc16To10bit(PINBASE, 2, 26243);
+    analog3 = adc16To10bit(PINBASE, 3, 26243);
 
     ui->label_ads1115A0->setText(QString::number(analog0));
     ui->label_ads1115A1->setText(QString::number(analog1));
@@ -198,15 +196,15 @@ MainWindow::onUpdateTime() {
 
 void
 MainWindow::on_highButton_clicked() {    
-    pinstate18 = HIGH;
-    digitalWrite(18, pinstate18);
+    pinstate[18] = HIGH;
+    digitalWrite(18, pinstate[18]);
 }
 
 
 void
 MainWindow::on_lowButton_clicked() {
-    pinstate18 = LOW;
-    digitalWrite(18, pinstate23);
+    pinstate[18] = LOW;
+    digitalWrite(18, pinstate[23]);
 }
 
 
