@@ -48,7 +48,7 @@ void GPIOsetup() {
 }
 
 void GPIOreset() {
-	for(int i=0; i<40; i++) { pinstate[i] = 0; }
+	for(int i=0; i<80; i++) { pinstate[i] = 0; }
     // outputs
     digitalWrite(18, 0);
     digitalWrite(23, 0);
