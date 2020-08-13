@@ -72,7 +72,7 @@ void loop() {
      char formatstr[MSGLEN];
      
      // debug, cut-down:
-     strcpy(formatstr, "ง");
+     strcpy(formatstr, "ยง");
      strcat(formatstr, "message from Raspi: %d;\n");
      sprintf(mbuf, formatstr, i0);
                     
@@ -112,7 +112,7 @@ void loop() {
      if (stringComplete)  {         
 
        strcpy (mbuf, inputString.c_str() );
-       //strcat(mbuf, "\0");
+
        fprintf(stderr,mbuf); fprintf(stderr,"\n"); 
        
        // process mbuf !
