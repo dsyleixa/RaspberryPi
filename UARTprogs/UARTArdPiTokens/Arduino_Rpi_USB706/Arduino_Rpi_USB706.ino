@@ -3,6 +3,7 @@
 
 
 // history:
+// 0706
 // 0705  debug value (i2) from Raspi
 // 0704  Serial.readStringUntil(), debug value (i0) from Arduino
 // 0703  simple msg str 
