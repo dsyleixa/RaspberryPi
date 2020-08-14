@@ -74,6 +74,9 @@ https://www.bogotobogo.com/Qt/Qt5_QGraphicsView_QGraphicsScene.php
 
 https://wiki.qt.io/Basic_Qt_Programming_Tutorial 
 
+https://riptutorial.com/de/qt
+https://riptutorial.com/de/qt/example/13705/eine-einfache-schreibgeschutzte-tabelle-zum-anzeigen-von-daten-aus-einem-modell
+
 http://www.elektronik.nmp24.de/?Einplatinenrechner:Raspberry_PI:GUI_mit_Qt_Creator_erstellen 
 
 https://qtvon0auf100.wordpress.com/ 
