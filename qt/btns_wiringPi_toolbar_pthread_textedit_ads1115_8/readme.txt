@@ -2,7 +2,7 @@
 * GPIO setup (BCM numbering):
 *   pinMode(18, OUTPUT);  // triggered by program (blink)
     pinMode(23, OUTPUT);  // triggered by GUI buttons (on/off)
-    pinMode(24, OUTPUT);  // yet unused
+    pinMode(24, OUTPUT);  // triggered by GPIO switch (on/off)
 
     pinMode(6 , INPUT);  pullUpDnControl(6,  PUD_UP); // init, default
     pinMode(16, INPUT);  pullUpDnControl(16, PUD_UP); // init, default

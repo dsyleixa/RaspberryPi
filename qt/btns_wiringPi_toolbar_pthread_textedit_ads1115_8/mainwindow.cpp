@@ -182,19 +182,17 @@ MainWindow::onUpdateTime() {
     ui->pin20Label->setText(QString::number(pinstate[20]));
     Qwriteln1("pinstate[20]="+QString::number(pinstate[20]));
 
-    // read pin and switch related LED
-
     pinstate[21] = digitalRead(21);
     ui->pin21Label->setText(QString::number(pinstate[21]));
     Qwriteln1("pinstate[21]="+QString::number(pinstate[21]));
-    pinstate[24]=pinstate[21];
-    if(pinstate[24]) digitalWrite(24, HIGH); else digitalWrite(24, LOW);
+
+    // read GPIO pin and switch related LED pin
 
     pinstate[25] = digitalRead(25);
     ui->pin25Label->setText(QString::number(pinstate[25]));
     Qwriteln1("pinstate[25]="+QString::number(pinstate[25]));
-    pinstate[18]=pinstate[25];
-    if(pinstate[18]) digitalWrite(18, HIGH); else digitalWrite(18, LOW);
+    pinstate[24]=pinstate[25];
+    if(pinstate[24]) digitalWrite(24, HIGH); else digitalWrite(24, LOW);
 
     // output 23 auto-program-triggered, outputs 18+24 manually
 
@@ -218,18 +216,17 @@ MainWindow::onUpdateTime() {
 }
 
 
-void
-MainWindow::on_highButton_clicked() {    
+// read GUI button and switch related LED pin
+
+void MainWindow::on_highButton_clicked() {
     pinstate[18] = HIGH;
     digitalWrite(18, pinstate[18]);
 }
-
-
-void
-MainWindow::on_lowButton_clicked() {
+void MainWindow::on_lowButton_clicked() {
     pinstate[18] = LOW;
-    digitalWrite(18, pinstate[23]);
+    digitalWrite(18, pinstate[18]);
 }
+
 
 
 void __attribute__((noreturn))
