@@ -3,12 +3,13 @@
 #include <wiringPi.h>
 #include <ads1115.h>
 #include <pthread.h>
+#include <unistd.h>
 
 
 
 
 /*
-* ver 0.8a
+* ver 0.8
 *
 * GPIO setup (BCM numbering):
 * 23: Output (green LED + resistor) // switchable by widget buttons)
@@ -30,8 +31,13 @@
 
 
 int analog0=0, analog1=0, analog2=0, analog3=0;
-int pinstate[80];
+int pinstate[40];
 
+
+
+void msleep(uint32_t ms) {
+    usleep(ms*1000);
+}
 
 
 
@@ -48,11 +54,16 @@ void GPIOsetup() {
 }
 
 void GPIOreset() {
-	for(int i=0; i<80; i++) { pinstate[i] = 0; }
     // outputs
-    digitalWrite(18, 0);
-    digitalWrite(23, 0);
-    digitalWrite(24, 0);
+    pinstate[18] = LOW; digitalWrite(18, 0);
+    pinstate[23] = LOW; digitalWrite(23, 0);
+    pinstate[24] = LOW; digitalWrite(24, 0);
+    // input switch
+    pinstate[6]  = LOW; digitalWrite(6 , 0);
+    pinstate[16] = LOW; digitalWrite(16, 0);
+    pinstate[20] = LOW; digitalWrite(20, 0);
+    pinstate[21] = LOW; digitalWrite(21, 0);
+    pinstate[25] = LOW; digitalWrite(25, 0);
 }
 
 void cleanup();
@@ -63,15 +74,20 @@ pthread_t thread0;
 
 
 
+
 void* loop(void*)
 {
     while(TASKS_ACTIVE )  {  // blink loop
         pinstate[23]=LOW;
         digitalWrite(23, pinstate[23]);
-        delay(500);
+        //delay(500);
+        //std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        msleep(500);
         pinstate[23]=HIGH;
-        digitalWrite(23, pinstate[23]);
-        delay(500);
+        digitalWrite(23, pinstate[23]);        
+        //delay(500);
+        //std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        msleep(500);
     }
     return NULL;  //
 }
@@ -152,9 +168,11 @@ int32_t adc16To10bit(int pinbase, int channel, int actmax) {
 void
 MainWindow::onUpdateTime() {
 
+    // read pins only
+
     pinstate[6] = digitalRead(6);
     ui->pin6Label->setText(QString::number(pinstate[6]));
-    Qwriteln1("pinstate[6]="+QString::number(pinstate[21]));
+    Qwriteln1("pinstate[6]="+QString::number(pinstate[6]));
 
     pinstate[16] = digitalRead(16);
     ui->pin16Label->setText(QString::number(pinstate[16]));
@@ -164,21 +182,27 @@ MainWindow::onUpdateTime() {
     ui->pin20Label->setText(QString::number(pinstate[20]));
     Qwriteln1("pinstate[20]="+QString::number(pinstate[20]));
 
+    // read pin and switch related LED
+
     pinstate[21] = digitalRead(21);
     ui->pin21Label->setText(QString::number(pinstate[21]));
     Qwriteln1("pinstate[21]="+QString::number(pinstate[21]));
+    pinstate[24]=pinstate[21];
+    if(pinstate[24]) digitalWrite(24, HIGH); else digitalWrite(24, LOW);
 
     pinstate[25] = digitalRead(25);
     ui->pin25Label->setText(QString::number(pinstate[25]));
     Qwriteln1("pinstate[25]="+QString::number(pinstate[25]));
+    pinstate[18]=pinstate[25];
+    if(pinstate[18]) digitalWrite(18, HIGH); else digitalWrite(18, LOW);
 
-    // program-triggered
-    ui->pin18Label->setText(QString::number(pinstate[18]));
+    // output 23 auto-program-triggered, outputs 18+24 manually
+
+    ui->pin18Label->setText(QString::number(pinstate[23]));
     ui->label_p1->setText(QString::number(pinstate[23]));
-
     Qwriteln1("pinstate[18]="+QString::number(pinstate[18]));
     Qwriteln1("pinstate[23]="+QString::number(pinstate[23]));
-    Qwriteln1("pinstate[25]="+QString::number(pinstate[25]));
+    Qwriteln1("pinstate[24]="+QString::number(pinstate[24]));
 
     //analog0 = analogRead(PINBASE + 0);          // debug
     //analog1 = analogRead(PINBASE + 1);          // debug
