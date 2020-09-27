@@ -196,7 +196,7 @@ MainWindow::onUpdateTime() {
 
     // output 23 auto-program-triggered, outputs 18+24 manually
 
-    ui->pin18Label->setText(QString::number(pinstate[23]));
+    ui->pin18Label->setText(QString::number(pinstate[18]));
     ui->label_p1->setText(QString::number(pinstate[23]));
     Qwriteln1("pinstate[18]="+QString::number(pinstate[18]));
     Qwriteln1("pinstate[23]="+QString::number(pinstate[23]));
