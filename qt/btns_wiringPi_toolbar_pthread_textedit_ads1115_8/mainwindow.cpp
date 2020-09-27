@@ -249,23 +249,6 @@ MainWindow::on_actionQuit_triggered()
 
 
 
-
-/*
-
-void MainWindow::on_actionGPIO25_PUP_triggered()
-{
-    ui->statusBar->showMessage("Test for GPIO25 pullup activated ", 1000);
-    pullUpDnControl(25, PUD_UP);
-}
-
-void MainWindow::on_actionGPIO25_PDN_triggered()
-{
-    ui->statusBar->showMessage("Test for GPIO25 pulldown activated ", 1000);
-    pullUpDnControl(25, PUD_DOWN);
-}
-
-*/
-
 void MainWindow::on_actionGPIO25_PUP_triggered()
 {
     ui->statusBar->showMessage("Test for GPIO25 pullup activated ", 1000);
