@@ -27,6 +27,5 @@
   INCLUDEPATH += /usr/local/include
   LIBS += -L"/usr/local/lib"
   LIBS += -lwiringPi
-  LIBS += -Iads1115.h
   LIBS += -lpthread
 */
