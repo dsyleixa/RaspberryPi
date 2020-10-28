@@ -16,6 +16,6 @@ int main(int argc, char** argv)
           if( (waitKey(10)%256) == 27 )   break; // stop capturing by pressing ESC 
     }
     // the camera will be closed automatically upon exit
-    // cap.close();
+    cap.close();
     return 0;
 }
