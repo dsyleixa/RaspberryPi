@@ -1,0 +1,13 @@
+sudo apt-get update
+sudo apt-get upgrade
+# opencv
+sudo apt-get install libopencv-dev
+
+#Auswahl von Cam Tools:
+#apt search webcam
+
+# cam tool guvcview
+sudo apt install guvcview
+# alternativ z.B.:
+# cam tool camorama
+sudo apt install camorama
