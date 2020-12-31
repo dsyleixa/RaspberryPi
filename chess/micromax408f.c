@@ -67,7 +67,9 @@ signed char  L,
      board[129],                                         // board: half of 16x8+dummy 
      T[1035];                                            // hash translation table    
 
-signed char  psymbol[]= ".?+nkbrq?*?NKBRQ";
+
+signed char  psymbol[]= ".?+nkbrq?*?NKBRQ";              // .empty ?undef +downstreamPawn *upstreamPawn
+                                                         // nKnight kKing bBishop rRook qQueen 
 
 int  mfrom, mto;    // current ply from - to
 int  Rootep,           // e.PieceType. square
