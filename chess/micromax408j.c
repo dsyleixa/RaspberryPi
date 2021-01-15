@@ -2,7 +2,7 @@
 /*                               micro-Max,                                */
 /* A chess program orig. <  2 KByte (of non-blank source), by H.G. Muller  */
 /***************************************************************************/
-/* version 4.8.j2  ported and reworked for RasPi by dsyleixa               */
+/* version 4.8.j6  ported and reworked for RasPi by dsyleixa               */
 /* features:                                                               */
 /* version 4.8  features:                                                  */
 /* - recursive negamax search                                              */
@@ -18,6 +18,7 @@
 /* - extend check evasions in inner nodes                                  */
 /* - reduction of all non-Pawn, non-capture moves except hash move (LMR)   */
 /* - full FIDE rules (expt under-promotion) and move-legality checking     */
+ 
 
 
 // Code für Raspberry Pi
@@ -29,8 +30,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-
-#define Kb(A,B) *(int*)(T+A+(B&8)+S*(B&7))
 
 
 #define HASHSIZE (1<<24) //  wegen RAM, für PC: (1<<24) // <<<<<<  für Arduino Mega 1<<8 !
@@ -48,8 +47,7 @@ struct HTab {
 
 
 
-//  think time, std for PC: 60000 
-#define MAXNODE  1700000L   // max deepening: increased values => higher skills
+#define MAXNODES  1700000L   // max deepening: increased values => higher skills
 
 int  K,
      RootEval,
@@ -66,6 +64,8 @@ int
     Side=16;                                             // 16=white, 8=black; Side^=24 switches ther and back
 
 signed char  L;
+
+//------------------------------------------------------------
 
                          // piece list (number, type) is {1,2,3,4,5,6,7} = {P+,P-,N,K,B,R,Q}. 
                          // Type 0 is not used, so it can indicate empty squares on the board.
@@ -92,10 +92,21 @@ int  Rootep,           // e.PieceType. square
      rmvP=128;         // remove piece
 
 
+//------------------------------------------------------------
+// compute HashTable value
+// #define Kb(A,B) *(int*)(T+A+(B&8)+S*(B&7)) 
+static int  Kb( const signed char A, const int B )
+{
+   void const * const ptr = T+A+(B&8)+S*(B&7);
+   int result;
+   memcpy(&result, ptr, 4);
+   return result;
+}
+ 
 
-
+//------------------------------------------------------------
 // recursive minimax search, Side=moving side, n=depth 
-
+//------------------------------------------------------------
 int  Minimax(int32_t  Alpha, int32_t  Beta, int32_t  Eval, int  epSqr, int  prev, int32_t   Depth)
                        // (Alpha,Beta)=window, Eval, EnPass_sqr. 
                        // prev=prev.dest; HashKeyLo,HashKeyHi=hashkeys; return EvalScore 
@@ -146,7 +157,7 @@ int  Minimax(int32_t  Alpha, int32_t  Beta, int32_t  Eval, int  epSqr, int  prev
 
    while( IterDepth++ <  Depth || IterDepth<3           // iterative deepening loop  
      || prev&K == INF
-       && ( (N<MAXNODE  && IterDepth<98)                   // root: deepen upto time; changed from N<60000    
+       && ( (N<MAXNODES  && IterDepth<98)                   // root: deepen upto time; changed from N<60000    
           || (K=BestFrom, L=BestTo&~bchk, IterDepth=3)
        )
      )                                                  // time's up: go do best     
@@ -158,7 +169,7 @@ int  Minimax(int32_t  Alpha, int32_t  Beta, int32_t  Eval, int  epSqr, int  prev
       N++;                                              // node count (for timing)   
       do
       {
-         Piece=board[FromSqr ];                         // scan board looking for    
+         Piece=board[FromSqr];                         // scan board looking for    
          if(Piece & Side)                               //  own piece (inefficient!) 
          {
             StepVec = PieceType = Piece&7;              // PieceType = piece type (set StepVec>0)  
@@ -192,8 +203,8 @@ labelA:                                                                 // resum
 
                   if(IterDepth-!Victim >1)                              // remaining depth           
                   {   
-                     v=PieceType<6?board[FromSqr +8]-board[ToSqr +8]:0;            // center positional pts.    
-                     board[ RookSqr ]=board[CaptSqr ]=board[FromSqr ]=0;board[ToSqr ]=Piece|32;             // do move, set non-virgin   
+                     v=PieceType<6?board[FromSqr+8]-board[ToSqr+8]:0;            // center positional pts.    
+                     board[RookSqr]=board[CaptSqr]=board[FromSqr]=0;board[ToSqr]=Piece|32;             // do move, set non-virgin   
                      if(!( RookSqr & bchk))board[SkipSqr]=Side+6,v+=50;               // castling: put R & Eval   
                      v-=PieceType-4|R>29?0:20;                                     // penalize mid-game K move  
 
@@ -204,14 +215,14 @@ labelA:                                                                 // resum
                               +(board[FromSqr ^16]==Side+36))                      // kling to non-virgin King  
                               -(R>>2);                                             // end-game Pawn-push bonus  
                          V=ToSqr +StepVec+1 & S?647-PieceType:2*(Piece & ToSqr +16 & 32);           // promotion or 6/7th bonus  
-                         board[ToSqr ]+=V;
+                         board[ToSqr]+=V;
                          i+=V;                                                     // change piece, add Eval   
                      }
 
                      v+= Eval+i;
                      V=BestScore >Alpha ? BestScore  : Alpha;                      // new eval and alpha        
-                     HashKeyLo+=Kb(ToSqr +0,board[ToSqr ])-Kb(FromSqr +0,Piece)-Kb(CaptSqr +0,Victim );
-                     HashKeyHi+=Kb(ToSqr +8,board[ToSqr ])-Kb(FromSqr +8,Piece)-Kb(CaptSqr +8,Victim )+ RookSqr -S;  // update hash key           
+                     HashKeyLo+=Kb(ToSqr +0,board[ToSqr])-Kb(FromSqr +0,Piece)-Kb(CaptSqr +0,Victim );
+                     HashKeyHi+=Kb(ToSqr+8,board[ToSqr])-Kb(FromSqr+8,Piece)-Kb(CaptSqr+8,Victim )+ RookSqr -S;  // update hash key           
                      C = IterDepth-1-(IterDepth>5 & PieceType>2 & !Victim & !h);
                      C = R>29|IterDepth<3|P-INF?C:IterDepth;                       // extend 1 ply if in check  
                      do {
@@ -230,10 +241,10 @@ labelA:                                                                 // resum
                      }
                      HashKeyLo=f;
                      HashKeyHi=g;                                       // restore hash key          
-                     board[ RookSqr ]=Side+6;
-                     board[SkipSqr]=board[ToSqr ]=0;
-                     board[FromSqr ]=Piece;
-                     board[CaptSqr ]=Victim ;                           // undo move, RookSqr can be dummy  
+                     board[RookSqr]=Side+6;
+                     board[SkipSqr]=board[ToSqr]=0;
+                     board[FromSqr]=Piece;
+                     board[CaptSqr]=Victim ;                           // undo move, RookSqr can be dummy  
                   }
                   if(v>BestScore )                                      // new best, update max,best 
                   {
@@ -247,8 +258,8 @@ labelA:                                                                 // resum
                   if (
                     FromSqr + StepVec - ToSqr  || Piece & 32 ||               // not 1st step,moved before 
                     PieceType>2 && (PieceType-4 | j-7 ||                      // no P & no lateral K move, 
-                      board[ RookSqr =FromSqr +3^StepVec>>1 & 7]-Side-6       // no virgin R in corner  RookSqr,  
-                      || board[ RookSqr^1] || board[ RookSqr^2] )             // no 2 empty sq. next to R  
+                      board[RookSqr = FromSqr+3 ^StepVec>>1 & 7] -Side-6      // no virgin R in corner  RookSqr,  
+                      || board[RookSqr^1] || board[RookSqr^2] )             // no 2 empty sq. next to R  
                     )
                   {
                      Victim += PieceType<5;
@@ -407,6 +418,7 @@ void chess()
    //int16_t       oldto, oldEPSQ; //debug
    char          sbuf[50], sbuf2[50];
    int16_t       str[20], *ptr;
+   float         count=1;
    signed char   oboard[129], spiece;
 
  
@@ -414,11 +426,13 @@ RESTART:
    standardBoard();                                               // standard board setup
    
 CUSTOM:      
+   eval=INF; 
    centerPointsTable();                                           // center-points table   
                                                                   //(in unused half board[]) 
    hashTblInit();                                                 // init hash table 
    
                                                                         // play loop   
+   count=1.0;
    Side=WHITE;                                                                            
    while(1)
    {
@@ -441,10 +455,18 @@ CUSTOM:
      }
      printf("     --------------- \n     A B C D E F G H \n");  
      printf(" R_estart  Q_uit  I_nput  S_ide \n"); 
+     printf("   move %.1f\n", 0.5+(count/2)); 
 
 SIDE:
      if(Side==16) printf(">  WHITE: ");  
      else         printf(">  BLACK: ");     
+          if(eval==-(INF-1)) {
+			  printf("--->   CHECKMATE   <---");
+		  }
+		  else
+		  if(eval==0) {
+			  printf("--->   STALEMATE   <---");
+		  }
     
      ptr=str;
      while( ( *ptr++ = getchar() ) >10 ) ;
@@ -470,11 +492,12 @@ SIDE:
      //oldEPSQ=Rootep;
 
      eval=Minimax(-INF, INF, RootEval, Rootep, 1, 3);      // think or check & do 
+     printf("\nmove=%.1f, eval=%d\n", 0.5+(count/2), eval); 
 
      if(eval!=15) {
         if(oboard[mto])   rmvP=mto;
         else  rmvP=128;
-        //debug: //if(mto==oldEPSQ)  rmvP=oldto;
+        //debug: //if(mto==oldEPSQ)  rmvP=oldto;        
         spiece=psymbol[board[mto] & 15];
         if(spiece=='*' || spiece=='+') spiece=' ';           
         sprintf(sbuf,"\n\nmove: %c %c%c", spiece,'a'+(mfrom & 7),'8'-(mfrom>>4));
@@ -495,15 +518,27 @@ SIDE:
              printf("%c%c (%3d)\n\n", 'a'+(rmvP & 7), '8'-(rmvP>>4 & 7), rmvP);  
           else printf ("(  )"); 
           printf("\n");
+          if(eval==-(INF-1)) {
+			  printf("--->   CHECKMATE   <---");
+		  }
+		  else
+		  if(eval==0) {
+			  printf("--->   STALEMATE   <---");
+		  }
+		  else
+          count++;
       }
-      else printf("\n\nILLEGAL!\n");
-
+      
+      else printf("\n\nILLEGAL! (eval=%d) \n", eval);
+         
    }
 }
 
 
 
-
+//------------------------------------------------------------
+// main()
+//------------------------------------------------------------
 int main(int argc, char **argv)
 {
    chess();
@@ -545,3 +580,16 @@ even if it has to move his own King slightly off center to achieve this. Unfortu
 /*   https://home.hccnet.nl/h.g.muller/chess.html                          */
 /*   https://home.hccnet.nl/h.g.muller/progress.html                       */
               
+
+/*
+ 
+ 9 ply, searched:   3529412 
+move=2
+move: n b8-c6 (1-34)  EPsq: (  )  rmvP: (  )
+ 
+ 9 ply, searched:   2469377 
+move=3 
+move: N b1-c3 (113-82)  EPsq: (  )  rmvP: (  )
+
+
+*/
