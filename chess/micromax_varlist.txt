@@ -1,5 +1,6 @@
 
 Variable Index
+v. 3.x
 
 In order to minimize the number of characters in the source code of micro-Max, all variables have one-character names, which makes the names rather non-descriptive. The following list with descriptions might therefore be helpful. Some names are used for different variables in main() and D(). A letter D or m in the second column of the table distinguishes the case. A space there indicates that this is a global ('static') variable. Most global variables are used to pass information from one instance of the recursive search routine D() to the next, or between that routine and the main program. To be visible to the routine that uses them, the corresponding names can then not be used for a local variables. This makes that we have nearly run out of one-letter names for use in D().
 
