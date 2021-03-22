@@ -92,5 +92,6 @@ https://github.com/StefanFrings/QtWebApp
 
 QGraphicsView:
 https://www.bogotobogo.com/Qt/Qt5_QGraphicsView_QGraphicsScene.php
+https://doc.qt.io/qt-5/qtwidgets-widgets-tetrix-example.html
 
 
