@@ -121,7 +121,7 @@ MainWindow::MainWindow(QWidget *parent)
     scene1= new QGraphicsScene(this);
     ui->graphicsView_1->setScene(scene1);
 
-    // Heater: Create a blue and green brushes and outline pen
+    // Create brushes and outline pen
     QBrush blueBrush(Qt::blue);
     QBrush greenBrush(Qt::green);
     QBrush redBrush(Qt::red);
