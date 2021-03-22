@@ -90,4 +90,7 @@ qt webserver: http://stefanfrings.de/qtwebapp/index.html
 http://stefanfrings.de/qtwebapp/index.html
 https://github.com/StefanFrings/QtWebApp
 
+QGraphicsView:
+https://www.bogotobogo.com/Qt/Qt5_QGraphicsView_QGraphicsScene.php
+
 
