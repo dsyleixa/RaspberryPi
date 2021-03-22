@@ -9,7 +9,7 @@
 
 
 /*
-* ver 0.8
+* ver 0.1
 *
 * GPIO setup (BCM numbering):
 * 23: Output (green LED + resistor) // switchable by widget buttons)
