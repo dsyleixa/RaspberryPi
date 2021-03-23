@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>949</width>
-    <height>643</height>
+    <width>876</width>
+    <height>682</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,10 +17,10 @@
    <widget class="QPushButton" name="quitButton">
     <property name="geometry">
      <rect>
-      <x>820</x>
-      <y>30</y>
+      <x>740</x>
+      <y>510</y>
       <width>101</width>
-      <height>61</height>
+      <height>71</height>
      </rect>
     </property>
     <property name="text">
@@ -628,6 +628,26 @@
      </rect>
     </property>
    </widget>
+   <widget class="QGraphicsView" name="graphicsView_3">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>510</y>
+      <width>171</width>
+      <height>71</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QGraphicsView" name="graphicsView_2">
+    <property name="geometry">
+     <rect>
+      <x>490</x>
+      <y>430</y>
+      <width>171</width>
+      <height>71</height>
+     </rect>
+    </property>
+   </widget>
    <zorder>label_23</zorder>
    <zorder>quitButton</zorder>
    <zorder>highButton</zorder>
@@ -667,13 +687,15 @@
    <zorder>label_ads1115A3</zorder>
    <zorder>graphicsView</zorder>
    <zorder>graphicsView_1</zorder>
+   <zorder>graphicsView_3</zorder>
+   <zorder>graphicsView_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>949</width>
+     <width>876</width>
      <height>34</height>
     </rect>
    </property>

@@ -42,6 +42,8 @@ private:
 
     QGraphicsScene *scene0;
     QGraphicsScene *scene1;
+    QGraphicsScene *scene2;
+    QGraphicsScene *scene3;
     QGraphicsEllipseItem *ellipse;
     QGraphicsRectItem *rectangle;
     QGraphicsTextItem *text;
