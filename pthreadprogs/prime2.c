@@ -64,6 +64,15 @@
         return NULL;
     }
 
+    void* thread4Go(void *)
+    {
+        int c;
+        c=calcPrimes(9, 100000, 8); //starting thread 2 at the next odd
+                                    //number and jumping 8 spaces
+        printf("thread3 found %d primes.\n",c);
+        return NULL;
+    }
+
    
     int main()
     {
