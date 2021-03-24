@@ -64,14 +64,7 @@
         return NULL;
     }
 
-    void* thread4Go(void *)
-    {
-        int c;
-        c=calcPrimes(9, 100000, 8); // think you get it.
-        printf("thread4 found %d primes.\n",c);
-        return NULL;
-    }
-
+   
     int main()
     {
 		unsigned long  timerms;
