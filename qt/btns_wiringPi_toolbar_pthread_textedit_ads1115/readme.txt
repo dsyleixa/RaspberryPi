@@ -18,7 +18,7 @@
 * ads1115 at i2c-1
 * #include <wiringPi.h> 
 * #include <ads1115.h>
-* show up ads1115 A0 reading in widget label
+* show up ads1115 A0...A3 readings in widget label
 *
 * ui->plainTextEdit1->setMaximumBlockCount(2000); // set in form editor
 *
