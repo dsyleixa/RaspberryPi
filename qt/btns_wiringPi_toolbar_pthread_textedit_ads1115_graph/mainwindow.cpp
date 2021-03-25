@@ -10,7 +10,7 @@
 
 
 /*
-* ver 0.4
+* ver 0.4a
 *
 * GPIO setup (BCM numbering):
 * 23: Output (green LED + resistor) // switchable by widget buttons)
@@ -122,20 +122,17 @@ void GPIOreset() {
 
 //-------------------------------------------------------------------------------
 // map values
-int32_t map(int32_t val, int32_t oldmax, int32_t newmax) {
-    if (oldmax==0) return 0;
-    int newval= (val*newmax)/oldmax;
-    if(newval>newmax) newval=newmax;
-    return newval;
+long  map(long x, long in_min, long in_max, long out_min, long out_max) {
+    return (x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min;
 }
 
 
 //-------------------------------------------------------------------------------
 // ADC map
-int32_t adc16To10bit(int pinbase, int channel, int actmax) {
+int32_t read_adc16To10bit(int pinbase, int channel, int actmax) {
     int32_t adc = analogRead(pinbase + channel);
 
-    adc = map(adc, actmax, maxADC);
+    adc = map(adc, 0,actmax, 0,maxADC);
     if(adc > maxADC) adc=maxADC;
     if(adc < 0)      adc=0;
 
@@ -261,6 +258,22 @@ void cleanup() {
 }
 
 
+
+//-------------------------------------------------------------------------------
+// read GUI button and switch related LED pin
+
+void MainWindow::on_highButton_clicked() {
+    pinstate[18] = HIGH;
+    digitalWrite(18, pinstate[18]);
+}
+
+void MainWindow::on_lowButton_clicked() {
+    pinstate[18] = LOW;
+    digitalWrite(18, pinstate[18]);
+}
+
+
+
 //-------------------------------------------------------------------------------
 // GPIO set pullUp/Down
 void MainWindow::on_actionGPIO25_PUP_triggered()
@@ -320,10 +333,11 @@ MainWindow::onUpdateTime() {
 
     //analog0 = analogRead(PINBASE + 0);          // debug
     //analog1 = analogRead(PINBASE + 1);          // debug
-    analog0 = adc16To10bit(PINBASE, 0, 26243);    // adjust to actual potentiometer max
-    analog1 = adc16To10bit(PINBASE, 1, 26243);
-    analog2 = adc16To10bit(PINBASE, 2, 26243);
-    analog3 = adc16To10bit(PINBASE, 3, 26243);
+
+    analog0 = read_adc16To10bit(PINBASE, 0, 26243);    // adjust to actual potentiometer max
+    analog1 = read_adc16To10bit(PINBASE, 1, 26243);
+    analog2 = read_adc16To10bit(PINBASE, 2, 26243);
+    analog3 = read_adc16To10bit(PINBASE, 3, 26243);
 
     ui->label_ads1115A0->setText(QString::number(analog0));
     ui->label_ads1115A1->setText(QString::number(analog1));
@@ -343,7 +357,7 @@ MainWindow::onUpdateTime() {
     for(int i=0; i<180; i++) {
        line = scene0->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
     }
-    line = scene0->addLine(offsX, offsY+3, offsX+(2*radius), offsY+3, outlinePen);
+    line = scene0->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
     line = scene0->addLine(CcircleXY_sm[0][0], CcircleXY_sm[0][1], CcircleXY_lg[0][0], CcircleXY_lg[0][1], outlinePen);
     line = scene0->addLine(CcircleXY_sm[90][0], CcircleXY_sm[90][1], CcircleXY_lg[90][0], CcircleXY_lg[90][1], outlinePen);
     line = scene0->addLine(CcircleXY_sm[180][0], CcircleXY_sm[180][1], CcircleXY_lg[180][0], CcircleXY_lg[180][1], outlinePen);
@@ -354,7 +368,7 @@ MainWindow::onUpdateTime() {
     for(int i=0; i<180; i++) {
        line = scene1->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
     }
-    line = scene1->addLine(offsX, offsY+3, offsX+(2*radius), offsY+3, outlinePen);
+    line = scene1->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
     line = scene1->addLine(CcircleXY_sm[0][0], CcircleXY_sm[0][1], CcircleXY_lg[0][0], CcircleXY_lg[0][1], outlinePen);
     line = scene1->addLine(CcircleXY_sm[90][0], CcircleXY_sm[90][1], CcircleXY_lg[90][0], CcircleXY_lg[90][1], outlinePen);
     line = scene1->addLine(CcircleXY_sm[180][0], CcircleXY_sm[180][1], CcircleXY_lg[180][0], CcircleXY_lg[180][1], outlinePen);
@@ -365,7 +379,7 @@ MainWindow::onUpdateTime() {
     for(int i=0; i<180; i++) {
        line = scene2->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
     }
-    line = scene2->addLine(offsX, offsY+3, offsX+(2*radius), offsY+3, outlinePen);
+    line = scene2->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
     line = scene2->addLine(CcircleXY_sm[0][0], CcircleXY_sm[0][1], CcircleXY_lg[0][0], CcircleXY_lg[0][1], outlinePen);
     line = scene2->addLine(CcircleXY_sm[90][0], CcircleXY_sm[90][1], CcircleXY_lg[90][0], CcircleXY_lg[90][1], outlinePen);
     line = scene2->addLine(CcircleXY_sm[180][0], CcircleXY_sm[180][1], CcircleXY_lg[180][0], CcircleXY_lg[180][1], outlinePen);
@@ -376,7 +390,7 @@ MainWindow::onUpdateTime() {
     for(int i=0; i<180; i++) {
        line = scene3->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
     }
-    line = scene3->addLine(offsX, offsY+3, offsX+(2*radius), offsY+3, outlinePen);
+    line = scene3->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
     line = scene3->addLine(CcircleXY_sm[0][0], CcircleXY_sm[0][1], CcircleXY_lg[0][0], CcircleXY_lg[0][1], outlinePen);
     line = scene3->addLine(CcircleXY_sm[90][0], CcircleXY_sm[90][1], CcircleXY_lg[90][0], CcircleXY_lg[90][1], outlinePen);
     line = scene3->addLine(CcircleXY_sm[180][0], CcircleXY_sm[180][1], CcircleXY_lg[180][0], CcircleXY_lg[180][1], outlinePen);
@@ -410,17 +424,6 @@ MainWindow::onUpdateTime() {
 }
 
 
-//-------------------------------------------------------------------------------
-// read GUI button and switch related LED pin
-
-void MainWindow::on_highButton_clicked() {
-    pinstate[18] = HIGH;
-    digitalWrite(18, pinstate[18]);
-}
-void MainWindow::on_lowButton_clicked() {
-    pinstate[18] = LOW;
-    digitalWrite(18, pinstate[18]);
-}
 
 
 //-------------------------------------------------------------------------------
