@@ -10,7 +10,7 @@
 
 
 /*
-* ver 0.3
+* ver 0.4
 *
 * GPIO setup (BCM numbering):
 * 23: Output (green LED + resistor) // switchable by widget buttons)
@@ -35,6 +35,10 @@ int maxADC = 1023;
 int analog0=0, analog1=0, analog2=0, analog3=0;
 int pinstate[40];
 
+//-------------------------------------------------------------------------------
+// QGraphics
+//-------------------------------------------------------------------------------
+
 // Create brushes and outline pen
 QBrush blueBrush(Qt::blue);
 QBrush greenBrush(Qt::green);
@@ -46,12 +50,14 @@ QPen whitePen(Qt::white);
 QPen redPen(Qt::red);
 
 
-
+// circle lookup tables
 float circleXY[362][2];    // unit circle (math convention)
 float CcircleXY[362][2];   // custom circle (qt conventions)
 float CcircleXY_sm[362][2];
 float CcircleXY_lg[362][2];
 
+
+// gauge clock faces
 float offsX=10, offsY=55, radius=50;
 
 // calc unit circle (math convention)
@@ -85,14 +91,9 @@ void initCustomCircleXY(float offsetX, float offsetY, float radius, float sm, fl
 }
 
 
-
-
-
-void msleep(uint32_t ms) {
-    usleep(ms*1000);
-}
-
-
+//-------------------------------------------------------------------------------
+// GPIOs
+//-------------------------------------------------------------------------------
 
 void GPIOsetup() {
     pinMode(18, OUTPUT);  // triggered by program (blink)
@@ -122,11 +123,24 @@ void GPIOreset() {
 void cleanup();
 
 
+
+//-------------------------------------------------------------------------------
+// pthread
+//-------------------------------------------------------------------------------
+
 volatile bool TASKS_ACTIVE = true;
 pthread_t thread0;
 
 
+void msleep(uint32_t ms) {
+    usleep(ms*1000);
+}
 
+
+
+//-------------------------------------------------------------------------------
+// pthread loops
+//-------------------------------------------------------------------------------
 
 void* loop(void*)
 {
@@ -145,6 +159,11 @@ void* loop(void*)
     return NULL;  //
 }
 
+
+
+//-------------------------------------------------------------------------------
+// main()
+//-------------------------------------------------------------------------------
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -170,7 +189,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // calculate  circle helper tables    
     initCircleXY();  // radius=1
-    initCustomCircleXY(offsX, offsY, radius, -4, 2); // custom pos and radius
+    initCustomCircleXY(offsX, offsY, radius, -2, 4); // custom pos and radius
     outlinePen.setWidth(2);
 
 
@@ -197,7 +216,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&updateTimer, SIGNAL(timeout()),
             this, SLOT(onUpdateTime()));
     // Start the timer
-    updateTimer.start(100);// in msec
+    updateTimer.start(100); // in msec
     // Go to the event loop...
 }
 
@@ -209,7 +228,8 @@ MainWindow::~MainWindow() {
 }
 
 
-
+//-------------------------------------------------------------------------------
+// GPIO cleanup
 void cleanup() {
     TASKS_ACTIVE = false;
     pthread_join(thread0, NULL);
@@ -217,6 +237,23 @@ void cleanup() {
 }
 
 
+//-------------------------------------------------------------------------------
+// GPIO set pullUp/Down
+void MainWindow::on_actionGPIO25_PUP_triggered()
+{
+    ui->statusBar->showMessage("Test for GPIO25 pullup activated ", 1000);
+    pullUpDnControl(25, PUD_UP);
+}
+
+void MainWindow::on_actionGPIO25_PDN_triggered()
+{
+    ui->statusBar->showMessage("Test for GPIO25 pulldown activated ", 1000);
+    pullUpDnControl(25, PUD_DOWN);
+}
+
+
+//-------------------------------------------------------------------------------
+// map values
 int32_t map(int32_t val, int32_t oldmax, int32_t newmax) {
     if (oldmax==0) return 0;
     int newval= (val*newmax)/oldmax;
@@ -225,6 +262,8 @@ int32_t map(int32_t val, int32_t oldmax, int32_t newmax) {
 }
 
 
+//-------------------------------------------------------------------------------
+// ADC map
 int32_t adc16To10bit(int pinbase, int channel, int actmax) {
     int32_t adc = analogRead(pinbase + channel);
 
@@ -236,7 +275,9 @@ int32_t adc16To10bit(int pinbase, int channel, int actmax) {
 }
 
 
-// Invoked every ...ms
+//-------------------------------------------------------------------------------
+// update time loop, invoked every ...ms
+//-------------------------------------------------------------------------------
 void
 MainWindow::onUpdateTime() {
     double val;
@@ -293,8 +334,6 @@ MainWindow::onUpdateTime() {
     whitePen.setWidth(2);
     redPen.setWidth(2);
 
-
-
     // Gauge Clock Faces
     // Gauge 0
     scene0->clear();
@@ -303,7 +342,9 @@ MainWindow::onUpdateTime() {
        line = scene0->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
     }
     line = scene0->addLine(offsX, offsY+3, offsX+(2*radius), offsY+3, outlinePen);
-
+    line = scene0->addLine(CcircleXY_sm[0][0], CcircleXY_sm[0][1], CcircleXY_lg[0][0], CcircleXY_lg[0][1], outlinePen);
+    line = scene0->addLine(CcircleXY_sm[90][0], CcircleXY_sm[90][1], CcircleXY_lg[90][0], CcircleXY_lg[90][1], outlinePen);
+    line = scene0->addLine(CcircleXY_sm[180][0], CcircleXY_sm[180][1], CcircleXY_lg[180][0], CcircleXY_lg[180][1], outlinePen);
 
     // Gauge 1
     scene1->clear();
@@ -312,6 +353,9 @@ MainWindow::onUpdateTime() {
        line = scene1->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
     }
     line = scene1->addLine(offsX, offsY+3, offsX+(2*radius), offsY+3, outlinePen);
+    line = scene1->addLine(CcircleXY_sm[0][0], CcircleXY_sm[0][1], CcircleXY_lg[0][0], CcircleXY_lg[0][1], outlinePen);
+    line = scene1->addLine(CcircleXY_sm[90][0], CcircleXY_sm[90][1], CcircleXY_lg[90][0], CcircleXY_lg[90][1], outlinePen);
+    line = scene1->addLine(CcircleXY_sm[180][0], CcircleXY_sm[180][1], CcircleXY_lg[180][0], CcircleXY_lg[180][1], outlinePen);
 
     // Gauge 2
     scene2->clear();
@@ -320,6 +364,9 @@ MainWindow::onUpdateTime() {
        line = scene2->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
     }
     line = scene2->addLine(offsX, offsY+3, offsX+(2*radius), offsY+3, outlinePen);
+    line = scene2->addLine(CcircleXY_sm[0][0], CcircleXY_sm[0][1], CcircleXY_lg[0][0], CcircleXY_lg[0][1], outlinePen);
+    line = scene2->addLine(CcircleXY_sm[90][0], CcircleXY_sm[90][1], CcircleXY_lg[90][0], CcircleXY_lg[90][1], outlinePen);
+    line = scene2->addLine(CcircleXY_sm[180][0], CcircleXY_sm[180][1], CcircleXY_lg[180][0], CcircleXY_lg[180][1], outlinePen);
 
     // Gauge 3
     scene3->clear();
@@ -328,6 +375,9 @@ MainWindow::onUpdateTime() {
        line = scene3->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
     }
     line = scene3->addLine(offsX, offsY+3, offsX+(2*radius), offsY+3, outlinePen);
+    line = scene3->addLine(CcircleXY_sm[0][0], CcircleXY_sm[0][1], CcircleXY_lg[0][0], CcircleXY_lg[0][1], outlinePen);
+    line = scene3->addLine(CcircleXY_sm[90][0], CcircleXY_sm[90][1], CcircleXY_lg[90][0], CcircleXY_lg[90][1], outlinePen);
+    line = scene3->addLine(CcircleXY_sm[180][0], CcircleXY_sm[180][1], CcircleXY_lg[180][0], CcircleXY_lg[180][1], outlinePen);
 
 
 
@@ -355,10 +405,10 @@ MainWindow::onUpdateTime() {
     line = scene3->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
     line->setTransformOriginPoint(offsX+radius, offsY);
     line->setRotation(val);
-
 }
 
 
+//-------------------------------------------------------------------------------
 // read GUI button and switch related LED pin
 
 void MainWindow::on_highButton_clicked() {
@@ -371,7 +421,9 @@ void MainWindow::on_lowButton_clicked() {
 }
 
 
-
+//-------------------------------------------------------------------------------
+// Quit
+//-------------------------------------------------------------------------------
 void __attribute__((noreturn))
 MainWindow::on_quitButton_clicked() {
     updateTimer.stop();
@@ -379,7 +431,7 @@ MainWindow::on_quitButton_clicked() {
     exit(EXIT_SUCCESS);
 }
 
-
+//-------------------------------------------------------------------------------
 void
 MainWindow::on_actionQuit_triggered()
 {
@@ -392,14 +444,3 @@ MainWindow::on_actionQuit_triggered()
 
 
 
-void MainWindow::on_actionGPIO25_PUP_triggered()
-{
-    ui->statusBar->showMessage("Test for GPIO25 pullup activated ", 1000);
-    pullUpDnControl(25, PUD_UP);
-}
-
-void MainWindow::on_actionGPIO25_PDN_triggered()
-{
-    ui->statusBar->showMessage("Test for GPIO25 pulldown activated ", 1000);
-    pullUpDnControl(25, PUD_DOWN);
-}
