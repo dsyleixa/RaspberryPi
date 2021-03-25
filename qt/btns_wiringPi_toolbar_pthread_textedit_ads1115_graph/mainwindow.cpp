@@ -149,7 +149,7 @@ int32_t adc16To10bit(int pinbase, int channel, int actmax) {
 
 
 //-------------------------------------------------------------------------------
-// pthread
+// thread & timing
 //-------------------------------------------------------------------------------
 
 volatile bool TASKS_ACTIVE = true;
