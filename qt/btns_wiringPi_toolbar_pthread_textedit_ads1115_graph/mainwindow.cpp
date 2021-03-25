@@ -54,17 +54,19 @@ float CcircleXY_lg[361][2];
 
 float offsX=10, offsY=55, radius=50;
 
-void initCircleXY() {
+// maths unit circle
+void initCircleXY() {   
     for(int i=0;i<=360; i++) {
        circleXY[i][0]= cosf(i*M_PI/180);
        circleXY[i][1]= sinf(i*M_PI/180);
     }
 }
 
+// custom qt circle
 void initCustomCircleXY(float offsetX, float offsetY, float radius, float sm, float lg) {
     float x=0, y=0;
 
-    for(int i=0; i<=180; i++) {
+    for(int i=0; i<=360; i++) {
        x=radius*circleXY[i][0]+offsetX+radius;
        y=-radius*circleXY[i][1]+offsetY;
        CcircleXY[i][0]=x;
