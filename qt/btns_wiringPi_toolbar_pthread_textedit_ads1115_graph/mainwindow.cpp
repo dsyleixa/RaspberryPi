@@ -51,10 +51,10 @@ QPen redPen(Qt::red);
 
 
 // circle lookup tables
-float circleXY[362][2];    // unit circle (math convention)
-float CcircleXY[362][2];   // custom circle (qt conventions)
-float CcircleXY_sm[362][2];
-float CcircleXY_lg[362][2];
+float uCircleXY[362][2];      // unit circle (math convention)
+float myCircleXY[362][2];     // custom circle (qt conventions)
+float myCircleXY_sm[362][2];  // smaller
+float myCircleXY_lg[362][2];  // larger
 
 
 // gauge clock faces
@@ -63,8 +63,8 @@ float offsX=10, offsY=55, radius=50;
 // calc unit circle (math convention)
 void initCircleXY() {
     for(int i=0;i<=361; i++) {
-       circleXY[i][0]= cosf(i*M_PI/180);
-       circleXY[i][1]= sinf(i*M_PI/180);
+       uCircleXY[i][0]= cosf(i*M_PI/180);
+       uCircleXY[i][1]= sinf(i*M_PI/180);
     }
 }
 
@@ -73,20 +73,20 @@ void initCustomCircleXY(float offsetX, float offsetY, float radius, float sm, fl
     float x=0, y=0;
 
     for(int i=0; i<=361; i++) {
-       x=radius*circleXY[i][0]+offsetX+radius;
-       y=-radius*circleXY[i][1]+offsetY;
-       CcircleXY[i][0]=x;
-       CcircleXY[i][1]=y;
+       x = radius*uCircleXY[i][0]+offsetX+radius;
+       y =-radius*uCircleXY[i][1]+offsetY;
+       myCircleXY[i][0]=x;
+       myCircleXY[i][1]=y;
 
-       x=(radius+sm)*circleXY[i][0]+offsetX+radius;
-       y=-(radius+sm)*circleXY[i][1]+offsetY;
-       CcircleXY_sm[i][0]=x;
-       CcircleXY_sm[i][1]=y;
+       x = (radius+sm)*uCircleXY[i][0]+offsetX+radius;
+       y =-(radius+sm)*uCircleXY[i][1]+offsetY;
+       myCircleXY_sm[i][0]=x;
+       myCircleXY_sm[i][1]=y;
 
-       x=(radius+lg)*circleXY[i][0]+offsetX+radius;
-       y=-(radius+lg)*circleXY[i][1]+offsetY;
-       CcircleXY_lg[i][0]=x;
-       CcircleXY_lg[i][1]=y;
+       x = (radius+lg)*uCircleXY[i][0]+offsetX+radius;
+       y =-(radius+lg)*uCircleXY[i][1]+offsetY;
+       myCircleXY_lg[i][0]=x;
+       myCircleXY_lg[i][1]=y;
     }
 }
 
@@ -172,7 +172,7 @@ void* loop(void*)
         //std::this_thread::sleep_for(std::chrono::milliseconds(500));
         msleep(500);
         pinstate[23]=HIGH;
-        digitalWrite(23, pinstate[23]);        
+        digitalWrite(23, pinstate[23]);
         //delay(500);
         //std::this_thread::sleep_for(std::chrono::milliseconds(500));
         msleep(500);
@@ -208,7 +208,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->pin25Label->setText(QString::number(pinstate[25]));
 
-    // calculate  circle helper tables    
+    // calculate  circle helper tables
     initCircleXY();  // radius=1
     initCustomCircleXY(offsX, offsY, radius, -2, 4); // custom pos and radius
     outlinePen.setWidth(2);
@@ -355,45 +355,45 @@ MainWindow::onUpdateTime() {
     scene0->clear();
     rectangle = scene0->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
     for(int i=0; i<180; i++) {
-       line = scene0->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
+       line = scene0->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
     }
     line = scene0->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
-    line = scene0->addLine(CcircleXY_sm[0][0], CcircleXY_sm[0][1], CcircleXY_lg[0][0], CcircleXY_lg[0][1], outlinePen);
-    line = scene0->addLine(CcircleXY_sm[90][0], CcircleXY_sm[90][1], CcircleXY_lg[90][0], CcircleXY_lg[90][1], outlinePen);
-    line = scene0->addLine(CcircleXY_sm[180][0], CcircleXY_sm[180][1], CcircleXY_lg[180][0], CcircleXY_lg[180][1], outlinePen);
+    line = scene0->addLine(myCircleXY_sm[0][0], myCircleXY_sm[0][1], myCircleXY_lg[0][0], myCircleXY_lg[0][1], outlinePen);
+    line = scene0->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
+    line = scene0->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
 
     // Gauge 1
     scene1->clear();
     rectangle = scene1->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
     for(int i=0; i<180; i++) {
-       line = scene1->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
+       line = scene1->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
     }
     line = scene1->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
-    line = scene1->addLine(CcircleXY_sm[0][0], CcircleXY_sm[0][1], CcircleXY_lg[0][0], CcircleXY_lg[0][1], outlinePen);
-    line = scene1->addLine(CcircleXY_sm[90][0], CcircleXY_sm[90][1], CcircleXY_lg[90][0], CcircleXY_lg[90][1], outlinePen);
-    line = scene1->addLine(CcircleXY_sm[180][0], CcircleXY_sm[180][1], CcircleXY_lg[180][0], CcircleXY_lg[180][1], outlinePen);
+    line = scene1->addLine(myCircleXY_sm[0][0], myCircleXY_sm[0][1], myCircleXY_lg[0][0], myCircleXY_lg[0][1], outlinePen);
+    line = scene1->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
+    line = scene1->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
 
     // Gauge 2
     scene2->clear();
     rectangle = scene2->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
     for(int i=0; i<180; i++) {
-       line = scene2->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
+       line = scene2->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
     }
     line = scene2->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
-    line = scene2->addLine(CcircleXY_sm[0][0], CcircleXY_sm[0][1], CcircleXY_lg[0][0], CcircleXY_lg[0][1], outlinePen);
-    line = scene2->addLine(CcircleXY_sm[90][0], CcircleXY_sm[90][1], CcircleXY_lg[90][0], CcircleXY_lg[90][1], outlinePen);
-    line = scene2->addLine(CcircleXY_sm[180][0], CcircleXY_sm[180][1], CcircleXY_lg[180][0], CcircleXY_lg[180][1], outlinePen);
+    line = scene2->addLine(myCircleXY_sm[0][0], myCircleXY_sm[0][1], myCircleXY_lg[0][0], myCircleXY_lg[0][1], outlinePen);
+    line = scene2->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
+    line = scene2->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
 
     // Gauge 3
     scene3->clear();
     rectangle = scene3->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
     for(int i=0; i<180; i++) {
-       line = scene3->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
+       line = scene3->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
     }
     line = scene3->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
-    line = scene3->addLine(CcircleXY_sm[0][0], CcircleXY_sm[0][1], CcircleXY_lg[0][0], CcircleXY_lg[0][1], outlinePen);
-    line = scene3->addLine(CcircleXY_sm[90][0], CcircleXY_sm[90][1], CcircleXY_lg[90][0], CcircleXY_lg[90][1], outlinePen);
-    line = scene3->addLine(CcircleXY_sm[180][0], CcircleXY_sm[180][1], CcircleXY_lg[180][0], CcircleXY_lg[180][1], outlinePen);
+    line = scene3->addLine(myCircleXY_sm[0][0], myCircleXY_sm[0][1], myCircleXY_lg[0][0], myCircleXY_lg[0][1], outlinePen);
+    line = scene3->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
+    line = scene3->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
 
 
 
