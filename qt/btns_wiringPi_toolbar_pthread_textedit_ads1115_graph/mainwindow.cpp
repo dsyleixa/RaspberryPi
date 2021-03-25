@@ -120,12 +120,6 @@ void GPIOreset() {
     pinstate[25] = LOW; digitalWrite(25, 0);
 }
 
-
-//-------------------------------------------------------------------------------
-// fwd
-void cleanup();
-
-
 //-------------------------------------------------------------------------------
 // map values
 int32_t map(int32_t val, int32_t oldmax, int32_t newmax) {
@@ -144,12 +138,18 @@ int32_t adc16To10bit(int pinbase, int channel, int actmax) {
     adc = map(adc, actmax, maxADC);
     if(adc > maxADC) adc=maxADC;
     if(adc < 0)      adc=0;
+
     return adc;
 }
 
+//-------------------------------------------------------------------------------
+// fwd
+void cleanup();
+
+
 
 //-------------------------------------------------------------------------------
-// thread & timing
+// thread, timing
 //-------------------------------------------------------------------------------
 
 volatile bool TASKS_ACTIVE = true;
