@@ -120,8 +120,32 @@ void GPIOreset() {
     pinstate[25] = LOW; digitalWrite(25, 0);
 }
 
+
+//-------------------------------------------------------------------------------
+// fwd
 void cleanup();
 
+
+//-------------------------------------------------------------------------------
+// map values
+int32_t map(int32_t val, int32_t oldmax, int32_t newmax) {
+    if (oldmax==0) return 0;
+    int newval= (val*newmax)/oldmax;
+    if(newval>newmax) newval=newmax;
+    return newval;
+}
+
+
+//-------------------------------------------------------------------------------
+// ADC map
+int32_t adc16To10bit(int pinbase, int channel, int actmax) {
+    int32_t adc = analogRead(pinbase + channel);
+
+    adc = map(adc, actmax, maxADC);
+    if(adc > maxADC) adc=maxADC;
+    if(adc < 0)      adc=0;
+    return adc;
+}
 
 
 //-------------------------------------------------------------------------------
@@ -251,28 +275,6 @@ void MainWindow::on_actionGPIO25_PDN_triggered()
     pullUpDnControl(25, PUD_DOWN);
 }
 
-
-//-------------------------------------------------------------------------------
-// map values
-int32_t map(int32_t val, int32_t oldmax, int32_t newmax) {
-    if (oldmax==0) return 0;
-    int newval= (val*newmax)/oldmax;
-    if(newval>newmax) newval=newmax;
-    return newval;
-}
-
-
-//-------------------------------------------------------------------------------
-// ADC map
-int32_t adc16To10bit(int pinbase, int channel, int actmax) {
-    int32_t adc = analogRead(pinbase + channel);
-
-    adc = map(adc, actmax, maxADC);
-    if(adc > maxADC) adc=maxADC;
-    if(adc < 0)      adc=0;
-
-	return adc;
-}
 
 
 //-------------------------------------------------------------------------------
