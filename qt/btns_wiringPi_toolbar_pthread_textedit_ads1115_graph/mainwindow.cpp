@@ -10,7 +10,7 @@
 
 
 /*
-* ver 0.2
+* ver 0.3
 *
 * GPIO setup (BCM numbering):
 * 23: Output (green LED + resistor) // switchable by widget buttons)
@@ -47,33 +47,33 @@ QPen redPen(Qt::red);
 
 
 
-float circleXY[361][2];
-float CcircleXY[361][2];
-float CcircleXY_sm[361][2];
-float CcircleXY_lg[361][2];
+float circleXY[362][2];    // unit circle (math convention)
+float CcircleXY[362][2];   // custom circle (qt conventions)
+float CcircleXY_sm[362][2];
+float CcircleXY_lg[362][2];
 
 float offsX=10, offsY=55, radius=50;
 
-// maths unit circle
-void initCircleXY() {   
-    for(int i=0;i<=360; i++) {
+// calc unit circle (math convention)
+void initCircleXY() {
+    for(int i=0;i<=361; i++) {
        circleXY[i][0]= cosf(i*M_PI/180);
        circleXY[i][1]= sinf(i*M_PI/180);
     }
 }
 
-// custom qt circle
+// calc custom circle (qt conventions)
 void initCustomCircleXY(float offsetX, float offsetY, float radius, float sm, float lg) {
     float x=0, y=0;
 
-    for(int i=0; i<=360; i++) {
+    for(int i=0; i<=361; i++) {
        x=radius*circleXY[i][0]+offsetX+radius;
        y=-radius*circleXY[i][1]+offsetY;
        CcircleXY[i][0]=x;
        CcircleXY[i][1]=y;
 
-       x=(radius-sm)*circleXY[i][0]+offsetX+radius;
-       y=-(radius-sm)*circleXY[i][1]+offsetY;
+       x=(radius+sm)*circleXY[i][0]+offsetX+radius;
+       y=-(radius+sm)*circleXY[i][1]+offsetY;
        CcircleXY_sm[i][0]=x;
        CcircleXY_sm[i][1]=y;
 
@@ -170,7 +170,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     // calculate  circle helper tables    
     initCircleXY();  // radius=1
-    initCustomCircleXY(offsX, offsY, radius, 2, 2); // custom pos and radius
+    initCustomCircleXY(offsX, offsY, radius, -4, 2); // custom pos and radius
     outlinePen.setWidth(2);
 
 
@@ -187,39 +187,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->graphicsView_3->setScene(scene3);
 
 
-    // gauge 0
-    rectangle = scene0->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
-    for(int i=0; i<180; i++) {
-       line = scene0->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
-    }
-    //line = scene0->addLine(offsX, offsY, offsX+(2*radius), offsY, outlinePen);
-
-    
-    // gauge 1
-    rectangle = scene1->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
-    for(int i=0; i<180; i++) {
-       line = scene1->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
-    }
-    //line = scene1->addLine(offsX, offsY, offsX+(2*radius), offsY, outlinePen);
-
-
-    // gauge 2
-    rectangle = scene2->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
-    for(int i=0; i<180; i++) {
-       line = scene2->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
-    }
-    //line = scene2->addLine(offsX, offsY, offsX+(2*radius), offsY, outlinePen);
-
-
-    // gauge 3
-    rectangle = scene3->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
-    for(int i=0; i<180; i++) {
-       line = scene3->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
-    }
-    //line = scene3->addLine(offsX, offsY, offsX+(2*radius), offsY, outlinePen);
-
-
-
 
     pthread_create(&thread0, NULL, loop, NULL);
 
@@ -230,7 +197,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&updateTimer, SIGNAL(timeout()),
             this, SLOT(onUpdateTime()));
     // Start the timer
-    updateTimer.start(50);// in msec
+    updateTimer.start(100);// in msec
     // Go to the event loop...
 }
 
@@ -269,12 +236,10 @@ int32_t adc16To10bit(int pinbase, int channel, int actmax) {
 }
 
 
-// Invoked every 50ms
+// Invoked every ...ms
 void
 MainWindow::onUpdateTime() {
-
-    volatile static int old0=1, old1=1, old2=1, old3=1;
-    int val;
+    double val;
 
     // read pins only
 
@@ -312,7 +277,7 @@ MainWindow::onUpdateTime() {
 
     //analog0 = analogRead(PINBASE + 0);          // debug
     //analog1 = analogRead(PINBASE + 1);          // debug
-    analog0 = adc16To10bit(PINBASE, 0, 26243);  // adjust to actual potentiometer max
+    analog0 = adc16To10bit(PINBASE, 0, 26243);    // adjust to actual potentiometer max
     analog1 = adc16To10bit(PINBASE, 1, 26243);
     analog2 = adc16To10bit(PINBASE, 2, 26243);
     analog3 = adc16To10bit(PINBASE, 3, 26243);
@@ -322,45 +287,75 @@ MainWindow::onUpdateTime() {
     ui->label_ads1115A2->setText(QString::number(analog2));
     ui->label_ads1115A3->setText(QString::number(analog3));
 
-    //GAUGE pointer values
+
+
+    // GAUGE graphics
     whitePen.setWidth(2);
     redPen.setWidth(2);
 
 
+
+    // Gauge Clock Faces
+    // Gauge 0
+    scene0->clear();
+    rectangle = scene0->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
+    for(int i=0; i<180; i++) {
+       line = scene0->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
+    }
+    line = scene0->addLine(offsX, offsY+3, offsX+(2*radius), offsY+3, outlinePen);
+
+
+    // Gauge 1
+    scene1->clear();
+    rectangle = scene1->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
+    for(int i=0; i<180; i++) {
+       line = scene1->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
+    }
+    line = scene1->addLine(offsX, offsY+3, offsX+(2*radius), offsY+3, outlinePen);
+
+    // Gauge 2
+    scene2->clear();
+    rectangle = scene2->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
+    for(int i=0; i<180; i++) {
+       line = scene2->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
+    }
+    line = scene2->addLine(offsX, offsY+3, offsX+(2*radius), offsY+3, outlinePen);
+
+    // Gauge 3
+    scene3->clear();
+    rectangle = scene3->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
+    for(int i=0; i<180; i++) {
+       line = scene3->addLine(CcircleXY[i][0], CcircleXY[i][1], CcircleXY[i+1][0], CcircleXY[i+1][1], outlinePen);
+    }
+    line = scene3->addLine(offsX, offsY+3, offsX+(2*radius), offsY+3, outlinePen);
+
+
+
+    // Gauge pointer needles
     //Gauge 0
-    val=(maxADC-old0)*180/maxADC;
-    line = scene0->addLine(offsX+radius, offsY, CcircleXY_sm[val][0], CcircleXY_sm[val][1], whitePen);
-    val=(maxADC-analog0)*180/maxADC;
-    line = scene0->addLine(offsX+radius, offsY, CcircleXY_sm[val][0], CcircleXY_sm[val][1], redPen);
-    //line = scene0->addLine(offsX, offsY, offsX+(2*radius), offsY, outlinePen);
+    val=(analog0)*180.0/maxADC;
+    line = scene0->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
+    line->setTransformOriginPoint(offsX+radius, offsY);
+    line->setRotation(val);
 
     //Gauge 1
-    val=(maxADC-old1)*180/maxADC;
-    line = scene1->addLine(offsX+radius, offsY, CcircleXY_sm[val][0], CcircleXY_sm[val][1], whitePen);
-    val=(maxADC-analog1)*180/maxADC;
-    line = scene1->addLine(offsX+radius, offsY, CcircleXY_sm[val][0], CcircleXY_sm[val][1], redPen);
-    //line = scene1->addLine(offsX, offsY, offsX+(2*radius), offsY, outlinePen)
+    val=(analog1)*180.0/maxADC;
+    line = scene1->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
+    line->setTransformOriginPoint(offsX+radius, offsY);
+    line->setRotation(val);
 
     //Gauge 2
-    val=(maxADC-old2)*180/maxADC;
-    line = scene2->addLine(offsX+radius, offsY, CcircleXY_sm[val][0], CcircleXY_sm[val][1], whitePen);
-    val=(maxADC-analog2)*180/maxADC;
-    line = scene2->addLine(offsX+radius, offsY, CcircleXY_sm[val][0], CcircleXY_sm[val][1], redPen);
-    //line = scene1->addLine(offsX, offsY, offsX+(2*radius), offsY, outlinePen);
+    val=(analog2)*180.0/maxADC;
+    line = scene2->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
+    line->setTransformOriginPoint(offsX+radius, offsY);
+    line->setRotation(val);
 
     //Gauge 3
-    val=(maxADC-old3)*180/maxADC;
-    line = scene3->addLine(offsX+radius, offsY, CcircleXY_sm[val][0], CcircleXY_sm[val][1], whitePen);
-    val=(maxADC-analog3)*180/maxADC;
-    line = scene3->addLine(offsX+radius, offsY, CcircleXY_sm[val][0], CcircleXY_sm[val][1], redPen);
-    //line = scene1->addLine(offsX, offsY, offsX+(2*radius), offsY, outlinePen);
+    val=(analog3)*180.0/maxADC;
+    line = scene3->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
+    line->setTransformOriginPoint(offsX+radius, offsY);
+    line->setRotation(val);
 
-
-
-    old0=analog0;
-    old1=analog1;
-    old2=analog2;
-    old3=analog3;
 }
 
 
@@ -396,23 +391,6 @@ MainWindow::on_actionQuit_triggered()
 
 
 
-
-
-/*
-
-void MainWindow::on_actionGPIO25_PUP_triggered()
-{
-    ui->statusBar->showMessage("Test for GPIO25 pullup activated ", 1000);
-    pullUpDnControl(25, PUD_UP);
-}
-
-void MainWindow::on_actionGPIO25_PDN_triggered()
-{
-    ui->statusBar->showMessage("Test for GPIO25 pulldown activated ", 1000);
-    pullUpDnControl(25, PUD_DOWN);
-}
-
-*/
 
 void MainWindow::on_actionGPIO25_PUP_triggered()
 {
