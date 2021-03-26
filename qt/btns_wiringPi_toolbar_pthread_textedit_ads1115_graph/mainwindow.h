@@ -23,17 +23,18 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+     QGraphicsLineItem *pline0;
+     QGraphicsLineItem *pline1;
+     QGraphicsLineItem *pline2;
+     QGraphicsLineItem *pline3;
 
 private slots:
+    void onUpdateTime();
     void on_highButton_clicked();
     void on_lowButton_clicked();
-    void on_quitButton_clicked();
-    void onUpdateTime();
-
+    void on_quitButton_clicked();    
     void on_actionQuit_triggered();
-
     void on_actionGPIO25_PUP_triggered();
-
     void on_actionGPIO25_PDN_triggered();
 
 private:

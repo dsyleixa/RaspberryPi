@@ -608,7 +608,7 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;ADC1 3&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QGraphicsView" name="graphicsView">
+   <widget class="QGraphicsView" name="graphicsView_0">
     <property name="geometry">
      <rect>
       <x>490</x>
@@ -685,7 +685,7 @@
    <zorder>label_ads1115A1</zorder>
    <zorder>label_ads1115A2</zorder>
    <zorder>label_ads1115A3</zorder>
-   <zorder>graphicsView</zorder>
+   <zorder>graphicsView_0</zorder>
    <zorder>graphicsView_1</zorder>
    <zorder>graphicsView_3</zorder>
    <zorder>graphicsView_2</zorder>

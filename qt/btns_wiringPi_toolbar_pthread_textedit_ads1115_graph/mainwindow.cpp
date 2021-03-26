@@ -10,7 +10,7 @@
 
 
 /*
-* ver 0.4a
+* ver 0.6
 *
 * GPIO setup (BCM numbering):
 * 23: Output (green LED + resistor) // switchable by widget buttons)
@@ -215,7 +215,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     scene0 = new QGraphicsScene(this);
-    ui->graphicsView->setScene(scene0);
+    ui->graphicsView_0->setScene(scene0);
 
     scene1 = new QGraphicsScene(this);
     ui->graphicsView_1->setScene(scene1);
@@ -225,6 +225,56 @@ MainWindow::MainWindow(QWidget *parent)
 
     scene3 = new QGraphicsScene(this);
     ui->graphicsView_3->setScene(scene3);
+
+    // Gauge Clock Faces
+    // Gauge 0
+    scene0->clear();
+    rectangle = scene0->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
+    for(int i=0; i<180; i++) {
+       line = scene0->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
+    }
+    line = scene0->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
+    line = scene0->addLine(myCircleXY_sm[0][0], myCircleXY_sm[0][1], myCircleXY_lg[0][0], myCircleXY_lg[0][1], outlinePen);
+    line = scene0->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
+    line = scene0->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
+
+    // Gauge 1
+    scene1->clear();
+    rectangle = scene1->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
+    for(int i=0; i<180; i++) {
+       line = scene1->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
+    }
+    line = scene1->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
+    line = scene1->addLine(myCircleXY_sm[0][0], myCircleXY_sm[0][1], myCircleXY_lg[0][0], myCircleXY_lg[0][1], outlinePen);
+    line = scene1->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
+    line = scene1->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
+
+    // Gauge 2
+    scene2->clear();
+    rectangle = scene2->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
+    for(int i=0; i<180; i++) {
+       line = scene2->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
+    }
+    line = scene2->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
+    line = scene2->addLine(myCircleXY_sm[0][0], myCircleXY_sm[0][1], myCircleXY_lg[0][0], myCircleXY_lg[0][1], outlinePen);
+    line = scene2->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
+    line = scene2->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
+
+    // Gauge 3
+    scene3->clear();
+    rectangle = scene3->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
+    for(int i=0; i<180; i++) {
+       line = scene3->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
+    }
+    line = scene3->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
+    line = scene3->addLine(myCircleXY_sm[0][0], myCircleXY_sm[0][1], myCircleXY_lg[0][0], myCircleXY_lg[0][1], outlinePen);
+    line = scene3->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
+    line = scene3->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
+
+    pline0 = scene0->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
+    pline1 = scene1->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
+    pline2 = scene2->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
+    pline3 = scene3->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
 
 
 
@@ -350,77 +400,34 @@ MainWindow::onUpdateTime() {
     whitePen.setWidth(2);
     redPen.setWidth(2);
 
-    // Gauge Clock Faces
-    // Gauge 0
-    scene0->clear();
-    rectangle = scene0->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
-    for(int i=0; i<180; i++) {
-       line = scene0->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
-    }
-    line = scene0->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
-    line = scene0->addLine(myCircleXY_sm[0][0], myCircleXY_sm[0][1], myCircleXY_lg[0][0], myCircleXY_lg[0][1], outlinePen);
-    line = scene0->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
-    line = scene0->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
-
-    // Gauge 1
-    scene1->clear();
-    rectangle = scene1->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
-    for(int i=0; i<180; i++) {
-       line = scene1->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
-    }
-    line = scene1->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
-    line = scene1->addLine(myCircleXY_sm[0][0], myCircleXY_sm[0][1], myCircleXY_lg[0][0], myCircleXY_lg[0][1], outlinePen);
-    line = scene1->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
-    line = scene1->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
-
-    // Gauge 2
-    scene2->clear();
-    rectangle = scene2->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
-    for(int i=0; i<180; i++) {
-       line = scene2->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
-    }
-    line = scene2->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
-    line = scene2->addLine(myCircleXY_sm[0][0], myCircleXY_sm[0][1], myCircleXY_lg[0][0], myCircleXY_lg[0][1], outlinePen);
-    line = scene2->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
-    line = scene2->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
-
-    // Gauge 3
-    scene3->clear();
-    rectangle = scene3->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
-    for(int i=0; i<180; i++) {
-       line = scene3->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
-    }
-    line = scene3->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
-    line = scene3->addLine(myCircleXY_sm[0][0], myCircleXY_sm[0][1], myCircleXY_lg[0][0], myCircleXY_lg[0][1], outlinePen);
-    line = scene3->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
-    line = scene3->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
-
-
-
     // Gauge pointer needles
     //Gauge 0
     val=(analog0)*180.0/maxADC;
-    line = scene0->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
-    line->setTransformOriginPoint(offsX+radius, offsY);
-    line->setRotation(val);
+    scene0->removeItem(pline0);
+    pline0 = scene0->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
+    pline0->setTransformOriginPoint(offsX+radius, offsY);
+    pline0->setRotation(val);
 
     //Gauge 1
     val=(analog1)*180.0/maxADC;
-    line = scene1->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
-    line->setTransformOriginPoint(offsX+radius, offsY);
-    line->setRotation(val);
+    scene1->removeItem(pline1);
+    pline1 = scene1->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
+    pline1->setTransformOriginPoint(offsX+radius, offsY);
+    pline1->setRotation(val);
 
     //Gauge 2
     val=(analog2)*180.0/maxADC;
-    line = scene2->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
-    line->setTransformOriginPoint(offsX+radius, offsY);
-    line->setRotation(val);
+    scene2->removeItem(pline2);
+    pline2 = scene2->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
+    pline2->setTransformOriginPoint(offsX+radius, offsY);
+    pline2->setRotation(val);
 
     //Gauge 3
     val=(analog3)*180.0/maxADC;
-    line = scene3->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
-    line->setTransformOriginPoint(offsX+radius, offsY);
-    line->setRotation(val);
+    scene3->removeItem(pline3);
+    pline3 = scene3->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
+    pline3->setTransformOriginPoint(offsX+radius, offsY);
+    pline3->setRotation(val);
 }
 
 
