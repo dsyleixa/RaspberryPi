@@ -46,11 +46,17 @@ private:
     QGraphicsEllipseItem *ellipse;
     QGraphicsRectItem *rectangle;
     QGraphicsTextItem *text;
+    QGraphicsTextItem *text0;
+    QGraphicsTextItem *text1;
+    QGraphicsTextItem *text2;
+    QGraphicsTextItem *text3;
     QGraphicsLineItem *line;
     QGraphicsLineItem *pline0;
     QGraphicsLineItem *pline1;
     QGraphicsLineItem *pline2;
     QGraphicsLineItem *pline3;
+
+
 };
 
 #endif // MAINWINDOW_H

@@ -292,6 +292,17 @@ MainWindow::MainWindow(QWidget *parent)
     pline2->setTransformOriginPoint(offsX+radius, offsY);
     pline3->setTransformOriginPoint(offsX+radius, offsY);
 
+    text0 = scene0->addText("ADCX", QFont("Arial", 16) );
+    text1 = scene1->addText("ADCX", QFont("Arial", 16) );
+    text2 = scene2->addText("ADCX", QFont("Arial", 16) );
+    text3 = scene3->addText("ADCX", QFont("Arial", 16) );
+
+    text0->setPos(offsX+radius-20, offsY-25);
+    text1->setPos(offsX+radius-20, offsY-25);
+    text2->setPos(offsX+radius-20, offsY-25);
+    text3->setPos(offsX+radius-20, offsY-25);
+
+
 
 
     pthread_create(&thread0, NULL, loop, NULL);
@@ -401,24 +412,26 @@ MainWindow::onUpdateTime() {
     ui->label_ads1115A3->setText(QString::number(analog3));
 
 
-
-    // GAUGES
     // Gauge pointer needles updates
     //Gauge 0
     val=(analog0)*180.0/maxADC;    
     pline0->setRotation(val);
+    text0->setPlainText(QString::number(analog0));
 
     //Gauge 1
     val=(analog1)*180.0/maxADC;
     pline1->setRotation(val);
+    text1->setPlainText(QString::number(analog1));
 
     //Gauge 2
     val=(analog2)*180.0/maxADC;
     pline2->setRotation(val);
+    text2->setPlainText(QString::number(analog2));
 
     //Gauge 3
     val=(analog3)*180.0/maxADC;
     pline3->setRotation(val);
+    text3->setPlainText(QString::number(analog3));
 }
 
 
