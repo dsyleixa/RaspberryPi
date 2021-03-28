@@ -290,9 +290,11 @@ MainWindow::~MainWindow() {
 
 
 //-------------------------------------------------------------------------------
+// paint gauge clock face
+
 void MainWindow::drawGauge(QGraphicsScene *scene) {
     scene->clear();
-    // Gaugs clpck face
+    // Gauge clock face
     rectangle = scene->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
     for(int i=0; i<180; i++) {
        line = scene->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
