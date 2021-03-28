@@ -35,6 +35,7 @@ private slots:
     void on_actionGPIO25_PDN_triggered();
     void drawGauge(QGraphicsScene *scene);
 
+
 private:
     Ui::MainWindow *ui;
     QTimer updateTimer;

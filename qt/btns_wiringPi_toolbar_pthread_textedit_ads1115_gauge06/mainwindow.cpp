@@ -10,7 +10,7 @@
 
 
 /*
-* ver 0.6
+* ver 0.6a
 *
 * GPIO setup (BCM numbering):
 * 23: Output (green LED + resistor) // switchable by widget buttons)
@@ -129,20 +129,15 @@ long  map(long x, long in_min, long in_max, long out_min, long out_max) {
 
 //-------------------------------------------------------------------------------
 // ADC map
-int32_t read_adc16To10bit(int pinbase, int channel, int actmax) {
+int32_t read_adc16To10bit(int pinbase, int channel, int actmax16) {
     int32_t adc = analogRead(pinbase + channel);
 
-    adc = map(adc, 0,actmax, 0,maxADC);
+    adc = map(adc, 0, actmax16, 0, maxADC);
     if(adc > maxADC) adc=maxADC;
     if(adc < 0)      adc=0;
 
     return adc;
 }
-
-//-------------------------------------------------------------------------------
-// fwd
-void cleanup();
-
 
 
 //-------------------------------------------------------------------------------
@@ -195,6 +190,7 @@ void* loop(void*)
 // main()
 //-------------------------------------------------------------------------------
 
+//  constructor
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -243,13 +239,12 @@ MainWindow::MainWindow(QWidget *parent)
     drawGauge(scene3);
 
 
-    // Gauges pointer needles
+    // Gauge variant pointer needles and text
 
     pline0 = scene0->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
     pline1 = scene1->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
     pline2 = scene2->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
     pline3 = scene3->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
-
     pline0->setTransformOriginPoint(offsX+radius, offsY);
     pline1->setTransformOriginPoint(offsX+radius, offsY);
     pline2->setTransformOriginPoint(offsX+radius, offsY);
@@ -259,29 +254,24 @@ MainWindow::MainWindow(QWidget *parent)
     text1 = scene1->addText("ADCX", QFont("Arial", 16) );
     text2 = scene2->addText("ADCX", QFont("Arial", 16) );
     text3 = scene3->addText("ADCX", QFont("Arial", 16) );
-
     text0->setPos(offsX+radius-20, offsY-25);
     text1->setPos(offsX+radius-20, offsY-25);
     text2->setPos(offsX+radius-20, offsY-25);
     text3->setPos(offsX+radius-20, offsY-25);
 
 
-
+     // threads, timers
 
     pthread_create(&thread0, NULL, loop, NULL);
 
-    onUpdateTime();
-
-    // Every time the Timer will reach its terminal count
-    // invoke the "slot" onUpdateTime()
-    connect(&updateTimer, SIGNAL(timeout()),
-            this, SLOT(onUpdateTime()));
-    // Start the timer
-    updateTimer.start(100); // in msec
-    // Go to the event loop...
+    onUpdateTime();               // invoke the "slot" onUpdateTime()
+    connect(&updateTimer, SIGNAL(timeout()), this, SLOT(onUpdateTime()));
+    updateTimer.start(100);       // Start the timer (in msec)
 }
 
 
+//-------------------------------------------------------------------------------
+//  destructor
 MainWindow::~MainWindow() {
     updateTimer.stop();
     cleanup();
@@ -290,11 +280,10 @@ MainWindow::~MainWindow() {
 
 
 //-------------------------------------------------------------------------------
-// paint gauge clock face
+//  paint     // Gauge clock face
 
 void MainWindow::drawGauge(QGraphicsScene *scene) {
     scene->clear();
-    // Gauge clock face
     rectangle = scene->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
     for(int i=0; i<180; i++) {
        line = scene->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
@@ -307,7 +296,7 @@ void MainWindow::drawGauge(QGraphicsScene *scene) {
 
 
 //-------------------------------------------------------------------------------
-// read GUI button and switch related LED pin
+//  read GUI button and switch related LED pin
 
 void MainWindow::on_highButton_clicked() {
     pinstate[18] = HIGH;
@@ -322,7 +311,7 @@ void MainWindow::on_lowButton_clicked() {
 
 
 //-------------------------------------------------------------------------------
-// GPIO set pullUp/Down
+//  GPIO set pullUp/Down
 void MainWindow::on_actionGPIO25_PUP_triggered()
 {
     ui->statusBar->showMessage("Test for GPIO25 pullup activated ", 1000);
@@ -338,10 +327,9 @@ void MainWindow::on_actionGPIO25_PDN_triggered()
 
 
 //-------------------------------------------------------------------------------
-// update time loop, invoked every ...ms
+//  update time loop, invoked every ...ms
 //-------------------------------------------------------------------------------
-void
-MainWindow::onUpdateTime() {
+void MainWindow::onUpdateTime() {
     double val;
 
     // read pins only
@@ -418,7 +406,7 @@ MainWindow::onUpdateTime() {
 
 
 //-------------------------------------------------------------------------------
-// Quit
+//  Quit
 //-------------------------------------------------------------------------------
 void __attribute__((noreturn))
 MainWindow::on_quitButton_clicked() {
@@ -428,8 +416,7 @@ MainWindow::on_quitButton_clicked() {
 }
 
 //-------------------------------------------------------------------------------
-void
-MainWindow::on_actionQuit_triggered()
+void MainWindow::on_actionQuit_triggered()
 {
     //ui->statusBar->showMessage("File Quit menu activated", 2000);
     updateTimer.stop();
