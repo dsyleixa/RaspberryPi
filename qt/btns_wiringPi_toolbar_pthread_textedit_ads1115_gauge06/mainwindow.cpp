@@ -201,16 +201,14 @@ MainWindow::MainWindow(QWidget *parent)
     if( iores == -1 )
         exit(1);
 
-    ui->plainTextEdit1->setStyleSheet("(color:black)");
-    //ui->plainTextEdit1->setMaximumBlockCount(2000); // set in form editor
-
     GPIOsetup();
     GPIOreset();
+    //pullUpDnControl(8, PUD_UP); // test init, default
 
-    pullUpDnControl(8, PUD_UP); // init, default
-
-    ads1115Setup ( PINBASE, ADS_ADDR );
-
+    ads1115Setup ( PINBASE, ADS_ADDR );        
+    
+    ui->plainTextEdit1->setStyleSheet("(color:black)");
+    //ui->plainTextEdit1->setMaximumBlockCount(2000); // set in form editor
     ui->pin25Label->setText(QString::number(pinstate[25]));
 
     // calculate  circle helper tables
