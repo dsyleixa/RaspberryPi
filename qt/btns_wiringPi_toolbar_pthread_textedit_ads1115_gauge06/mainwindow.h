@@ -26,7 +26,8 @@ public:
 
 
 private slots:
-    void onUpdateTime();
+    void onUpdateTime1();
+    void onUpdateTime2();
     void on_highButton_clicked();
     void on_lowButton_clicked();
     void on_quitButton_clicked();    
@@ -47,17 +48,18 @@ private:
 
     QGraphicsEllipseItem *ellipse;
     QGraphicsRectItem *rectangle;
-    QGraphicsTextItem *text;
-    QGraphicsTextItem *text0;
-    QGraphicsTextItem *text1;
-    QGraphicsTextItem *text2;
-    QGraphicsTextItem *text3;
+
     QGraphicsLineItem *line;
     QGraphicsLineItem *pline0;
     QGraphicsLineItem *pline1;
     QGraphicsLineItem *pline2;
     QGraphicsLineItem *pline3;
 
+    QGraphicsTextItem *text;
+    QGraphicsTextItem *text0;
+    QGraphicsTextItem *text1;
+    QGraphicsTextItem *text2;
+    QGraphicsTextItem *text3;
 
 };
 

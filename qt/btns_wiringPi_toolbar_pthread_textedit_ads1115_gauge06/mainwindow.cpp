@@ -10,7 +10,7 @@
 
 
 /*
-* ver 0.6a
+* ver 0.6b
 *
 * GPIO setup (BCM numbering):
 * 23: Output (green LED + resistor) // switchable by widget buttons)
@@ -203,7 +203,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     GPIOsetup();
     GPIOreset();
-    ads1115Setup( PINBASE, ADS_ADDR );        
+    ads1115Setup ( PINBASE, ADS_ADDR );
+
     
     ui->plainTextEdit1->setStyleSheet("(color:black)");
     //ui->plainTextEdit1->setMaximumBlockCount(2000); // set in form editor
@@ -259,8 +260,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     pthread_create(&thread0, NULL, loop, NULL);
 
-    onUpdateTime();               // invoke the "slot" onUpdateTime()
-    connect(&updateTimer, SIGNAL(timeout()), this, SLOT(onUpdateTime()));
+    onUpdateTime1();               // invoke the "slot" onUpdateTime1(): quick
+    connect(&updateTimer, SIGNAL(timeout()), this, SLOT(onUpdateTime1()));
+    updateTimer.start(20);       // Start the timer (in msec)
+
+    onUpdateTime2();               // invoke the "slot" onUpdateTime2(): slow
+    connect(&updateTimer, SIGNAL(timeout()), this, SLOT(onUpdateTime2()));
     updateTimer.start(100);       // Start the timer (in msec)
 }
 
@@ -291,7 +296,7 @@ void MainWindow::drawGauge(QGraphicsScene *scene) {
 
 
 //-------------------------------------------------------------------------------
-//  read GUI button and switch related LED pin
+//  read GUI buttons and switch related LED pin
 
 void MainWindow::on_highButton_clicked() {
     pinstate[18] = HIGH;
@@ -322,58 +327,69 @@ void MainWindow::on_actionGPIO25_PDN_triggered()
 
 
 //-------------------------------------------------------------------------------
-//  update time loop, invoked every ...ms
+//  update time loops, invoked every ...ms
 //-------------------------------------------------------------------------------
-void MainWindow::onUpdateTime() {
-    double val;
+void MainWindow::onUpdateTime1() {  // quick
+    //double val;
 
-    // read pins only
-
-    pinstate[6] = digitalRead(6);
-    ui->pin6Label->setText(QString::number(pinstate[6]));
-    Qwriteln1("pinstate[6]="+QString::number(pinstate[6]));
-
+    // read input GPIOs
+    pinstate[ 6] = digitalRead(6);
     pinstate[16] = digitalRead(16);
-    ui->pin16Label->setText(QString::number(pinstate[16]));
-    Qwriteln1("pinstate[16]="+QString::number(pinstate[16]));
-
     pinstate[20] = digitalRead(20);
-    ui->pin20Label->setText(QString::number(pinstate[20]));
-    Qwriteln1("pinstate[20]="+QString::number(pinstate[20]));
-
     pinstate[21] = digitalRead(21);
-    ui->pin21Label->setText(QString::number(pinstate[21]));
-    Qwriteln1("pinstate[21]="+QString::number(pinstate[21]));
-
-    // read GPIO pin and switch related LED pin
-
     pinstate[25] = digitalRead(25);
-    ui->pin25Label->setText(QString::number(pinstate[25]));
-    Qwriteln1("pinstate[25]="+QString::number(pinstate[25]));
+
+    // write output GPIOs
+    // output GPIO 23 auto-program-triggered (pthread loop),
+    // output GPIO 18 switch by ui HIGH+LOW button event slots
+    // output GPIO 24 by pin 25 GPIO switch
+
+    // write switch25-related LED output GPIO 24
     pinstate[24]=pinstate[25];
     if(pinstate[24]) digitalWrite(24, HIGH); else digitalWrite(24, LOW);
 
-    // output 23 auto-program-triggered, outputs 18+24 manually
-
-    ui->pin18Label->setText(QString::number(pinstate[18]));
-    ui->label_p1->setText(QString::number(pinstate[23]));
-    Qwriteln1("pinstate[18]="+QString::number(pinstate[18]));
-    Qwriteln1("pinstate[23]="+QString::number(pinstate[23]));
-    Qwriteln1("pinstate[24]="+QString::number(pinstate[24]));
-
-    //analog0 = analogRead(PINBASE + 0);          // debug
-    //analog1 = analogRead(PINBASE + 1);          // debug
-
-    analog0 = read_adc16To10bit(PINBASE, 0, 26243);    // adjust to actual potentiometer max
+    // read i2c device(s) (ADC)
+    //analog0 = analogRead(PINBASE + 0);             // debug
+    //analog1 = analogRead(PINBASE + 1);             // debug
+    analog0 = read_adc16To10bit(PINBASE, 0, 26243);  // adjust to actual poti max
     analog1 = read_adc16To10bit(PINBASE, 1, 26243);
     analog2 = read_adc16To10bit(PINBASE, 2, 26243);
     analog3 = read_adc16To10bit(PINBASE, 3, 26243);
+}
+
+
+//-------------------------------------------------------------------------------
+void MainWindow::onUpdateTime2() {  // slow
+    double val;
+
+    // update values on dashboard
+
+    ui->pin6Label->setText(QString::number(pinstate[6]));
+    Qwriteln1("pinstate[6]="+QString::number(pinstate[6]));
+
+    ui->pin16Label->setText(QString::number(pinstate[16]));
+    Qwriteln1("pinstate[16]="+QString::number(pinstate[16]));
+
+    ui->pin20Label->setText(QString::number(pinstate[20]));
+    Qwriteln1("pinstate[20]="+QString::number(pinstate[20]));
+
+    ui->pin21Label->setText(QString::number(pinstate[21]));
+    Qwriteln1("pinstate[21]="+QString::number(pinstate[21]));
+
+    ui->pin25Label->setText(QString::number(pinstate[25]));
+    Qwriteln1("pinstate[25]="+QString::number(pinstate[25]));    
+
+    ui->pin18Label->setText(QString::number(pinstate[18]));
+    ui->label_p1->setText(QString::number(pinstate[23]));
+
+    Qwriteln1("pinstate[18]="+QString::number(pinstate[18]));
+    Qwriteln1("pinstate[23]="+QString::number(pinstate[23]));
+    Qwriteln1("pinstate[24]="+QString::number(pinstate[24]));
 
     ui->label_ads1115A0->setText(QString::number(analog0));
     ui->label_ads1115A1->setText(QString::number(analog1));
     ui->label_ads1115A2->setText(QString::number(analog2));
     ui->label_ads1115A3->setText(QString::number(analog3));
-
 
     // Gauge pointer needles updates
     //Gauge 0
