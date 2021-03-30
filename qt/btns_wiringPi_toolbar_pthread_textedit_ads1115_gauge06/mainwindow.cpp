@@ -214,7 +214,7 @@ MainWindow::MainWindow(QWidget *parent)
     initCustomCircleXY(offsX, offsY, radius, -2, 4); // custom pos and radius
 
     outlinePen.setWidth(2);
-    redPen.setWidth(2);
+    redPen.setWidth(3);
 
     scene0 = new QGraphicsScene(this);
     ui->graphicsView_0->setScene(scene0);
@@ -246,14 +246,14 @@ MainWindow::MainWindow(QWidget *parent)
     pline2->setTransformOriginPoint(offsX+radius, offsY);
     pline3->setTransformOriginPoint(offsX+radius, offsY);
 
-    text0 = scene0->addText("ADCX", QFont("Arial", 16) );
-    text1 = scene1->addText("ADCX", QFont("Arial", 16) );
-    text2 = scene2->addText("ADCX", QFont("Arial", 16) );
-    text3 = scene3->addText("ADCX", QFont("Arial", 16) );
-    text0->setPos(offsX+radius-20, offsY-25);
-    text1->setPos(offsX+radius-20, offsY-25);
-    text2->setPos(offsX+radius-20, offsY-25);
-    text3->setPos(offsX+radius-20, offsY-25);
+    text0 = scene0->addText("A0=", QFont("Arial", 16) );
+    text1 = scene1->addText("A1=", QFont("Arial", 16) );
+    text2 = scene2->addText("A2=", QFont("Arial", 16) );
+    text3 = scene3->addText("A3=", QFont("Arial", 16) );
+    text0->setPos(offsX+5, offsY-30);
+    text1->setPos(offsX+5, offsY-30);
+    text2->setPos(offsX+5, offsY-30);
+    text3->setPos(offsX+5, offsY-30);
 
 
      // threads, timers
@@ -288,7 +288,7 @@ void MainWindow::drawGauge(QGraphicsScene *scene) {
     for(int i=0; i<180; i++) {
        line = scene->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
     }
-    line = scene->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
+    // line = scene->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
     line = scene->addLine(myCircleXY_sm[0][0], myCircleXY_sm[0][1], myCircleXY_lg[0][0], myCircleXY_lg[0][1], outlinePen);
     line = scene->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
     line = scene->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
@@ -330,7 +330,6 @@ void MainWindow::on_actionGPIO25_PDN_triggered()
 //  update time loops, invoked every ...ms
 //-------------------------------------------------------------------------------
 void MainWindow::onUpdateTime1() {  // quick
-    //double val;
 
     // read input GPIOs
     pinstate[ 6] = digitalRead(6);
@@ -362,7 +361,7 @@ void MainWindow::onUpdateTime1() {  // quick
 void MainWindow::onUpdateTime2() {  // slow
     double val;
 
-    // update values on dashboard
+    // show up values on dashboard
 
     ui->pin6Label->setText(QString::number(pinstate[6]));
     Qwriteln1("pinstate[6]="+QString::number(pinstate[6]));
@@ -386,6 +385,7 @@ void MainWindow::onUpdateTime2() {  // slow
     Qwriteln1("pinstate[23]="+QString::number(pinstate[23]));
     Qwriteln1("pinstate[24]="+QString::number(pinstate[24]));
 
+    // debug, test
     ui->label_ads1115A0->setText(QString::number(analog0));
     ui->label_ads1115A1->setText(QString::number(analog1));
     ui->label_ads1115A2->setText(QString::number(analog2));
@@ -395,22 +395,22 @@ void MainWindow::onUpdateTime2() {  // slow
     //Gauge 0
     val=(analog0)*180.0/maxADC;    
     pline0->setRotation(val);
-    text0->setPlainText(QString::number(analog0));
+    text0->setPlainText("A0="+QString::number(analog0));
 
     //Gauge 1
     val=(analog1)*180.0/maxADC;
     pline1->setRotation(val);
-    text1->setPlainText(QString::number(analog1));
+    text1->setPlainText("A1="+QString::number(analog1));
 
     //Gauge 2
     val=(analog2)*180.0/maxADC;
     pline2->setRotation(val);
-    text2->setPlainText(QString::number(analog2));
+    text2->setPlainText("A2="+QString::number(analog2));
 
     //Gauge 3
     val=(analog3)*180.0/maxADC;
     pline3->setRotation(val);
-    text3->setPlainText(QString::number(analog3));
+    text3->setPlainText("A3="+QString::number(analog3));
 }
 
 
@@ -419,6 +419,7 @@ void MainWindow::onUpdateTime2() {  // slow
 //-------------------------------------------------------------------------------
 //  Quit
 //-------------------------------------------------------------------------------
+
 void __attribute__((noreturn))
 MainWindow::on_quitButton_clicked() {
     updateTimer.stop();
@@ -427,6 +428,7 @@ MainWindow::on_quitButton_clicked() {
 }
 
 //-------------------------------------------------------------------------------
+
 void MainWindow::on_actionQuit_triggered()
 {
     //ui->statusBar->showMessage("File Quit menu activated", 2000);
