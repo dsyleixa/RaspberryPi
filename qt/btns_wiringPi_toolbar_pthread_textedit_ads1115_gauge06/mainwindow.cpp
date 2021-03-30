@@ -10,7 +10,7 @@
 
 
 /*
-* ver 0.6b
+* ver 0.6c
 *
 * GPIO setup (BCM numbering):
 * 23: Output (green LED + resistor) // switchable by widget buttons)
@@ -362,7 +362,7 @@ void MainWindow::onUpdateTime2() {  // slow
     double val;
 
     // show up values on dashboard
-
+    // inputs
     ui->pin6Label->setText(QString::number(pinstate[6]));
     Qwriteln1("pinstate[6]="+QString::number(pinstate[6]));
 
@@ -376,10 +376,12 @@ void MainWindow::onUpdateTime2() {  // slow
     Qwriteln1("pinstate[21]="+QString::number(pinstate[21]));
 
     ui->pin25Label->setText(QString::number(pinstate[25]));
-    Qwriteln1("pinstate[25]="+QString::number(pinstate[25]));    
+    Qwriteln1("pinstate[25]="+QString::number(pinstate[25]));
 
-    ui->pin18Label->setText(QString::number(pinstate[18]));
+    // outputs
+    ui->label_p0->setText(QString::number(pinstate[18]));
     ui->label_p1->setText(QString::number(pinstate[23]));
+    ui->label_p2->setText(QString::number(pinstate[24]));
 
     Qwriteln1("pinstate[18]="+QString::number(pinstate[18]));
     Qwriteln1("pinstate[23]="+QString::number(pinstate[23]));
