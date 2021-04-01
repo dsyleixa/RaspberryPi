@@ -205,13 +205,13 @@ MainWindow::MainWindow(QWidget *parent)
     GPIOreset();
     ads1115Setup ( PINBASE, ADS_ADDR );
 
-    
-    ui->plainTextEdit1->setStyleSheet("(color:black)");
-    //ui->plainTextEdit1->setMaximumBlockCount(2000); // set in form editor
-
+    // ui Widgets    
     // calculate  circle helper tables
     initCircleXY();  // radius=1
     initCustomCircleXY(offsX, offsY, radius, -2, 4); // custom pos and radius
+        
+    ui->plainTextEdit1->setStyleSheet("(color:black)");
+    //ui->plainTextEdit1->setMaximumBlockCount(2000); // set in form editor
 
     outlinePen.setWidth(2);
     redPen.setWidth(3);
@@ -228,25 +228,14 @@ MainWindow::MainWindow(QWidget *parent)
     scene3 = new QGraphicsScene(this);
     ui->graphicsView_3->setScene(scene3);
 
-    // Gauge Clock Faces
+    // Gauge clock faces
     drawGauge(scene0, &pline0, &text0);
     drawGauge(scene1, &pline1, &text1);
     drawGauge(scene2, &pline2, &text2);
     drawGauge(scene3, &pline3, &text3);
-    /*
-    text0 = scene0->addText("", QFont("Arial", 16) );
-    text1 = scene1->addText("", QFont("Arial", 16) );
-    text2 = scene2->addText("", QFont("Arial", 16) );
-    text3 = scene3->addText("", QFont("Arial", 16) );
-    text0->setPos(offsX+5, offsY-30);
-    text1->setPos(offsX+5, offsY-30);
-    text2->setPos(offsX+5, offsY-30);
-    text3->setPos(offsX+5, offsY-30);
-    */
-
+    
 
      // threads, timers
-
     pthread_create(&thread0, NULL, loop, NULL);
 
     onUpdateTime1();               // invoke the "slot" onUpdateTime1(): quick
@@ -289,9 +278,7 @@ void MainWindow::drawGauge(QGraphicsScene *scene, QGraphicsLineItem **pline, QGr
     QGraphicsTextItem* texttemp = scene->addText("", QFont("Arial", 16) );
     texttemp->setPos(offsX+5, offsY-30);
     *text = texttemp;
-
 }
-
 
 
 
@@ -393,7 +380,7 @@ void MainWindow::onUpdateTime2() {  // slow
     ui->label_ads1115A2->setText(QString::number(analog2));
     ui->label_ads1115A3->setText(QString::number(analog3));
 
-    // Gauge pointer needles updates
+    // Gauge variables updates
     //Gauge 0
     val=(analog0)*180.0/maxADC;    
     pline0->setRotation(val);
