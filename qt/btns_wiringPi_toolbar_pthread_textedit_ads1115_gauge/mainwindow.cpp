@@ -32,7 +32,8 @@
 int maxADC = 1023;
 
 
-int analog0=0, analog1=0, analog2=0, analog3=0;
+int adcraw0=0, adcraw1=0, adcraw2=0, adcraw3=0,
+    analog0=0, analog1=0, analog2=0, analog3=0;
 int pinstate[40];
 
 //-------------------------------------------------------------------------------
@@ -129,13 +130,10 @@ long  map(long x, long in_min, long in_max, long out_min, long out_max) {
 
 //-------------------------------------------------------------------------------
 // ADC map
-int32_t read_adc16To10bit(int pinbase, int channel, int actmax16) {
-    int32_t adc = analogRead(pinbase + channel);
-
+int32_t adc16To10bit(int32_t adc, int32_t actmax16) {
     adc = map(adc, 0, actmax16, 0, maxADC);
     if(adc > maxADC) adc=maxADC;
     if(adc < 0)      adc=0;
-
     return adc;
 }
 
@@ -338,12 +336,14 @@ void MainWindow::onUpdateTime1() {  // quick
     if(pinstate[24]) digitalWrite(24, HIGH); else digitalWrite(24, LOW);
 
     // read i2c device(s) (ADC)
-    //analog0 = analogRead(PINBASE + 0);             // debug
-    //analog1 = analogRead(PINBASE + 1);             // debug
-    analog0 = read_adc16To10bit(PINBASE, 0, 26243);  // adjust to actual poti max
-    analog1 = read_adc16To10bit(PINBASE, 1, 26243);
-    analog2 = read_adc16To10bit(PINBASE, 2, 26243);
-    analog3 = read_adc16To10bit(PINBASE, 3, 26243);
+    adcraw0 = analogRead(PINBASE + 0);             // raw
+    adcraw1 = analogRead(PINBASE + 1);             // raw
+    adcraw2 = analogRead(PINBASE + 2);             // raw
+    adcraw3 = analogRead(PINBASE + 3);             // raw
+    analog0 = adc16To10bit(adcraw0, 26243);  // adjust to actual poti max
+    analog1 = adc16To10bit(adcraw1, 26243);
+    analog2 = adc16To10bit(adcraw2, 26243);
+    analog3 = adc16To10bit(adcraw3, 26243);
 }
 
 
@@ -378,10 +378,10 @@ void MainWindow::onUpdateTime2() {  // slow
     Qwriteln1("pinstate[24]="+QString::number(pinstate[24]));
 
     // debug, test
-    ui->label_ads1115A0->setText(QString::number(analog0));
-    ui->label_ads1115A1->setText(QString::number(analog1));
-    ui->label_ads1115A2->setText(QString::number(analog2));
-    ui->label_ads1115A3->setText(QString::number(analog3));
+    ui->label_ads1115A0->setText( QString::number(adcraw0) );
+    ui->label_ads1115A1->setText( QString::number(adcraw1) );
+    ui->label_ads1115A2->setText( QString::number(adcraw2) );
+    ui->label_ads1115A3->setText( QString::number(adcraw3) );
 
     // Gauge pointer needles updates
     //Gauge 0
