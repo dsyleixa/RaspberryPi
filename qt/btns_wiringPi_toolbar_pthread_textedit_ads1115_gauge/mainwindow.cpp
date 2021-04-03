@@ -271,6 +271,8 @@ void MainWindow::drawGauge(QGraphicsScene *scene, QGraphicsLineItem **pline, QGr
     line = scene->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
     line = scene->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
 
+    QGraphicsEllipseItem* circle=scene->addEllipse(offsX+radius-3, offsY-3, 6, 6, redPen, redBrush);
+
     QGraphicsLineItem* plinetemp = scene->addLine(offsX+radius, offsY, offsX+3, offsY, redPen);
     plinetemp->setTransformOriginPoint(offsX+radius, offsY);
     *pline = plinetemp;
@@ -378,10 +380,10 @@ void MainWindow::onUpdateTime2() {  // slow
     Qwriteln1("pinstate[24]="+QString::number(pinstate[24]));
 
     // debug, test
-    ui->label_ads1115A0->setText( QString::number(adcraw0) );
-    ui->label_ads1115A1->setText( QString::number(adcraw1) );
-    ui->label_ads1115A2->setText( QString::number(adcraw2) );
-    ui->label_ads1115A3->setText( QString::number(adcraw3) );
+    ui->label_ads1115A0->setText(QString::number(adcraw0));
+    ui->label_ads1115A1->setText(QString::number(adcraw1));
+    ui->label_ads1115A2->setText(QString::number(adcraw2));
+    ui->label_ads1115A3->setText(QString::number(adcraw3));
 
     // Gauge pointer needles updates
     //Gauge 0
