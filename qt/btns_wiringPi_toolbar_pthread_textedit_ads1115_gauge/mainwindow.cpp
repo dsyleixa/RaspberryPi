@@ -8,9 +8,8 @@
 
 
 
-
 /*
-* ver 0.7
+* ver 0.7a
 *
 * GPIO setup (BCM numbering):
 * 23: Output (green LED + resistor) // switchable by widget buttons)
@@ -29,11 +28,11 @@
 
 #define  PINBASE  120
 #define  ADS_ADDR 0x48
-int maxADC = 1023;
 
 
-int adcraw0=0, adcraw1=0, adcraw2=0, adcraw3=0,
-    analog0=0, analog1=0, analog2=0, analog3=0;
+int adcraw[8],
+    analog[8];
+float anaf[8];
 int pinstate[40];
 
 //-------------------------------------------------------------------------------
@@ -127,13 +126,26 @@ long  map(long x, long in_min, long in_max, long out_min, long out_max) {
     return (x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min;
 }
 
+float mapf(float x, float in_min, float in_max, float out_min, float out_max) {
+    return (x-in_min) * (out_max-out_min) / (in_max-in_min) + out_min;
+}
+
 
 //-------------------------------------------------------------------------------
 // ADC map
-int32_t adc16To10bit(int32_t adc, int32_t actmax16) {
-    adc = map(adc, 0, actmax16, 0, maxADC);
-    if(adc > maxADC) adc=maxADC;
+int32_t adc16To10bit(int32_t adc) {
+    int32_t ADSMAX16 = 26260;
+    adc = map(adc, 0, ADSMAX16, 0, 1023);
+    if(adc > 1023) adc=1023;
     if(adc < 0)      adc=0;
+    return adc;
+}
+
+float adcToPerc(float adc) {
+    float ADSMAX16 = 26260.0;
+    adc = adc*100.0/ADSMAX16;
+    if(adc > 100.0)  adc=100.0;
+    if(adc < 0)      adc=0.0;
     return adc;
 }
 
@@ -175,8 +187,6 @@ void* loop(void*)
         msleep(500);
         pinstate[23]=HIGH;
         digitalWrite(23, pinstate[23]);
-        //delay(500);
-        //std::this_thread::sleep_for(std::chrono::milliseconds(500));
         msleep(500);
     }
     return NULL;  //
@@ -201,7 +211,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     GPIOsetup();
     GPIOreset();
-    ads1115Setup ( PINBASE, ADS_ADDR );
+    ads1115Setup(PINBASE, ADS_ADDR);
 
     
 
@@ -277,7 +287,7 @@ void MainWindow::drawGauge(QGraphicsScene *scene, QGraphicsLineItem **pline, QGr
     plinetemp->setTransformOriginPoint(offsX+radius, offsY);
     *pline = plinetemp;
 
-    QGraphicsTextItem* texttemp = scene->addText("", QFont("Arial", 16) );
+    QGraphicsTextItem* texttemp = scene->addText("", QFont("Arial", 14) );
     texttemp->setPos(offsX+5, offsY-30);
     *text = texttemp;
 }
@@ -338,20 +348,19 @@ void MainWindow::onUpdateTime1() {  // quick
     if(pinstate[24]) digitalWrite(24, HIGH); else digitalWrite(24, LOW);
 
     // read i2c device(s) (ADC)
-    adcraw0 = analogRead(PINBASE + 0);             // raw
-    adcraw1 = analogRead(PINBASE + 1);             // raw
-    adcraw2 = analogRead(PINBASE + 2);             // raw
-    adcraw3 = analogRead(PINBASE + 3);             // raw
-    analog0 = adc16To10bit(adcraw0, 26243);  // adjust to actual poti max
-    analog1 = adc16To10bit(adcraw1, 26243);
-    analog2 = adc16To10bit(adcraw2, 26243);
-    analog3 = adc16To10bit(adcraw3, 26243);
+    for (int i=0; i<4; i++) {
+       adcraw[i] = analogRead(PINBASE + i);
+       analog[i] = adc16To10bit(adcraw[i]);  // adjust to 10 bit
+       anaf[i]   = adcToPerc(adcraw[i]);     // adjust to Percent
+    }
+
 }
 
 
 //-------------------------------------------------------------------------------
 void MainWindow::onUpdateTime2() {  // slow
     double val;
+    char buf[10];
 
     // show up values on dashboard
     // inputs
@@ -380,31 +389,31 @@ void MainWindow::onUpdateTime2() {  // slow
     Qwriteln1("pinstate[24]="+QString::number(pinstate[24]));
 
     // debug, test
-    ui->label_ads1115A0->setText(QString::number(adcraw0));
-    ui->label_ads1115A1->setText(QString::number(adcraw1));
-    ui->label_ads1115A2->setText(QString::number(adcraw2));
-    ui->label_ads1115A3->setText(QString::number(adcraw3));
+    ui->label_ads1115A0->setText( QString::number(adcraw[0]) );
+    ui->label_ads1115A1->setText( QString::number(adcraw[1]) );
+    ui->label_ads1115A2->setText( QString::number(adcraw[2]) );
+    ui->label_ads1115A3->setText( QString::number(adcraw[3]) );
 
     // Gauge pointer needles updates
     //Gauge 0
-    val=(analog0)*180.0/maxADC;    
+    val=(anaf[0])*180.0/100;
     pline0->setRotation(val);
-    text0->setPlainText("A0="+QString::number(analog0));
+    text0->setPlainText( "A0="+QString::number(anaf[0], 'f', 1) );
 
     //Gauge 1
-    val=(analog1)*180.0/maxADC;
+    val=(anaf[1])*180.0/100;
     pline1->setRotation(val);
-    text1->setPlainText("A1="+QString::number(analog1));
+    text1->setPlainText( "A1="+QString::number(anaf[1], 'f', 1) );
 
     //Gauge 2
-    val=(analog2)*180.0/maxADC;
+    val=(anaf[2])*180.0/100;
     pline2->setRotation(val);
-    text2->setPlainText("A2="+QString::number(analog2));
+    text2->setPlainText( "A2="+QString::number(anaf[2], 'f', 1) );
 
     //Gauge 3
-    val=(analog3)*180.0/maxADC;
+    val=(anaf[3])*180.0/100;
     pline3->setRotation(val);
-    text3->setPlainText("A3="+QString::number(analog3));
+    text3->setPlainText( "A3="+QString::number(anaf[3], 'f', 1) );
 }
 
 
