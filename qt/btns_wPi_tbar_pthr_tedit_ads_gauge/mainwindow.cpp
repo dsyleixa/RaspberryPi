@@ -274,13 +274,14 @@ MainWindow::~MainWindow() {
 void MainWindow::drawGauge(QGraphicsScene *scene, QGraphicsLineItem **pline, QGraphicsTextItem **text) {
     scene->clear();
     rectangle = scene->addRect(0, 0, 120, 60, outlinePen, whiteBrush);
+
     for(int i=0; i<180; i++) {
        line = scene->addLine(myCircleXY[i][0], myCircleXY[i][1], myCircleXY[i+1][0], myCircleXY[i+1][1], outlinePen);
     }
-    // line = scene->addLine(offsX, offsY+2, offsX+(2*radius), offsY+2, outlinePen);
-    line = scene->addLine(myCircleXY_sm[0][0], myCircleXY_sm[0][1], myCircleXY_lg[0][0], myCircleXY_lg[0][1], outlinePen);
-    line = scene->addLine(myCircleXY_sm[90][0], myCircleXY_sm[90][1], myCircleXY_lg[90][0], myCircleXY_lg[90][1], outlinePen);
-    line = scene->addLine(myCircleXY_sm[180][0], myCircleXY_sm[180][1], myCircleXY_lg[180][0], myCircleXY_lg[180][1], outlinePen);
+    for (int m=0; m<=10; m++) {
+        int w=18*m;
+        line = scene->addLine(myCircleXY_sm[w][0], myCircleXY_sm[w][1], myCircleXY_lg[w][0], myCircleXY_lg[w][1], outlinePen);
+    }
 
     QGraphicsEllipseItem* circle=scene->addEllipse(offsX+radius-3, offsY-3, 6, 6, redPen, redBrush);
 
