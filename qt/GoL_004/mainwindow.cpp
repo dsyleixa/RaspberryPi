@@ -17,11 +17,11 @@ int blockSize = 4;
 int tftheight=640,
     tftwidth=640;
 
-int statusGliderEater[3] = {0} ; // let Gliders pass
-int statusGEnew[3] = {1} ;
+int stateGliderEater[3] = {0} ; // let Gliders pass
+int userGEnew[3] = {1} ;
 
 int updspeed=50;
-int statusUSnew=updspeed;
+int userUSnew=updspeed;
 //---------------------------------------------------------------------------
 // preferences and settings
 //---------------------------------------------------------------------------
@@ -427,8 +427,8 @@ void ResetGate() {
     int y1=10, x1=0, y2=10, x2=37+10;  // start pos of gliderguns
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
-    statusGliderEater[1]=statusGEnew[1];
-    statusGliderEater[2]=statusGEnew[2];
+    stateGliderEater[1]=userGEnew[1];
+    stateGliderEater[2]=userGEnew[2];
 
     // glidergun 1
     put_GliderGun( y1, x1 );
@@ -437,7 +437,7 @@ void ResetGate() {
     Eater1y = 9 +y1 +deltaXY;
     Eater1x =23 +x1 +deltaXY;
 
-    put_GliderEater( Eater1y, Eater1x, statusGliderEater[1]);
+    put_GliderEater( Eater1y, Eater1x, stateGliderEater[1]);
 
     // glidergun 2
     put_GliderGun( y2, x2 );
@@ -445,7 +445,7 @@ void ResetGate() {
     deltaXY=1;
     Eater2y = 9 +y2 +deltaXY;
     Eater2x =23 +x2 +deltaXY;
-    put_GliderEater( Eater2y, Eater2x, statusGliderEater[2]);
+    put_GliderEater( Eater2y, Eater2x, stateGliderEater[2]);
 
 }
 
@@ -527,77 +527,68 @@ MainWindow::onUpdateTime() {
 
       scene->clear();
 
-      ui->labelOut1->setText(QString::number(statusGEnew[1]));
-      ui->labelOut2->setText(QString::number(statusGEnew[2]));
+      ui->labelOut1->setText(QString::number(userGEnew[1]));
+      ui->labelOut2->setText(QString::number(userGEnew[2]));
 
-      if(updspeed!=statusUSnew) {
-         updspeed=statusUSnew;
+      if(updspeed!=userUSnew) {
+         updspeed=userUSnew;
          updateTimer.start(1003-10*updspeed);
       }
-      ui->labelUpdspeed->setText("Speed: "+QString::number(statusUSnew));
+      ui->labelUpdspeed->setText("Speed: "+QString::number(userUSnew));
 
-
-      if(statusGliderEater[1]!=statusGEnew[1] || statusGliderEater[2]!=statusGEnew[2]) {
+      if(stateGliderEater[1]!=userGEnew[1] || stateGliderEater[2]!=userGEnew[2]) {
          ResetGate();
-         statusGliderEater[1]=statusGEnew[1];
-         statusGliderEater[2]=statusGEnew[2];
+         stateGliderEater[1]=userGEnew[1];
+         stateGliderEater[2]=userGEnew[2];
          GenerationCnt=0;
       }
 
+      // GoL: calculate next Generation
       calculateGeneration();
 
-      // paint border
+      // draw GoL screen border
       rectangle = scene->addRect( 1, 1, screenWidth+frame, screenHeight+frame, outlinePen, whiteBrush);
 
-      // paint GoL screen
+      // draw GoL screen dots
       for (int yrow=frame; yrow <(yrows-frame); yrow++) {
         for (int xcol=frame; xcol<(xcols-frame); xcol++)  {
           // Draw all the "live" cells.
           if (board[yrow][xcol])
             rectangle = scene->addRect( (xcol-frame+1)*blockSize, (yrow-frame+1)*blockSize,
-                                        blockSize, blockSize, outlinePen, blueBrush);
+                                        blockSize, blockSize,  outlinePen, blackBrush);
         }
       }
 
-      // Add text to our graphics scene.
-      //text = scene->addText("Hi dsyleixa123!", QFont("Arial", 20) );
-      //text->setPos(80, 60);
-
       // generation monitor
-      /*
-      text = scene->addText("Generation: "+QString::number(GenerationCnt), QFont("Arial", 14) );
-      text->setPos(0, tftheight-100);
-      */
       ui->labelGen->setText("Generation: "+QString::number(GenerationCnt));
-
       GenerationCnt++;
-      ui->graphicsView->centerOn(screenWidth, screenHeight/2);  // <<<< not perfectly focussing yet
 
+      ui->graphicsView->centerOn(screenWidth, screenHeight/2);  //
 }
 
 
 
 void MainWindow::on_SliderUpdateSpeed_sliderMoved(int position)
 {
-    statusUSnew=position;
+    userUSnew=position;
 }
 
 
 void MainWindow::on_SliderUpdateSpeed_valueChanged(int value)
 {
-    statusUSnew=value;
+    userUSnew=value;
 }
 
 
 void MainWindow::on_checkBox1_clicked(bool checked)
 {
-    if (checked) statusGEnew[1]=1;
-    else statusGEnew[1]=0;
+    if (checked) userGEnew[1]=1;
+    else userGEnew[1]=0;
 }
 
 void MainWindow::on_checkBox2_clicked(bool checked)
 {
-    if (checked) statusGEnew[2]=1;
-    else statusGEnew[2]=0;
+    if (checked) userGEnew[2]=1;
+    else userGEnew[2]=0;
 }
 
