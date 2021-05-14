@@ -14,9 +14,6 @@ QPen outlinePen(Qt::black);
 
 int blockSize = 4;
 
-int tftheight=640,
-    tftwidth=640;
-
 int stateGliderEater[3] = {0} ; // let Gliders pass
 int userGEnew[3] = {1} ;
 
@@ -34,8 +31,8 @@ int userUSnew=updspeed;
 
 // The size of the GoL screen window
 
-const int screenWidth = 500;   // <~~~~~~~~~~~~ adjust screen dimensions !
-const int screenHeight= 500;
+const int GOLscrWidth = 1000;   // <~~~~~~~~~~~~ adjust screen dimensions !
+const int GOLscrHeight= 1000;
 const int frame = 10;
 
 
@@ -43,8 +40,8 @@ const int frame = 10;
 
 // Make the board larger on either side to ensure that there's an invisible border of dead cells
 
-int yvisrows = (screenHeight / blockSize);
-int xviscols = (screenWidth / blockSize);
+int yvisrows = (GOLscrHeight / blockSize);
+int xviscols = (GOLscrWidth / blockSize);
 
 int yrows = yvisrows + 2*frame;
 int xcols = xviscols + 2*frame;
@@ -53,8 +50,8 @@ int xcols = xviscols + 2*frame;
 #define centerxcol (xcols/2)-1
 
 // two boards, one for the current generation and one for calculating the next one
-char board[screenHeight + 2*frame][screenWidth + 2*frame];
-char tmpboard[screenHeight + 2*frame][screenWidth + 2*frame];
+char board[GOLscrHeight + 2*frame][GOLscrWidth + 2*frame];
+char tmpboard[GOLscrHeight + 2*frame][GOLscrWidth + 2*frame];
 
 
 
@@ -459,11 +456,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     scene  = new QGraphicsScene(this);
 
-    tftheight=640;
-    tftwidth =640;
-
-
-      rectangle = scene->addRect( 0, 0, screenWidth+3, screenHeight+3, outlinePen, blueBrush);
+      rectangle = scene->addRect( 0, 0, GOLscrWidth+3, GOLscrHeight+3, outlinePen, blueBrush);
 
       ResetGate();
 
@@ -475,7 +468,7 @@ MainWindow::MainWindow(QWidget *parent)
       outlinePen.setWidth(1);
 
       // paint border
-      rectangle = scene->addRect( 1, 1, screenWidth+frame, screenHeight+frame, outlinePen, whiteBrush);
+      rectangle = scene->addRect( 1, 1, GOLscrWidth+frame, GOLscrHeight+frame, outlinePen, whiteBrush);
 
       // paint GoL screen
       for (int yrow=frame; yrow <(yrows-frame); yrow++) {
@@ -487,7 +480,7 @@ MainWindow::MainWindow(QWidget *parent)
         }
       }
 
-      ui->graphicsView->centerOn(screenWidth, screenHeight/2);  // <<<< not perfectly focussing yet
+      // ui->graphicsView->centerOn(GOLscrWidth, GOLscrHeight/2);  // <<<< not perfectly focussing yet
 
     //--------------------------------------------------------------
     // Timer
@@ -547,7 +540,7 @@ MainWindow::onUpdateTime() {
       calculateGeneration();
 
       // draw GoL screen border
-      rectangle = scene->addRect( 1, 1, screenWidth+frame, screenHeight+frame, outlinePen, whiteBrush);
+      rectangle = scene->addRect( 1, 1, GOLscrWidth+frame, GOLscrHeight+frame, outlinePen, whiteBrush);
 
       // draw GoL screen dots
       for (int yrow=frame; yrow <(yrows-frame); yrow++) {
@@ -563,7 +556,7 @@ MainWindow::onUpdateTime() {
       ui->labelGen->setText("Generation: "+QString::number(GenerationCnt));
       GenerationCnt++;
 
-      ui->graphicsView->centerOn(screenWidth, screenHeight/2);  //
+      ui->graphicsView->centerOn(GOLscrWidth, GOLscrHeight/2);  //
 }
 
 
