@@ -18,10 +18,10 @@ int tftheight=640,
     tftwidth=640;
 
 int statusGliderEater[3] = {0} ; // let Gliders pass
-int statusRBnew[3] = {1} ;
+int statusGEnew[3] = {1} ;
 
 int updspeed=50;
-int statusupdspeednew=updspeed;
+int statusUSnew=updspeed;
 //---------------------------------------------------------------------------
 // preferences and settings
 //---------------------------------------------------------------------------
@@ -398,7 +398,7 @@ void put_GliderGunRev(int starty, int startx) {  // Gosper Glider Gun, period=30
 
 
 //---------------------------------------------------------------------------
-void put_GliderEater(int starty, int startx, int V) {
+void put_GliderEater(int starty, int startx, char V) {
   int x,y;
 
   char sprite[6][6] = {  //
@@ -418,21 +418,6 @@ void put_GliderEater(int starty, int startx, int V) {
 }
 
 //---------------------------------------------------------------------------
-bool get_GliderEater(int starty, int startx, int ID) {
-
-   bool isdestroyed= !board[starty+frame+0][startx+frame+0]
-                  &&  board[starty+frame+0][startx+frame+2]
-                  && !board[starty+frame+1][startx+frame+0]
-                  &&  board[starty+frame+1][startx+frame+2]
-                  &&  board[starty+frame+2][startx+frame+1]
-                  && !board[starty+frame+2][startx+frame+2];
-
-   if(isdestroyed) {
-       //...
-   }
-   return isdestroyed;
-}
-
 
 void ResetGate() {
     memset(board, 0, sizeof(board));
@@ -442,8 +427,8 @@ void ResetGate() {
     int y1=10, x1=0, y2=10, x2=37+10;  // start pos of gliderguns
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
-    statusGliderEater[1]=statusRBnew[1];
-    statusGliderEater[2]=statusRBnew[2];
+    statusGliderEater[1]=statusGEnew[1];
+    statusGliderEater[2]=statusGEnew[2];
 
     // glidergun 1
     put_GliderGun( y1, x1 );
@@ -542,20 +527,20 @@ MainWindow::onUpdateTime() {
 
       scene->clear();
 
-      ui->labelOut1->setText(QString::number(statusRBnew[1]));
-      ui->labelOut2->setText(QString::number(statusRBnew[2]));
+      ui->labelOut1->setText(QString::number(statusGEnew[1]));
+      ui->labelOut2->setText(QString::number(statusGEnew[2]));
 
-      if(updspeed!=statusupdspeednew) {
-         updspeed=statusupdspeednew;
+      if(updspeed!=statusUSnew) {
+         updspeed=statusUSnew;
          updateTimer.start(1003-10*updspeed);
       }
-      ui->labelUpdspeed->setText("Speed: "+QString::number(statusupdspeednew));
+      ui->labelUpdspeed->setText("Speed: "+QString::number(statusUSnew));
 
 
-      if(statusGliderEater[1]!=statusRBnew[1] || statusGliderEater[2]!=statusRBnew[2]) {
+      if(statusGliderEater[1]!=statusGEnew[1] || statusGliderEater[2]!=statusGEnew[2]) {
          ResetGate();
-         statusGliderEater[1]=statusRBnew[1];
-         statusGliderEater[2]=statusRBnew[2];
+         statusGliderEater[1]=statusGEnew[1];
+         statusGliderEater[2]=statusGEnew[2];
          GenerationCnt=0;
       }
 
@@ -594,25 +579,25 @@ MainWindow::onUpdateTime() {
 
 void MainWindow::on_SliderUpdateSpeed_sliderMoved(int position)
 {
-    statusupdspeednew=position;
+    statusUSnew=position;
 }
 
 
 void MainWindow::on_SliderUpdateSpeed_valueChanged(int value)
 {
-    statusupdspeednew=value;
+    statusUSnew=value;
 }
 
 
 void MainWindow::on_checkBox1_clicked(bool checked)
 {
-    if (checked) statusRBnew[1]=1;
-    else statusRBnew[1]=0;
+    if (checked) statusGEnew[1]=1;
+    else statusGEnew[1]=0;
 }
 
 void MainWindow::on_checkBox2_clicked(bool checked)
 {
-    if (checked) statusRBnew[2]=1;
-    else statusRBnew[2]=0;
+    if (checked) statusGEnew[2]=1;
+    else statusGEnew[2]=0;
 }
 
