@@ -11,12 +11,13 @@ sudo reboot
 sudo apt-get autoremove
 	
 sudo apt install qtcreator 
-sudo apt install gnustep gnustep-devel clang-3.8-doc llvm-3.8-doc qtbase5-dev cmake  kdelibs5-data subversion
+sudo apt install qtcreator-data qtcreator-doc qtbase5-examples qtbase5-doc-html qtbase5-dev qtbase5-private-dev 
+sudo apt install gnustep gnustep-devel clang-3.8-doc llvm-3.8-doc qtbase5-dev  cmake  kdelibs5-data subversion
 sudo apt install qt5-default 
 
 #optional:
 sudo apt install qt5-qmltooling-plugins qt5-doc qt5-doc-html
-sudo apt-get install qtdeclarative5-dev qtdeclarative5-examples qtbase5-examples 
+sudo apt-get install qtdeclarative5-dev qtdeclarative5-examples 
 sudo apt-get install qml-module-qtquick-controls
 sudo apt-get install libqt5multimedia5-plugins 
 
