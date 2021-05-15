@@ -464,7 +464,7 @@ MainWindow::MainWindow(QWidget *parent)
       // Draw all the cells
       //---------------------------------------------------------------------------
       scene->clear();
-      ui->graphicsView->setScene(scene);
+      // ui->graphicsView->setScene(scene);
       outlinePen.setWidth(1);
 
       // paint border
