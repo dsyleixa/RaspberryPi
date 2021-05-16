@@ -318,12 +318,6 @@ void ResetCircuit() {
     put_GliderEater( EaterY[1], EaterX[1], stateGEater[1]);  // Input A
 
 
-    // AND GATE: trajectory of GGunA detect
-    EaterY[0] =  GGy1 +  9 +57;
-    EaterX[0] =  GGx1 + 23 +57;
-    put_GliderEater( EaterY[0], EaterX[0], 0);
-
-
     // glidergun 2: INPUT B
     put_GliderGun( GGy2, GGx2 );
     // Gun Eater 2
