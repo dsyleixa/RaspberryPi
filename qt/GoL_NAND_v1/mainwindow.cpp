@@ -327,8 +327,8 @@ void ResetCircuit() {
     // glidergun 2: INPUT B
     put_GliderGun( GGy2, GGx2 );
     // Gun Eater 2
-    EaterY[2] =  GGy2 +  9 +4;
-    EaterX[2] =  GGx2 + 23 +4;
+    EaterY[2] =  GGy2 + 9 +4;
+    EaterX[2] =  GGx2 + 9 +4;
     put_GliderEater( EaterY[2], EaterX[2], stateGEater[2]); // INPUT B
 
     put_GliderEater( EaterY[2]+16, EaterX[2]+16, 0); // INF-STOP
@@ -337,25 +337,25 @@ void ResetCircuit() {
     // glidergun 3: GUN INVERT B
     put_GliderGunRev( GGy3, GGx3 );
     // Gun Eater 3
-    EaterY[3] =  GGy3 +  9    +45;
-    EaterX[3] =  GGx3 + 23-14 -45;
+    EaterY[3] =  GGy3 + 9 +9*5;
+    EaterX[3] =  GGx3 + 9 -9*5;
     put_GliderEaterRev( EaterY[3], EaterX[3], 0);
 
 
-    // glidergun 4: GUN INVERT => NAND
+    // glidergun 4: GUN INVERT => NAND output
     put_GliderGunRev( GGy4, GGx4 );
     // Gun Eater 4
-    EaterY[4] =  GGy4 + 9     +81;
-    EaterX[4] =  GGx4 + 23-14 -81;
+    EaterY[4] =  GGy4 + 9  +9*10;
+    EaterX[4] =  GGx4 + 9  -9*10;
     put_GliderEaterRev( EaterY[4], EaterX[4], stateGEater[4]);
 
 
 /*
-    // glidergun 5: CLOCK
+    // glidergun 5: CLOCK  // parallel to NAND output stream
     put_GliderGunRev( GGy5, GGx5 );
     // Gun Eater 5
-    EaterY[5] =  GGy5 + 9     +57;
-    EaterX[5] =  GGx5 + 23-14 -57;
+    EaterY[5] =  GGy5 + 9  +9*10;
+    EaterX[5] =  GGx5 + 9  -9*10;
     put_GliderEaterRev( EaterY[5], EaterX[5], stateGEater[5]);
 */
 
@@ -484,9 +484,9 @@ MainWindow::onUpdateTime() {
       GenerationCnt++;
 
 
-      QGraphicsTextItem* text = scene->addText("  NAND\nresult stream", QFont("Arial", 14) );
-      //setBrush(Qt::red);
-      text->setDefaultTextColor(Qt::red);
+      QGraphicsSimpleTextItem* text = scene->addSimpleText("    NAND\nresult stream", QFont("Arial", 14) );
+      text->setBrush(Qt::red);
+      //text->setDefaultTextColor(Qt::red);
       text->setPos(EaterX[4]*blockSize+8*blockSize-1, EaterY[4]*blockSize-3*blockSize+2);
 
 }

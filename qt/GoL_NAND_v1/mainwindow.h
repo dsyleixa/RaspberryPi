@@ -40,7 +40,7 @@ private:
     QGraphicsEllipseItem *ellipse;
     QGraphicsEllipseItem *dot;
     QGraphicsRectItem *rectangle;
-    QGraphicsTextItem *text;
+    //QGraphicsTextItem *text;
     QGraphicsLineItem *line;
 
 };
