@@ -327,8 +327,8 @@ void ResetCircuit() {
     // glidergun 2: INPUT B
     put_GliderGun( GGy2, GGx2 );
     // Gun Eater 2
-    EaterY[2] =  GGy2 + 9 +4;
-    EaterX[2] =  GGx2 + 9 +4;
+    EaterY[2] =  GGy2 +  9 +4;
+    EaterX[2] =  GGx2 + 23 +4;
     put_GliderEater( EaterY[2], EaterX[2], stateGEater[2]); // INPUT B
 
     put_GliderEater( EaterY[2]+16, EaterX[2]+16, 0); // INF-STOP
