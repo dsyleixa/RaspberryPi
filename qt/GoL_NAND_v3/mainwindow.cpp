@@ -323,6 +323,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     scene  = new QGraphicsScene(this);
+    table  = new QTableView(this);
 
       //rectangle = scene->addRect( 0, 0, GOLscrWidth+3, GOLscrHeight+3, outlinePen, blueBrush);
 
@@ -487,4 +488,11 @@ void MainWindow::on_SliderBlocksize_sliderMoved(int position)
 void MainWindow::on_SliderBlocksize_valueChanged(int value)
 {
      userBlsize=value;
+}
+
+
+
+void MainWindow::on_table_clicked(const QModelIndex &index)
+{
+
 }

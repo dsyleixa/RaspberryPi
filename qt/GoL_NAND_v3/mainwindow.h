@@ -5,6 +5,7 @@
 #include <QTimer>
 #include <QGraphicsLineItem>
 #include <QGraphicsScene>
+#include <QTableView>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -32,6 +33,8 @@ private slots:
     void on_SliderBlocksize_sliderMoved(int position);
     void on_SliderBlocksize_valueChanged(int value);
 
+    void on_table_clicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
     QTimer updateTimer;
@@ -42,6 +45,8 @@ private:
     QGraphicsRectItem *rectangle;
     //QGraphicsTextItem *text;
     QGraphicsLineItem *line;
+
+    QTableView *table;
 
 };
 #endif // MAINWINDOW_H
