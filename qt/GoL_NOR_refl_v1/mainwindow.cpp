@@ -197,7 +197,7 @@ void put_GliderUp(int startx, int starty) {    //
 //---------------------------------------------------------------------------
 
 void put_GliderGun(int startx, int starty) {  // Gosper Glider Gun, period=30
-
+  // period=30
   int x,y;
 
   char sprite[9][37] = {  //
@@ -243,6 +243,49 @@ void put_GliderGunRev(int startx, int starty) {  // Gosper Glider Gun, period=30
     for(y=0; y<9; ++y) {
 
       board[starty+frame+y][startx+frame+x] = sprite[y][37-x] ;
+    }
+  }
+}
+
+
+
+//---------------------------------------------------------------------------
+void put_GliderEater(int startx, int starty, char V) {
+  int x,y;
+
+  char sprite[4][5] = {  //
+  {1 ,1 ,0 ,0 },
+  {1 ,0 ,0 ,0 },
+  {V ,1 ,1 ,1 },
+  {0 ,0 ,0 ,1 },
+  } ;
+
+  for(x=0; x<5; ++x) {
+    for(y=0; y<4; ++y) {
+       board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------
+void put_GliderEaterRev(int startx, int starty, char V) {
+  // GG offset:
+  //  EaterX[0] =  GGx + 10  -8*10;
+  //  EaterY[0] =  GGy + 10  +8*10;
+
+
+  int x,y;
+
+  char sprite[4][5] = {  //
+  {0 ,0 ,1 ,1 },
+  {0 ,0 ,0 ,1 },
+  {1 ,1 ,1 ,V },
+  {1 ,0 ,0 ,0 },
+  } ;
+
+  for(x=0; x<5; ++x) {
+    for(y=0; y<4; ++y) {
+       board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
     }
   }
 }
@@ -294,44 +337,6 @@ void put_GliderReflxVert(int startx, int starty, char V) {
   }
 }
 
-
-
-//---------------------------------------------------------------------------
-void put_GliderEater(int startx, int starty, char V) {
-  int x,y;
-
-  char sprite[4][5] = {  //
-  {1 ,1 ,0 ,0 },
-  {1 ,0 ,0 ,0 },
-  {V ,1 ,1 ,1 },
-  {0 ,0 ,0 ,1 },
-  } ;
-
-  for(x=0; x<5; ++x) {
-    for(y=0; y<4; ++y) {
-       board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
-    }
-  }
-}
-
-//---------------------------------------------------------------------------
-void put_GliderEaterRev(int startx, int starty, char V) {
-  int x,y;
-
-  char sprite[4][5] = {  //
-  {0 ,0 ,1 ,1 },
-  {0 ,0 ,0 ,1 },
-  {1 ,1 ,1 ,V },
-  {1 ,0 ,0 ,0 },
-  } ;
-
-  for(x=0; x<5; ++x) {
-    for(y=0; y<4; ++y) {
-       board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
-    }
-  }
-}
-
 //---------------------------------------------------------------------------
 
 void put_NOR(int startx, int starty) {
@@ -352,9 +357,10 @@ void put_NOR(int startx, int starty) {
 
     // glidergun 1: INPUT A
     put_GliderGun( GGx1, GGy1 );
-    // Gun Eater 1    
-    EaterY[1] =  GGy1 + 10 +4;
+    // Gun Eater 1
     EaterX[1] =  GGx1 + 24 +4;
+    EaterY[1] =  GGy1 + 10 +4;
+
     put_GliderEater( EaterX[1], EaterY[1], stateGEater[1]);   // Input A
     put_GliderEater( EaterX[1]+4*9, EaterY[1]+4*9, 0);        // INF delimiter
 
@@ -362,8 +368,9 @@ void put_NOR(int startx, int starty) {
     // glidergun 2: INPUT B
     put_GliderGun( GGx2, GGy2 );
     // Gun Eater 2
-    EaterY[2] =  GGy2 + 10 +4;
     EaterX[2] =  GGx2 + 24 +4;
+    EaterY[2] =  GGy2 + 10 +4;
+
     put_GliderEater( EaterX[2], EaterY[2], stateGEater[2]); // INPUT B
     //put_GliderEater( EaterY[2]+16, EaterX[2]+16, 0);      // INF delimiter
 
@@ -371,20 +378,13 @@ void put_NOR(int startx, int starty) {
     // glidergun 3:  NOR output stream
     put_GliderGunRev( GGx3, GGy3 );
     // Gun Eater 0: NOR output INF delimiter
-    EaterY[0] =  GGy3 + 10  +8*10;
     EaterX[0] =  GGx3 + 10  -8*10;
-    put_GliderEaterRev( EaterX[0], EaterY[0], stateGEater[0]);
+    EaterY[0] =  GGy3 + 10  +8*10;      
+    //
+    // put_GliderEaterRev( EaterX[0], EaterY[0], stateGEater[0]);
 
-    /*
-
-    // glidergun 4:
-    put_GliderGunRev( GGx4, GGy4 );
-    // Gun Eater 4
-    EaterY[4] =  GGy4 + 9  +9*10;
-    EaterX[4] =  GGx4 + 9  -9*10;
-    put_GliderEaterRev( EaterX[4], EaterY[4], stateGEater[4]);
-
-    */
+    // test reflector
+    put_GliderReflxVert(EaterX[0]-5, EaterY[0]-9, stateGEater[0]);
 
 }
 
@@ -519,7 +519,7 @@ MainWindow::onUpdateTime() {
       if(updspeed>0) GenerationCnt++;
 
 
-      QGraphicsSimpleTextItem* text = scene->addSimpleText("    NOR\nresult stream", QFont("Arial", 14) );
+      QGraphicsSimpleTextItem* text = scene->addSimpleText("    NOR\nresult stream \n   reflect", QFont("Arial", 14) );
       text->setBrush(Qt::red);
       textposX[0] = EaterX[0]*blockSize+8*blockSize-4;
       textposY[0] = EaterY[0]*blockSize-4;

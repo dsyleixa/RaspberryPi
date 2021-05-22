@@ -210,6 +210,51 @@ void put_GliderGunRev(int startx, int starty) {  // Gosper Glider Gun, period=30
 }
 
 
+//---------------------------------------------------------------------------
+void put_GliderReflxVert(int startx, int starty, char V) {
+  // https://www.conwaylife.com/wiki/P15_bouncer
+  // downleft stream to downright stream
+  // GG offset:
+  //  dX[0] =  GGx + 5  (-i*10);
+  //  dY[0] =  GGy + 1  (+i*10);
+
+  int x,y, xdim=11, ydim=22;
+
+  char sprite[ydim][xdim] = {  //
+  {0,0,1,1,0,0,0,0,0,1,1},
+  {0,0,0,1,0,0,0,0,0,1,1},
+  {0,0,0,1,0,1,0,0,0,0,0},
+  {0,0,0,0,1,1,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0,1,1,0},
+  {0,0,0,0,0,0,0,1,0,1,0},
+  {0,0,0,0,0,0,0,0,1,0,0},
+
+  {0,0,0,0,0,0,0,0,0,0,0},
+
+  {1,1,1,0,0,0,0,0,0,0,0},
+  {1,1,1,0,0,0,0,0,1,0,0},
+  {0,1,0,0,0,0,0,1,0,1,0},
+  {0,1,0,0,0,0,1,0,0,0,1},
+  {0,1,0,0,0,0,1,0,1,0,1},
+  {1,0,1,0,0,0,0,0,0,0,0},
+
+  {0,0,0,0,0,0,0,0,0,0,0},
+  {0,0,0,0,0,0,0,0,0,0,0},
+
+  {1,0,1,0,0,0,0,0,0,0,0},
+  {0,1,0,0,0,0,1,0,1,0,1},
+  {0,1,0,0,0,0,1,0,0,0,1},
+  {0,1,0,0,0,0,0,1,0,1,0},
+  {1,1,1,0,0,0,0,0,1,0,0},
+  {1,1,1,0,0,0,0,0,0,0,0}
+  } ;
+
+  for(x=0; x<xdim; ++x) {
+    for(y=0; y<ydim; ++y) {
+       board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
+    }
+  }
+}
 
 
 
@@ -257,8 +302,8 @@ void put_NAND(int startx, int starty) {
     // absolute start positions of gliderguns
     int GGy1= starty + 1, GGx1= startx;                // A
     int GGy2= starty + 1, GGx2= startx + 1 +(37+2)*1;  // B
-    int GGy3= starty + 1, GGx3= startx + 1 +(37+2)*2;  // Invert
-    int GGy4= starty + 1, GGx4= startx +    (37+2)*3;  // output
+    int GGy3= starty + 1 /* +1 */ , GGx3= startx + 1 + (37+2)*2;  // Invert (y +1 dot offset opt.)
+    int GGy4= starty + 1 /* +1 */ , GGx4= startx + 0 + (37+2)*3;  // output (y +1 dot offset opt.)
 
     //int EaterX[10], EaterY[10];    // absolute coordinates
 
@@ -388,7 +433,7 @@ MainWindow::onUpdateTime() {
 
       if(updspeed!=userUSnew) {
          updspeed=userUSnew;
-         updateTimer.start(1003-10*updspeed);
+         if(updspeed>0) updateTimer.start(1003-10*updspeed);
       }      
       ui->labelUpdspeed->setText("Speed: "+QString::number(userUSnew));
 
@@ -412,11 +457,10 @@ MainWindow::onUpdateTime() {
       ui->labelOut2->setText(QString::number(userGEater[2]));
 
       // GoL: calculate next Generation
-      calculateGeneration();
+      if(updspeed>0) calculateGeneration();
 
 
       // clear and redraw scene
-      //ui->graphicsView->setScene(scene);
       scene->clear();
 
       // draw GoL screen border
@@ -434,7 +478,7 @@ MainWindow::onUpdateTime() {
 
       // generation monitor
       ui->labelGen->setText("gen="+QString::number(GenerationCnt));
-      GenerationCnt++;
+      if(updspeed>0) GenerationCnt++;
 
 
       QGraphicsSimpleTextItem* text = scene->addSimpleText("   NAND\nresult stream", QFont("Arial", 14) );
