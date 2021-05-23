@@ -4,4 +4,9 @@ http://www.burgnetz.de/otg/informatik/schaltalgebra/addierer.htm
 Volladdierer
 https://www.inf-schule.de/rechner/digitaltechnik/addierer/ansatz_module
 
+30P glidergun stream duplicator:
+https://www.conwaylife.com/wiki/Glider_duplicator
 
+glider-triggered Set-Reset Latch:
+https://alanzucconi.com/wp-content/uploads/2020/08/latch.gif
+https://www.alanzucconi.com/2020/10/13/conways-game-of-life/
