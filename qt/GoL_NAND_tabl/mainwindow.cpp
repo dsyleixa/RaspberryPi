@@ -502,7 +502,3 @@ void MainWindow::on_SliderBlocksize_valueChanged(int value)
 
 
 
-void MainWindow::on_table_clicked(const QModelIndex &index)
-{
-
-}
