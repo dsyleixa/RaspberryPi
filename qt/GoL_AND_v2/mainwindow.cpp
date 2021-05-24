@@ -22,9 +22,9 @@ QPen   RedPen(Qt::red);
 // The blocks are blockSize * blockSize big
 // 2...6 seems to be a good value for this
 
-int blockSize = 1;
-int userBlsize = 1;
-int userZoom = 1;
+int   blockSize = 1;
+int   userBlsize = 1;
+float userZoom = 1;
 
 
 // The size of the GoL screen window
@@ -366,8 +366,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     scene  = new QGraphicsScene(this);
 
-      //rectangle = scene->addRect( 0, 0, GOLscrWidth+3, GOLscrHeight+3, outlinePen, blueBrush);
-
       ResetCircuit();
 
       //---------------------------------------------------------------------------
@@ -377,7 +375,7 @@ MainWindow::MainWindow(QWidget *parent)
       ui->graphicsView->setScene(scene);
       scene->clear();
 
-      outlinePen.setWidth(1);
+      outlinePen.setWidth(0.5);
 
       // paint border
       rectangle = scene->addRect( 1, 1, GOLscrWidth+frame, GOLscrHeight+frame, outlinePen, transpBrush);
@@ -441,7 +439,6 @@ MainWindow::onUpdateTime() {
       ui->labelBlocksize->setText("Blocksize: "+QString::number(userBlsize));
       */
 
-      ui->graphicsView->scale(userZoom, userZoom);
 
       if(stateGEater[1]!=userGEater[1])  {
           stateGEater[1]=userGEater[1];
@@ -476,6 +473,8 @@ MainWindow::onUpdateTime() {
         }
       }
 
+      ui->labelZoom->setText("zoom="+QString::number(userZoom));
+
       // generation monitor
       ui->labelGen->setText("gen="+QString::number(GenerationCnt));
       if(updspeed>0) GenerationCnt++;
@@ -500,7 +499,7 @@ void MainWindow::on_SliderUpdateSpeed_sliderMoved(int position)
 
 void MainWindow::on_SliderUpdateSpeed_valueChanged(int value)
 {
-    userUSnew=value;
+    userUSnew=value;    
 }
 
 
@@ -539,10 +538,12 @@ void MainWindow::on_SliderBlocksize_valueChanged(int value)
 
 void MainWindow::on_SliderZoom_sliderMoved(int position)
 {
-    userZoom = position;
+    userZoom = 1+(float)position/10;
+    ui->graphicsView->scale(userZoom, userZoom);
 }
 
 void MainWindow::on_SliderZoom_valueChanged(int value)
 {
-    userZoom = value;
+    userZoom = 1+(float)value/10;
+    ui->graphicsView->scale(userZoom, userZoom);
 }
