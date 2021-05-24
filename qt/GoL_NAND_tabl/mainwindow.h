@@ -33,7 +33,6 @@ private slots:
     void on_SliderBlocksize_sliderMoved(int position);
     void on_SliderBlocksize_valueChanged(int value);
 
-    void on_table_clicked(const QModelIndex &index);
 
 private:
     Ui::MainWindow *ui;
@@ -43,7 +42,6 @@ private:
     QGraphicsEllipseItem *ellipse;
     QGraphicsEllipseItem *dot;
     QGraphicsRectItem *rectangle;
-    //QGraphicsTextItem *text;
     QGraphicsLineItem *line;
 
     QTableWidget *tableWidget;

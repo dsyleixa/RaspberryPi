@@ -1,0 +1,1 @@
+just a specimen / test code about how to impement a QTableWidget

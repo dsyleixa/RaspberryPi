@@ -320,18 +320,19 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);   
+    ui->setupUi(this);
 
-    auto tableWidget = new QTableWidget;
-    tableWidget->setRowCount(32);
-    tableWidget->setColumnCount(32);
-    for (auto row=0; row<tableWidget->rowCount(); row++) {
-        for (auto column=0; column<tableWidget->columnCount(); column++) {
-            auto cell = new QTableWidgetItem(QString("%1").arg((row*tableWidget->columnCount())+column));
-            tableWidget->setItem(row, column, cell);
+    ui->tableWidget->setRowCount(32);
+    ui->tableWidget->setColumnCount(32);
+
+    for (auto row=0; row<ui->tableWidget->rowCount(); row++) {
+        for (auto column=0; column<ui->tableWidget->columnCount(); column++) {
+            auto cell = new QTableWidgetItem(QString("%1").arg((row*ui->tableWidget->columnCount())+column));
+
+            ui->tableWidget->setItem(row, column, cell);
         }
     }
-    this->setCentralWidget(tableWidget);
+
 
 
     scene  = new QGraphicsScene(this);
@@ -499,6 +500,5 @@ void MainWindow::on_SliderBlocksize_valueChanged(int value)
 {
      userBlsize=value;
 }
-
 
 
