@@ -24,7 +24,7 @@ QPen   RedPen(Qt::red);
 
 int   blockSize = 1;
 int   userBlsize = 1;
-float userZoom = 1;
+float userZoom = 0;
 
 
 // The size of the GoL screen window
