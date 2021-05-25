@@ -12,6 +12,7 @@ QBrush blackBrush(Qt::black);
 QBrush whiteBrush(Qt::white);
 QBrush transpBrush(Qt::transparent);
 QPen   outlinePen(Qt::black);
+QPen   invisibPen(Qt::transparent);
 QPen   RedPen(Qt::red);
 
 
@@ -375,10 +376,11 @@ MainWindow::MainWindow(QWidget *parent)
       ui->graphicsView->setScene(scene);
       scene->clear();
 
-      outlinePen.setWidth(0.5);
+      invisibPen.setWidth(1);
+      outlinePen.setWidth(1);
 
       // paint border
-      rectangle = scene->addRect( 1, 1, GOLscrWidth+frame, GOLscrHeight+frame, outlinePen, transpBrush);
+      // rectangle = scene->addRect( 1, 1, GOLscrWidth+frame, GOLscrHeight+frame, outlinePen, transpBrush);
 
       // paint GoL screen
       for (int yrow=frame; yrow <(yrows-frame); yrow++) {
@@ -386,7 +388,7 @@ MainWindow::MainWindow(QWidget *parent)
           // Draw all the "live" cells.
           if (board[yrow][xcol])
             rectangle = scene->addRect( (xcol-frame+1)*blockSize, (yrow-frame+1)*blockSize,
-                                        blockSize, blockSize, outlinePen, blueBrush);
+                                        blockSize, blockSize, invisibPen, blackBrush);
         }        
       }
 
@@ -469,7 +471,7 @@ MainWindow::onUpdateTime() {
           // Draw all the "live" cells.
           if (board[yrow][xcol])
             rectangle = scene->addRect( (xcol-frame+1)*blockSize, (yrow-frame+1)*blockSize,
-                                        blockSize, blockSize,  outlinePen, blackBrush);
+                                        blockSize, blockSize,  invisibPen, blackBrush);
         }
       }
 
@@ -538,12 +540,14 @@ void MainWindow::on_SliderBlocksize_valueChanged(int value)
 
 void MainWindow::on_SliderZoom_sliderMoved(int position)
 {
-    userZoom = 1+(float)position/10;
+    userZoom = 1+(float)position;
+    ui->graphicsView->resetTransform();
     ui->graphicsView->scale(userZoom, userZoom);
 }
 
 void MainWindow::on_SliderZoom_valueChanged(int value)
 {
-    userZoom = 1+(float)value/10;
+    userZoom = 1+(float)value;
+    ui->graphicsView->resetTransform();
     ui->graphicsView->scale(userZoom, userZoom);
 }

@@ -222,7 +222,10 @@
      <number>0</number>
     </property>
     <property name="maximum">
-     <number>10</number>
+     <number>49</number>
+    </property>
+    <property name="pageStep">
+     <number>5</number>
     </property>
     <property name="value">
      <number>0</number>
