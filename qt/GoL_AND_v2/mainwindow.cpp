@@ -380,7 +380,7 @@ MainWindow::MainWindow(QWidget *parent)
       outlinePen.setWidth(1);
 
       // paint border
-      rectangle = scene->addRect( 1, 1, GOLscrWidth+frame, GOLscrHeight+frame, outlinePen, blackBrush);
+      rectangle = scene->addRect( 1, 1, GOLscrWidth+frame, GOLscrHeight+frame, outlinePen, transpBrush);
 
       // paint GoL screen
       for (int yrow=frame; yrow <(yrows-frame); yrow++) {
@@ -463,7 +463,7 @@ MainWindow::onUpdateTime() {
       scene->clear();
 
       // draw GoL screen border
-      rectangle = scene->addRect( 1, 1, GOLscrWidth+frame, GOLscrHeight+frame, outlinePen, blackBrush);
+      rectangle = scene->addRect( 1, 1, GOLscrWidth+frame, GOLscrHeight+frame, outlinePen, transpBrush);
 
       // draw GoL screen dots
       for (int yrow=frame; yrow <(yrows-frame); yrow++) {
