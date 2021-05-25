@@ -482,10 +482,12 @@ MainWindow::onUpdateTime() {
       if(updspeed>0) GenerationCnt++;
 
 
-      QGraphicsSimpleTextItem* text = scene->addSimpleText("   AND\nresult stream", QFont("Arial", 14) );
+      QGraphicsSimpleTextItem* text = scene->addSimpleText("   AND\nresult stream", QFont("Arial", 14/((userZoom+14)/10)) );
       text->setBrush(Qt::red);
       textposX[0] = EaterX[0]*blockSize+8*blockSize-4;
       textposY[0] = EaterY[0]*blockSize-4;
+
+
       text->setPos(textposX[0], textposY[0]);
 
 
