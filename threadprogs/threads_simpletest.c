@@ -1,3 +1,5 @@
+#include <pthread.h>
+#include <stdio.h>
 #include <wiringPi.h>
 #incluse <stdatomic.h>
 
