@@ -26,7 +26,7 @@ int main() {
   wiringPiSetupGpio();
   pthread_t thread0, thread1;
   pinMode(24, INPUT);
-  pullUpDnControl(24, PUD_DN);
+  pullUpDnControl(24, PUD_DN); // GPIO24->switch->3v3
         
   pthread_create(&thread0, NULL, foo, NULL);
   pthread_create(&thread1, NULL, bas, NULL);
