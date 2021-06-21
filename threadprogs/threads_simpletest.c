@@ -8,7 +8,7 @@ _Atomic bool ThreadsRun=true;
 //...
 void *foo (void*) {
   while(ThreadsRun) {
-    ThreadsRun=digitalRead(26);
+    ThreadsRun=digitalRead(24);
     delay(1);
   }
 
@@ -25,7 +25,8 @@ void *bas (void*) {
 int main() {
   wiringPiSetupGpio();
   pthread_t thread0, thread1;
-  //...
+  pinMode(24, INPUT);
+  pullUpDnControl(24, PUD_DN);
         
   pthread_create(&thread0, NULL, foo, NULL);
   pthread_create(&thread1, NULL, bas, NULL);
