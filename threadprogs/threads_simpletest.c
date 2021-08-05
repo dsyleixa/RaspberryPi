@@ -1,7 +1,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <wiringPi.h>
-#incluse <stdatomic.h>
+#include <stdatomic.h>
 
 _Atomic bool ThreadsRun=true;
 
