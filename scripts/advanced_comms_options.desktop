@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=Advanced Communication Options
+Comment=Line Follower Calibration
+Icon=/usr/share/icons/gnome/256x256/status/gnome-netstatus-tx.png
+Exec=sudo python /home/pi/Dexter/lib/Dexter/advanced_communication_options/advanced_communication_options.py
+NoDisplay=true
