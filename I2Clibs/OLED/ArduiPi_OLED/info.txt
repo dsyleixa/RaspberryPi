@@ -1,2 +1,31 @@
-Quelle:
+ref:
 https://github.com/hallard/ArduiPi_OLED
+https://github.com/hallard/ArduiPi_OLED/issues/24#issuecomment-850871991
+
+clean boot from SD without having followed the instruction at http://hallard.me/adafruit-oled-display-driver-for-pi/:
+
+## sudo apt-get install build-essential git-core libi2c-dev i2c-tools lm-sensors  ## <<<<<<<<<<<<<<<<<<<<<<< dropped!
+instead: already having installed prior:
+sudo apt-get install libi2c-dev i2c-tools
+
+then
+git clone https://github.com/hallard/ArduiPi_OLED
+
+then patched the makefile by out-commenting -li2c :
+cd ArduiPi_OLED
+leafpad makefile
+
+ # Make the library
+ArduiPi_OLED: ArduiPi_OLED.o Adafruit_GFX.o bcm2835.o Wrapper.o
+	$(CXX) -shared -Wl,-soname,$(LIB).so.1 $(CFLAGS) $(LDFLAGS)  -o ${LIBNAME} $^ #-li2c
+----------------------------------------------------------------------------------------^ 
+
+then sudo make
+cd examples
+sudo make
+./oled_demo --help // OK!
+./oled_demo --verbose --oled 3 // OK!
+
+example program works.
+
+compile from either working dir: linker flag -l/ArduiPi_OLED (lowercase 'L' )
