@@ -4,10 +4,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <wiringPi.h>
 
-
-
-volatile static uint32_t  TimerTick=0;
 
 void ISR(uint32_t tick) {
    // do sth specific
@@ -15,8 +13,9 @@ void ISR(uint32_t tick) {
 
 
 uint32_t timerloop() {
+   volatile static uint32_t  TimerTick=0;
    while(true) {
-      if(TimerTick>=100000l)TimerTick=0;
+      if(TimerTick>=100000)TimerTick=0;
       ISR (TimerTick);
       TimerTick++;
       delayMicroseconds(10);
