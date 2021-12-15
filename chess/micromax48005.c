@@ -275,12 +275,12 @@ RESTART:
      printf("\n DEBUG cstring : %s", cstring);
      
      if(cstring[0]=='R') {
-         printf("\nChess game resset/restarted\n");
+         printf("\nChess game reset/restarted\n");
          goto RESTART;
      }
      else
      if(cstring[0]=='Q') {
-         printf("\nChess game reset/restarted\n");
+         printf("\nChess game Quit\n");
          goto QUIT;
      }
      sprintf(sbuf,"\n DEBUG K: %d  \n DEBUG L: %d \n",  K, L);
