@@ -205,7 +205,7 @@ C:if(m>I-M|m<M-I)d=98;                          // mate holds to any depth
     if( z  && X!=Y ) {
          fprintf(stderr, "\n%2d ply, searched: %9d ", d-1, N-S );
     }
-    else if( ((N-S)%10000)<1) { fprintf(stderr, "."); }            
+    else if( (N%10000)<1) { fprintf(stderr, "."); }            
                                      
  }                                             //    encoded in X S,8 bits 
  turn^=24;                                     // change sides back        
