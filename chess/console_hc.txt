@@ -1,0 +1,73 @@
+     A B C D E F G H 
+     --------------- 
+  8  r n b q k b n r  8 
+  7  + + + + + + + +  7 
+  6  . . . . . . . .  6 
+  5  . . . . . . . .  5 
+  4  . . . . . . . .  4 
+  3  . . . . . . . .  3 
+  2  * * * * * * * *  2 
+  1  R N B Q K B N R  1 
+     --------------- 
+     A B C D E F G H 
+>  WHITE: d2d4
+
+ DEBUG cstring : d
+ DEBUG K: 99  
+ DEBUG L: 67 
+
+score=8000
+
+
+  1.0:   d2-d4  
+DEBUG: 99 to 67  
+  EPsq: d3 ( 83)
+  RemP: a8 (128)
+
+
+     A B C D E F G H 
+     --------------- 
+  8  r n b q k b n r  8 
+  7  + + + + + + + +  7 
+  6  . . . . . . . .  6 
+  5  . . . . . . . .  5 
+  4  . . . * . . . .  4 
+  3  . . . . . . . .  3 
+  2  * * * . * * * *  2 
+  1  R N B Q K B N R  1 
+     --------------- 
+     A B C D E F G H 
+>   BLACK:  
+
+ DEBUG cstring : 
+ DEBUG K: 8000  
+ DEBUG L: 67 
+
+ 2 ply, searched:         9 
+ 3 ply, searched:       172 
+ 4 ply, searched:       966 
+ 5 ply, searched:      8804 .................
+ 6 ply, searched:    130720 ...............................................................................................................
+ 7 ply, searched:   1316247 
+score=8000
+
+
+  1.5: n g8-f6  
+DEBUG: 6 to 37  
+  EPsq: a8 (128)
+  RemP: a8 (128)
+
+
+     A B C D E F G H 
+     --------------- 
+  8  r n b q k b . r  8 
+  7  + + + + + + + +  7 
+  6  . . . . . n . .  6 
+  5  . . . . . . . .  5 
+  4  . . . * . . . .  4 
+  3  . . . . . . . .  3 
+  2  * * * . * * * *  2 
+  1  R N B Q K B N R  1 
+     --------------- 
+     A B C D E F G H 
+>  WHITE: 
