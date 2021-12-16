@@ -293,10 +293,11 @@ RESTART:
      score=Minimax(-I, I, Q, O, 1, 3);          // think or check & do 
      printf("\nscore=%d\n", score);
 
-
-     if(score==15)   {  printf("ILLEGAL score(%d) ", score); }
-     if(score==-I)   {  printf("checkmate score(%d) ", score); }
-     if(score==0  )  {  printf("stalemate score(%d) ", score); }
+     // DEBUG
+     if(score==15)   {  printf("!! score(%d) ", score); }
+     if(score==-I)   {  printf("!! score(%d) ", score); }
+     if(score==I/2)   {  printf("!! score(%d) ", score); }
+     if(score==0  )  {  printf("!! score(%d) ", score); }
      
      if(score!=15 && score!=-I && score!=0) {
         RemP=S;
