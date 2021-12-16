@@ -294,10 +294,23 @@ RESTART:
      printf("\nscore=%d\n", score);
 
      // DEBUG
-     if(score==15)   {  printf("!! score(%d) ", score); }
-     if(score==-I)   {  printf("!! score(%d) ", score); }
-     if(score==I/2)   {  printf("!! score(%d) ", score); }
-     if(score==0  )  {  printf("!! score(%d) ", score); }
+      if(score==15)   {
+         sprintf(sbuf,"Illegal(?) score(%d) ", score);
+         printf(sbuf);
+      }
+      if(score==-I)   {
+         sprintf(sbuf,"-I !! score(%d) ", score);
+         printf(sbuf);
+      }
+      if(score==I/2)   {
+         sprintf(sbuf,"I/2 !! score(%d) ", score);
+         printf(sbuf);
+      }
+      if(score==0  )  {
+         sprintf(sbuf,"0 !! score(%d) ", score);
+         printf(sbuf);
+      }
+
      
      if(score!=15 && score!=-I && score!=0) {
         RemP=S;
