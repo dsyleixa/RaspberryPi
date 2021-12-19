@@ -193,9 +193,8 @@ C:if(m>I-M|m<M-I)d=98;                          // mate holds to any depth
    a->K=Z,a->V=m,a->D=d,                        // always store in hash tab  
    a->X=X|8*(m>q)|S*(m<l),a->Y=Y;               // move, type (bound/exact), 
    
-                                                // uncomment for Kibitz  
-                                                // uncomment for Kibitz  
-   //                                                
+
+   // uncomment for Kibitz                                       
    //if(z) {
    //   printf("%2d ply, %9d searched, score=%6d by %c%c%c%c\n",d-1,N-S,m,
    //  'a'+(X&7),'8'-(X>>4),'a'+(Y&7),'8'-(Y>>4&7));
