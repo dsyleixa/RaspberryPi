@@ -201,7 +201,7 @@ C:if(m>I-M|m<M-I)d=98;                          // mate holds to any depth
    //}
    //
    
-    if( z  && X!=Y ) {
+    if(z) {
          //fprintf(stderr, "\n%2d ply, searched: %9d ", d-1, N-S );
           fprintf(stderr, "\n%2d ply, %9d searched, score=%6d by %c%c%c%c\n",d-1,N-S,m,
                  'a'+(X&7),'8'-(X>>4),'a'+(Y&7),'8'-(Y>>4&7));
