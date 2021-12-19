@@ -23,6 +23,7 @@
 
 // ver 48005
 // history
+// 48006: kibitz
 // 48005: basic Negamax from 48001
 // 48004: UI string
 // 48003: Hash Table: all int, no char
