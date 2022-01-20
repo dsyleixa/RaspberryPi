@@ -1,0 +1,15 @@
+https://forums.raspberrypi.com/viewtopic.php?t=242590
+https://forums.raspberrypi.com/viewtopic.php?t=328026
+
+sched_param param;
+int res;
+
+param.sched_priority = 50
+res = pthread_setschedparam(pthread_self(), SCHED_RR, &param);
+if (res != 0) {
+	fprintf(stderr, "Setschedparam failed, error=%d\n", res);
+}
+
+Be careful with giving high real-time priorities for your threads, you may block important system threads from running and make your system unresponsive.
+
+
