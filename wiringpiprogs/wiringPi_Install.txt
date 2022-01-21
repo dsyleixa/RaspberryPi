@@ -10,4 +10,4 @@ cd WiringPi
 ls debian-template/*deb
 
 
-when you already have an old apt-package and want to upgrade by gitclone, then 1st better make a clean uninstall of old one.
+when you already have an old apt-package and want to upgrade by gitclone, then 1st better make a clean uninstall of the old one.
