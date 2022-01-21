@@ -1,7 +1,0 @@
-github fork:
-https://github.com/WiringPi/WiringPi
-
-install:
-git clone https://github.com/WiringPi/WiringPi
-cd WiringPi
-./build
