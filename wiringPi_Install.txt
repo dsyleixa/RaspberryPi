@@ -1,0 +1,13 @@
+wiringPi is not deprecated, it's just not mainained by G.Henderson any more but still maintained by the community on github.
+The last official package was for Pi3B+ on Buster (apt-package), for Pi4 it's on github to download:
+
+https://github.com/WiringPi/WiringPi 
+
+install:
+git clone https://github.com/WiringPi/WiringPi
+cd WiringPi
+./build debian
+ls debian-template/*deb
+
+
+when you already have an old apt-package and want to upgrade by gitclone, then 1st better make a clean uninstall of old one.
