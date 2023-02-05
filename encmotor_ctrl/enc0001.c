@@ -53,8 +53,15 @@ int  pinmotpwm[MAXMOTORS] =      {pinmot0pwm, pinmot1pwm };
 
 volatile int8_t ISRab[MAXMOTORS];
 
+// 1/4 resolution
+// int8_t enctab[16] = {0,0,0,0,0,0,0,-1,0,0,0,0,0,1,0,0}; 
+
 // 1/2 resolution
 int8_t enctab[16] = {0, 0,0,0,1,0,0,-1, 0,0,0,1,0,0,-1,0};
+
+// 1/1 resolution
+//int8_t enctab[16] = {0,-1,1,0,1,0,0,-1,-1,0,0,1,0,1,-1,0}; 
+
                               
                                  
 /*************************************************************
