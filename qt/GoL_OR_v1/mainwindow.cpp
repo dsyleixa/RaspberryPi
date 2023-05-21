@@ -334,12 +334,13 @@ void put_GliderEaterRev(int startx, int starty, char V) {
 
 //---------------------------------------------------------------------------
 
-void put_NOR(int startx, int starty) {
+void put_OR(int startx, int starty) { // glider gener cyclus=30, offset=6
 
     // absolute start positions of gliderguns
-    int GGy1= starty + 1, GGx1= startx ;                // A
-    int GGy2= starty + 1, GGx2= startx + 1 + (37+2)*1;  // B
-    int GGy3= starty +1 /* +1 */, GGx3= startx + 1 + (37+2)*2;  // Invert A, B 1 pont offset opt.
+    int GGy0= starty + 1, GGx0= startx ;                // free space
+    int GGy1= starty + 1, GGx1= startx + 1 + (37+2)*1;  // A
+    int GGy2= starty + 1, GGx2= startx + 2 + (37+2)*2;  // B
+    int GGy3= starty +1 /* +1 */, GGx3= startx + 2 + (37+2)*3;  // Invert A, B 1 pont offset opt.
 
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
@@ -350,38 +351,46 @@ void put_NOR(int startx, int starty) {
     stateGEater[4]=0;
 
 
+    // glidergun 0:  OR output stream
+    put_GliderGun( GGx0, GGy0 );
+    // Gun Eater 0: OR output INF delimiter
+    EaterX[0] =  GGx0 + 90 +24  +4;
+    EaterY[0] =  GGy0 + 90 +10  +4;
+    put_GliderEater( EaterX[0], EaterY[0], 0);      // INF delimiter
+
+
     // glidergun 1: INPUT A
     put_GliderGun( GGx1, GGy1 );
-    // Gun Eater 1    
-    EaterY[1] =  GGy1 + 10 +4;
+    // Gun Eater 1        
     EaterX[1] =  GGx1 + 24 +4;
+    EaterY[1] =  GGy1 + 10 +4;
     put_GliderEater( EaterX[1], EaterY[1], stateGEater[1]);   // Input A
     put_GliderEater( EaterX[1]+4*9, EaterY[1]+4*9, 0);        // INF delimiter
 
 
     // glidergun 2: INPUT B
     put_GliderGun( GGx2, GGy2 );
-    // Gun Eater 2
-    EaterY[2] =  GGy2 + 10 +4;
+    // Gun Eater 2    
     EaterX[2] =  GGx2 + 24 +4;
+    EaterY[2] =  GGy2 + 10 +4;
     put_GliderEater( EaterX[2], EaterY[2], stateGEater[2]); // INPUT B
     //put_GliderEater( EaterY[2]+16, EaterX[2]+16, 0);      // INF delimiter
 
 
-    // glidergun 3:  NOR output stream
+    // glidergun 3:  NOR blocker stream
     put_GliderGunRev( GGx3, GGy3 );
-    // Gun Eater 0: NOR output INF delimiter
-    EaterY[3] =  GGy3 + 10  +8*10;
+    // Gun Eater 0: NOR output INF delimiter    
     EaterX[3] =  GGx3 + 10  -8*10;
+    EaterY[3] =  GGy3 + 10  +8*10;
     put_GliderEaterRev( EaterX[3], EaterY[3], stateGEater[3]);
 
     /*
 
     // glidergun 4:
     put_GliderGunRev( GGx4, GGy4 );
-    // Gun Eater 4
-    EaterY[4] =  GGy4 + 9  +9*10;
+    // Gun Eater 4    
     EaterX[4] =  GGx4 + 9  -9*10;
+    EaterY[4] =  GGy4 + 9  +9*10;
     put_GliderEaterRev( EaterX[4], EaterY[4], stateGEater[4]);
 
     */
@@ -394,7 +403,7 @@ void ResetCircuit() {
     memset(board, 0, sizeof(board));
     memset(tmpboard, 0, sizeof(tmpboard));
 
-    put_NOR( 0, 0 );
+    put_OR( 0, 0 );
 }
 
 //---------------------------------------------------------------------------
@@ -519,11 +528,11 @@ MainWindow::onUpdateTime() {
       if(updspeed>0) GenerationCnt++;
 
 
-      QGraphicsSimpleTextItem* text = scene->addSimpleText("    NOR\nresult stream", QFont("Arial", 14) );
+      QGraphicsSimpleTextItem* text = scene->addSimpleText("    OR\nresult stream", QFont("Arial", 14) );
       text->setBrush(Qt::red);
-      textposX[3] = EaterX[3]*blockSize+8*blockSize-4;
-      textposY[3] = EaterY[3]*blockSize-4;
-      text->setPos(textposX[3], textposY[3]);
+      textposX[0] = EaterX[0]*blockSize+8*blockSize-4;
+      textposY[0] = EaterY[0]*blockSize-4;
+      text->setPos(textposX[0], textposY[0]);
 
 
 }
