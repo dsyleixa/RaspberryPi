@@ -297,15 +297,15 @@ void put_GliderEaterRev(int startx, int starty, char V) {
 
 //---------------------------------------------------------------------------
 
-void put_NAND(int startx, int starty) {
+void put_AND(int startx, int starty) {
 
     // absolute start positions of gliderguns
     int GGy1= starty + 1, GGx1= startx;                // A
     int GGy2= starty + 1, GGx2= startx + 1 +(37+2)*1;  // B
-    int GGy3= starty + 1 /* +1 */ , GGx3= startx + 1 + (37+2)*2;  // Invert (y +1 dot offset opt.)
-    int GGy4= starty + 1 /* +1 */ , GGx4= startx + 0 + (37+2)*3;  // output (y +1 dot offset opt.)
+    int GGy3= starty   /* +1 */ , GGx3= startx + 1 + (37+2)*2;  // Invert (y +1 dot offset opt.)
+    //int GGy4= starty + 1 /* +1 */ , GGx4= startx + 0 + (37+2)*3;  // output (y +1 dot offset opt.)
 
-    //int EaterX[10], EaterY[10];    // absolute coordinates
+
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
     stateGEater[0]=0;
@@ -352,7 +352,7 @@ void ResetCircuit() {
     memset(board, 0, sizeof(board));
     memset(tmpboard, 0, sizeof(tmpboard));
 
-    put_NAND( 0, 0 );
+    put_AND( 0, 0 );
 }
 
 //---------------------------------------------------------------------------

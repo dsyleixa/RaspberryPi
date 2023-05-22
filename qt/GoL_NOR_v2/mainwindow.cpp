@@ -339,7 +339,7 @@ void put_NOR(int startx, int starty) {
     // absolute start positions of gliderguns
     int GGy1= starty + 1, GGx1= startx ;                // A
     int GGy2= starty + 1, GGx2= startx + 1 + (37+2)*1;  // B
-    int GGy3= starty +1 /* +1 */, GGx3= startx + 1 + (37+2)*2;  // Invert A, B 1 pont offset opt.
+    int GGy3= starty /* +1 */, GGx3= startx + 1 + (37+2)*2;  // Invert A, B 1 pont offset opt. <<<<<<
 
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
