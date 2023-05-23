@@ -28,25 +28,20 @@ private slots:
 
     void on_checkBox1_clicked(bool checked);
     void on_checkBox2_clicked(bool checked);
-/*
+
     void on_SliderBlocksize_sliderMoved(int position);
     void on_SliderBlocksize_valueChanged(int value);
-*/
-    void on_SliderZoom_sliderMoved(int position);
-    void on_SliderZoom_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;
     QTimer updateTimer;
 
-    QGraphicsScene *scene;    
+    QGraphicsScene *scene;
     QGraphicsEllipseItem *ellipse;
     QGraphicsEllipseItem *dot;
     QGraphicsRectItem *rectangle;
     //QGraphicsTextItem *text;
     QGraphicsLineItem *line;
-
-
 
 };
 #endif // MAINWINDOW_H

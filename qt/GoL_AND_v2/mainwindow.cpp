@@ -12,7 +12,6 @@ QBrush blackBrush(Qt::black);
 QBrush whiteBrush(Qt::white);
 QBrush transpBrush(Qt::transparent);
 QPen   outlinePen(Qt::black);
-QPen   invisibPen(Qt::transparent);
 QPen   RedPen(Qt::red);
 
 
@@ -23,9 +22,8 @@ QPen   RedPen(Qt::red);
 // The blocks are blockSize * blockSize big
 // 2...6 seems to be a good value for this
 
-int   blockSize = 1;
-int   userBlsize = 1;
-float userZoom = 0;
+int blockSize = 4;
+int userBlsize = 4;
 
 
 // The size of the GoL screen window
@@ -299,15 +297,15 @@ void put_GliderEaterRev(int startx, int starty, char V) {
 
 //---------------------------------------------------------------------------
 
-void put_NAND(int startx, int starty) {
+void put_AND(int startx, int starty) {
 
     // absolute start positions of gliderguns
     int GGy1= starty + 1, GGx1= startx;                // A
     int GGy2= starty + 1, GGx2= startx + 1 +(37+2)*1;  // B
-    int GGy3= starty + 1 /* +1 */ , GGx3= startx + 1 + (37+2)*2;  // Invert (y +1 dot offset opt.)
-    int GGy4= starty + 1 /* +1 */ , GGx4= startx + 0 + (37+2)*3;  // output (y +1 dot offset opt.)
+    int GGy3= starty   /* +1 */ , GGx3= startx + 1 + (37+2)*2;  // Invert (y +1 dot offset opt.)
+    //int GGy4= starty + 1 /* +1 */ , GGx4= startx + 0 + (37+2)*3;  // output (y +1 dot offset opt.)
 
-    //int EaterX[10], EaterY[10];    // absolute coordinates
+
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
     stateGEater[0]=0;
@@ -354,7 +352,7 @@ void ResetCircuit() {
     memset(board, 0, sizeof(board));
     memset(tmpboard, 0, sizeof(tmpboard));
 
-    put_NAND( 0, 0 );
+    put_AND( 0, 0 );
 }
 
 //---------------------------------------------------------------------------
@@ -367,6 +365,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     scene  = new QGraphicsScene(this);
 
+      //rectangle = scene->addRect( 0, 0, GOLscrWidth+3, GOLscrHeight+3, outlinePen, blueBrush);
+
       ResetCircuit();
 
       //---------------------------------------------------------------------------
@@ -376,7 +376,6 @@ MainWindow::MainWindow(QWidget *parent)
       ui->graphicsView->setScene(scene);
       scene->clear();
 
-      invisibPen.setWidth(1);
       outlinePen.setWidth(1);
 
       // paint border
@@ -388,7 +387,7 @@ MainWindow::MainWindow(QWidget *parent)
           // Draw all the "live" cells.
           if (board[yrow][xcol])
             rectangle = scene->addRect( (xcol-frame+1)*blockSize, (yrow-frame+1)*blockSize,
-                                        blockSize, blockSize, invisibPen, blackBrush);
+                                        blockSize, blockSize, outlinePen, blueBrush);
         }        
       }
 
@@ -422,6 +421,7 @@ void MainWindow::on_pushButton_clicked()
 
 
 // screen refresh
+
 void
 MainWindow::onUpdateTime() {
 
@@ -434,23 +434,38 @@ MainWindow::onUpdateTime() {
       }      
       ui->labelUpdspeed->setText("Speed: "+QString::number(userUSnew));
 
-      /*
+
       if(blockSize!=userBlsize) {
          blockSize=userBlsize;
       }
       ui->labelBlocksize->setText("Blocksize: "+QString::number(userBlsize));
-      */
+
+      static int synctick1=0, synctick2=0, sync1=1, sync2=1;
 
 
-      if(stateGEater[1]!=userGEater[1])  {
-          stateGEater[1]=userGEater[1];
-          ResetCircuit();
+      synctick1=(GenerationCnt-7+30)%30;  // sync-in for quick runtime input changes
+      synctick2=(GenerationCnt-7+30)%30;
+
+      if(stateGEater[1]!=userGEater[1] && sync1)  {
+          sync1=0;
       }
-
-      if(stateGEater[2]!=userGEater[2]) {
-          stateGEater[2]=userGEater[2];
-          ResetCircuit();
+      if(synctick1==19  && !sync1) {
+             stateGEater[1]=userGEater[1];
+             put_GliderEater( EaterX[1], EaterY[1], stateGEater[1]);
+             sync1=1;
       }
+      //ResetCircuit();
+
+
+      if(stateGEater[2]!=userGEater[2] && sync2)  {
+          sync2=0;
+      }
+      if(synctick2==19  && !sync2) {
+             stateGEater[2]=userGEater[2];
+             put_GliderEater( EaterX[2], EaterY[2], stateGEater[2]);
+             sync2=1;
+      }
+      //ResetCircuit();
 
       ui->labelOut1->setText(QString::number(userGEater[1]));
       ui->labelOut2->setText(QString::number(userGEater[2]));
@@ -463,7 +478,7 @@ MainWindow::onUpdateTime() {
       scene->clear();
 
       // draw GoL screen border
-      rectangle = scene->addRect( 1, 1, GOLscrWidth+frame, GOLscrHeight+frame, outlinePen, transpBrush);
+      //rectangle = scene->addRect( 1, 1, GOLscrWidth+frame, GOLscrHeight+frame, outlinePen, transpBrush);
 
       // draw GoL screen dots
       for (int yrow=frame; yrow <(yrows-frame); yrow++) {
@@ -471,25 +486,20 @@ MainWindow::onUpdateTime() {
           // Draw all the "live" cells.
           if (board[yrow][xcol])
             rectangle = scene->addRect( (xcol-frame+1)*blockSize, (yrow-frame+1)*blockSize,
-                                        blockSize, blockSize,  invisibPen, blackBrush);
+                                        blockSize, blockSize,  outlinePen, blackBrush);
         }
       }
-
-      ui->labelZoom->setText("zoom="+QString::number(userZoom));
 
       // generation monitor
       ui->labelGen->setText("gen="+QString::number(GenerationCnt));
       if(updspeed>0) GenerationCnt++;
 
 
-      QGraphicsSimpleTextItem* text = scene->addSimpleText("   AND\nresult stream", QFont("Arial", 14/((userZoom+14)/10)) );
+      QGraphicsSimpleTextItem* text = scene->addSimpleText("   AND\nresult stream", QFont("Arial", 14) );
       text->setBrush(Qt::red);
       textposX[0] = EaterX[0]*blockSize+8*blockSize-4;
       textposY[0] = EaterY[0]*blockSize-4;
-
-
       text->setPos(textposX[0], textposY[0]);
-
 
 }
 
@@ -503,7 +513,7 @@ void MainWindow::on_SliderUpdateSpeed_sliderMoved(int position)
 
 void MainWindow::on_SliderUpdateSpeed_valueChanged(int value)
 {
-    userUSnew=value;    
+    userUSnew=value;
 }
 
 
@@ -523,10 +533,9 @@ void MainWindow::on_checkBox2_clicked(bool checked)
 
 void MainWindow::on_btnGenReset_clicked()
 {
-    GenerationCnt=0;
+    //GenerationCnt=0;        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< disabled
 }
 
-/*
 void MainWindow::on_SliderBlocksize_sliderMoved(int position)
 {
     userBlsize = position;
@@ -535,21 +544,5 @@ void MainWindow::on_SliderBlocksize_sliderMoved(int position)
 
 void MainWindow::on_SliderBlocksize_valueChanged(int value)
 {
-    userBlsize=value;
-}
-*/
-
-
-void MainWindow::on_SliderZoom_sliderMoved(int position)
-{
-    userZoom = 1+(float)position;
-    ui->graphicsView->resetTransform();
-    ui->graphicsView->scale(userZoom, userZoom);
-}
-
-void MainWindow::on_SliderZoom_valueChanged(int value)
-{
-    userZoom = 1+(float)value;
-    ui->graphicsView->resetTransform();
-    ui->graphicsView->scale(userZoom, userZoom);
+     userBlsize=value;
 }
