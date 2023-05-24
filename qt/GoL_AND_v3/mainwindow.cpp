@@ -532,8 +532,9 @@ void MainWindow::on_checkBox2_clicked(bool checked)
 
 
 void MainWindow::on_btnGenReset_clicked()
-{
-    //GenerationCnt=0;        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< disabled
+{    
+    ResetCircuit();
+    GenerationCnt=1;
 }
 
 void MainWindow::on_SliderBlocksize_sliderMoved(int position)

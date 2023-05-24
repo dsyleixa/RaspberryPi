@@ -297,15 +297,15 @@ void put_GliderEaterRev(int startx, int starty, char V) {
 
 //---------------------------------------------------------------------------
 
-void put_AND(int startx, int starty) {
+void put_NAND(int startx, int starty) {
 
     // absolute start positions of gliderguns
     int GGy1= starty + 1, GGx1= startx;                // A
     int GGy2= starty + 1, GGx2= startx + 1 +(37+2)*1;  // B
-    int GGy3= starty   /* +1 */ , GGx3= startx + 1 + (37+2)*2;  // Invert (y +1 dot offset opt.)
-    //int GGy4= starty + 1 /* +1 */ , GGx4= startx + 0 + (37+2)*3;  // output (y +1 dot offset opt.)
+    int GGy3= starty   /* +1 */ , GGx3= startx + 1 + (37+2)*2;  // Invert (y +1 dot offset opt.) <<<<<<<
+    int GGy4= starty   /* +1 */ , GGx4= startx + 0 + (37+2)*3;  // output (y +1 dot offset opt.) <<<<<<<
 
-
+    //int EaterX[10], EaterY[10];    // absolute coordinates
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
     stateGEater[0]=0;
@@ -322,26 +322,30 @@ void put_AND(int startx, int starty) {
     EaterY[1] =  GGy1 + 10 +4;
     EaterX[1] =  GGx1 + 24 +4;
     put_GliderEater( EaterX[1], EaterY[1], stateGEater[1]);  // Input A
-    EaterX[0] =  EaterX[1] +6*10;
-    EaterY[0] =  EaterY[1] +6*10;
-    put_GliderEater( EaterX[0], EaterY[0], 0);
-
 
 
     // glidergun 2: INPUT B
     put_GliderGun( GGx2, GGy2 );
     // Gun Eater 2
+    EaterY[2] =  GGy2 + 10 +4;
     EaterX[2] =  GGx2 + 24 +4;
-    EaterY[2] =  GGy2 + 10 +4;    
     put_GliderEater( EaterX[2], EaterY[2], stateGEater[2]); // INPUT B
 
 
-    // glidergun 3: GUN INVERT A,B
+    // glidergun 3: GUN INVERT B
     put_GliderGunRev( GGx3, GGy3 );
     // Gun Eater 3: INF delimiter
+    EaterY[3] =  GGy3 +10 +4*10;
     EaterX[3] =  GGx3 +10 -4*10;
-    EaterY[3] =  GGy3 +10 +4*10;    
     put_GliderEaterRev( EaterX[3], EaterY[3], 0);
+
+
+    // glidergun 4:  NAND output stream
+    put_GliderGunRev( GGx4, GGy4 );
+    // Gun Eater 0: NAND output INF delimiter
+    EaterY[0] =  GGy4 +10  +8*10;
+    EaterX[0] =  GGx4 +10  -8*10;
+    put_GliderEaterRev( EaterX[0], EaterY[0], stateGEater[0]);
 
 
 }
@@ -352,7 +356,7 @@ void ResetCircuit() {
     memset(board, 0, sizeof(board));
     memset(tmpboard, 0, sizeof(tmpboard));
 
-    put_AND( 0, 0 );
+    put_NAND( 0, 0 );
 }
 
 //---------------------------------------------------------------------------
@@ -421,7 +425,6 @@ void MainWindow::on_pushButton_clicked()
 
 
 // screen refresh
-
 void
 MainWindow::onUpdateTime() {
 
@@ -495,7 +498,7 @@ MainWindow::onUpdateTime() {
       if(updspeed>0) GenerationCnt++;
 
 
-      QGraphicsSimpleTextItem* text = scene->addSimpleText("   AND\nresult stream", QFont("Arial", 14) );
+      QGraphicsSimpleTextItem* text = scene->addSimpleText("   NAND\nresult stream", QFont("Arial", 14) );
       text->setBrush(Qt::red);
       textposX[0] = EaterX[0]*blockSize+8*blockSize-4;
       textposY[0] = EaterY[0]*blockSize-4;
@@ -533,7 +536,8 @@ void MainWindow::on_checkBox2_clicked(bool checked)
 
 void MainWindow::on_btnGenReset_clicked()
 {
-    //GenerationCnt=0;        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< disabled
+    ResetCircuit();
+    GenerationCnt=1;
 }
 
 void MainWindow::on_SliderBlocksize_sliderMoved(int position)

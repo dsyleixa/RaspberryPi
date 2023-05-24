@@ -390,7 +390,10 @@ void put_NOR(int startx, int starty) {
     // Glider reflector
     // put_GliderReflxVert(EaterX[0]-5, EaterY[0]-9, stateGEater[0]);
     put_GliderReflxVert(GRx4, GRy4, 0);
-    put_GliderEater( GRx4+40+7, GRy4+40, 0);   // INF delimiter
+    EaterX[4] =  GRx4 +40+7;
+    EaterY[4] =  GRy4 +40;
+    //put_GliderEater( GRx4+40+7, GRy4+40, 0);   // INF delimiter
+    put_GliderEater( EaterX[4], EaterY[4], 0);   // INF delimiter
 
 
 }
@@ -528,8 +531,10 @@ MainWindow::onUpdateTime() {
 
       QGraphicsSimpleTextItem* text = scene->addSimpleText("    NOR\nresult stream \n   reflect", QFont("Arial", 14) );
       text->setBrush(Qt::red);
-      textposX[0] = EaterX[3]*blockSize+8*blockSize-10;
-      textposY[0] = EaterY[3]*blockSize+80;
+      //textposX[0] = EaterX[3]*blockSize+8*blockSize-10;
+      //textposY[0] = EaterY[3]*blockSize+80;
+      textposX[0] = (EaterX[4]-20)*blockSize -20;
+      textposY[0] =  EaterY[4]*blockSize;
       text->setPos(textposX[0], textposY[0]);
 
 

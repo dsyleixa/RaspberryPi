@@ -116,6 +116,7 @@ void calculateGeneration()
 
 
 
+
 //---------------------------------------------------------------------------
 // GoL coordinates and patterns
 //---------------------------------------------------------------------------
@@ -154,12 +155,49 @@ void put_Clock(int startx, int starty) {    //
 
 
 
+
+//---------------------------------------------------------------------------
+void put_Glider(int startx, int starty) {    //
+
+  int x,y;
+
+  char sprite[3][3] = {  //
+  {0,1,0,},
+  {0,0,1,},
+  {1,1,1,}
+  } ;
+
+  for(x=0; x<3; ++x) {
+    for(y=0; y<3; ++y) {
+      board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------
+void put_GliderUp(int startx, int starty) {    //
+
+  int x,y;
+
+  char sprite[3][3] = {  //
+  {0,1,1,},
+  {1,0,1,},
+  {0,0,1,}
+  } ;
+
+  for(x=0; x<3; ++x) {
+    for(y=0; y<3; ++y) {
+      board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
+    }
+  }
+}
+
 //---------------------------------------------------------------------------
 // GliderGuns plus eaters
 //---------------------------------------------------------------------------
 
 void put_GliderGun(int startx, int starty) {  // Gosper Glider Gun, period=30
-
+  // period=30
   int x,y;
 
   char sprite[9][37] = {  //
@@ -205,6 +243,49 @@ void put_GliderGunRev(int startx, int starty) {  // Gosper Glider Gun, period=30
     for(y=0; y<9; ++y) {
 
       board[starty+frame+y][startx+frame+x] = sprite[y][37-x] ;
+    }
+  }
+}
+
+
+
+//---------------------------------------------------------------------------
+void put_GliderEater(int startx, int starty, char V) {
+  int x,y;
+
+  char sprite[4][5] = {  //
+  {1 ,1 ,0 ,0 },
+  {1 ,0 ,0 ,0 },
+  {V ,1 ,1 ,1 },
+  {0 ,0 ,0 ,1 },
+  } ;
+
+  for(x=0; x<5; ++x) {
+    for(y=0; y<4; ++y) {
+       board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------
+void put_GliderEaterRev(int startx, int starty, char V) {
+  // GG offset:
+  //  EaterX[0] =  GGx + 10  -8*10;
+  //  EaterY[0] =  GGy + 10  +8*10;
+
+
+  int x,y;
+
+  char sprite[4][5] = {  //
+  {0 ,0 ,1 ,1 },
+  {0 ,0 ,0 ,1 },
+  {1 ,1 ,1 ,V },
+  {1 ,0 ,0 ,0 },
+  } ;
+
+  for(x=0; x<5; ++x) {
+    for(y=0; y<4; ++y) {
+       board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
     }
   }
 }
@@ -257,55 +338,15 @@ void put_GliderReflxVert(int startx, int starty, char V) {
 }
 
 
-
-//---------------------------------------------------------------------------
-void put_GliderEater(int startx, int starty, char V) {
-  int x,y;
-
-  char sprite[4][5] = {  //
-  {1 ,1 ,0 ,0 },
-  {1 ,0 ,0 ,0 },
-  {V ,1 ,1 ,1 },
-  {0 ,0 ,0 ,1 },
-  } ;
-
-  for(x=0; x<5; ++x) {
-    for(y=0; y<4; ++y) {
-       board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
-    }
-  }
-}
-
-//---------------------------------------------------------------------------
-void put_GliderEaterRev(int startx, int starty, char V) {
-  int x,y;
-
-  char sprite[4][5] = {  //
-  {0 ,0 ,1 ,1 },
-  {0 ,0 ,0 ,1 },
-  {1 ,1 ,1 ,V },
-  {1 ,0 ,0 ,0 },
-  } ;
-
-  for(x=0; x<5; ++x) {
-    for(y=0; y<4; ++y) {
-       board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
-    }
-  }
-}
-
-
 //---------------------------------------------------------------------------
 
-void put_AND(int startx, int starty) {
+void put_NOR(int startx, int starty) {
 
     // absolute start positions of gliderguns
-    int GGy1= starty + 1, GGx1= startx;                // A
-    int GGy2= starty + 1, GGx2= startx + 1 +(37+2)*1;  // B
-    int GGy3= starty   /* +1 */ , GGx3= startx + 1 + (37+2)*2;  // Invert (y +1 dot offset opt.)
-    //int GGy4= starty + 1 /* +1 */ , GGx4= startx + 0 + (37+2)*3;  // output (y +1 dot offset opt.)
-
-
+    int GGy1= starty + 1, GGx1= startx ;                // A
+    int GGy2= starty + 1, GGx2= startx + 1 + (37+2)*1;  // B
+    int GGy3= starty /* +1 */, GGx3= startx + 1 + (37+2)*2;  // Invert A, B 1 pont offset opt.  <<<<<
+    int GRy4, GRx4;
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
     stateGEater[0]=0;
@@ -313,35 +354,46 @@ void put_AND(int startx, int starty) {
     stateGEater[2]=userGEater[2];
     stateGEater[3]=0;
     stateGEater[4]=0;
-    stateGEater[5]=0;
 
 
     // glidergun 1: INPUT A
     put_GliderGun( GGx1, GGy1 );
-    // Gun Eater 1    
-    EaterY[1] =  GGy1 + 10 +4;
+    // Gun Eater 1
     EaterX[1] =  GGx1 + 24 +4;
-    put_GliderEater( EaterX[1], EaterY[1], stateGEater[1]);  // Input A
-    EaterX[0] =  EaterX[1] +6*10;
-    EaterY[0] =  EaterY[1] +6*10;
-    put_GliderEater( EaterX[0], EaterY[0], 0);
+    EaterY[1] =  GGy1 + 10 +4;
 
+    put_GliderEater( EaterX[1], EaterY[1], stateGEater[1]);   // Input A
+    put_GliderEater( EaterX[1]+4*9, EaterY[1]+4*9, 0);        // INF delimiter
 
 
     // glidergun 2: INPUT B
     put_GliderGun( GGx2, GGy2 );
     // Gun Eater 2
     EaterX[2] =  GGx2 + 24 +4;
-    EaterY[2] =  GGy2 + 10 +4;    
+    EaterY[2] =  GGy2 + 10 +4;
+
     put_GliderEater( EaterX[2], EaterY[2], stateGEater[2]); // INPUT B
+    //put_GliderEater( EaterY[2]+16, EaterX[2]+16, 0);      // INF delimiter
 
 
-    // glidergun 3: GUN INVERT A,B
+    // glidergun 3:  NOR output stream
+    // Gun Eater 0: NOR output INF delimiter
+    GRx4=GGx3 + 10  -8*10   -5;
+    GRy4=GGy3 + 10  +8*10   -9;
+
+    //EaterX[3] =  GRx4 +40;
+    //EaterY[3] =  GRy4 +40;
     put_GliderGunRev( GGx3, GGy3 );
-    // Gun Eater 3: INF delimiter
-    EaterX[3] =  GGx3 +10 -4*10;
-    EaterY[3] =  GGy3 +10 +4*10;    
-    put_GliderEaterRev( EaterX[3], EaterY[3], 0);
+
+
+
+    // Glider reflector
+    // put_GliderReflxVert(EaterX[0]-5, EaterY[0]-9, stateGEater[0]);
+    put_GliderReflxVert(GRx4, GRy4, 0);
+    EaterX[4] =  GRx4 +40+7;
+    EaterY[4] =  GRy4 +40;
+    //put_GliderEater( GRx4+40+7, GRy4+40, 0);   // INF delimiter
+    put_GliderEater( EaterX[4], EaterY[4], 0);   // INF delimiter
 
 
 }
@@ -352,7 +404,7 @@ void ResetCircuit() {
     memset(board, 0, sizeof(board));
     memset(tmpboard, 0, sizeof(tmpboard));
 
-    put_AND( 0, 0 );
+    put_NOR( 0, 0 );
 }
 
 //---------------------------------------------------------------------------
@@ -421,7 +473,6 @@ void MainWindow::on_pushButton_clicked()
 
 
 // screen refresh
-
 void
 MainWindow::onUpdateTime() {
 
@@ -440,8 +491,8 @@ MainWindow::onUpdateTime() {
       }
       ui->labelBlocksize->setText("Blocksize: "+QString::number(userBlsize));
 
-      static int synctick1=0, synctick2=0, sync1=1, sync2=1;
 
+      static int synctick1=0, synctick2=0, sync1=1, sync2=1;
 
       synctick1=(GenerationCnt-7+30)%30;  // sync-in for quick runtime input changes
       synctick2=(GenerationCnt-7+30)%30;  // 30=GGG_period, 7=GE_offset
@@ -450,9 +501,9 @@ MainWindow::onUpdateTime() {
           sync1=0;
       }
       if(synctick1==19  && !sync1) {
-             stateGEater[1]=userGEater[1];
-             put_GliderEater( EaterX[1], EaterY[1], stateGEater[1]);
-             sync1=1;
+          stateGEater[1]=userGEater[1];
+          put_GliderEater( EaterX[1], EaterY[1], stateGEater[1]);
+          sync1=1;
       }
       //ResetCircuit();
 
@@ -461,11 +512,14 @@ MainWindow::onUpdateTime() {
           sync2=0;
       }
       if(synctick2==19  && !sync2) {
-             stateGEater[2]=userGEater[2];
-             put_GliderEater( EaterX[2], EaterY[2], stateGEater[2]);
-             sync2=1;
+          stateGEater[2]=userGEater[2];
+          put_GliderEater( EaterX[2], EaterY[2], stateGEater[2]);
+          sync2=1;
       }
       //ResetCircuit();
+
+
+
 
       ui->labelOut1->setText(QString::number(userGEater[1]));
       ui->labelOut2->setText(QString::number(userGEater[2]));
@@ -495,11 +549,14 @@ MainWindow::onUpdateTime() {
       if(updspeed>0) GenerationCnt++;
 
 
-      QGraphicsSimpleTextItem* text = scene->addSimpleText("   AND\nresult stream", QFont("Arial", 14) );
+      QGraphicsSimpleTextItem* text = scene->addSimpleText("    NOR\nresult stream \n   reflect", QFont("Arial", 14) );
       text->setBrush(Qt::red);
-      textposX[0] = EaterX[0]*blockSize+8*blockSize-4;
-      textposY[0] = EaterY[0]*blockSize-4;
+      //textposX[0] = EaterX[3]*blockSize+8*blockSize-10;
+      //textposY[0] = EaterY[3]*blockSize+80;
+      textposX[0] = (EaterX[4]-20)*blockSize -20;
+      textposY[0] =  EaterY[4]*blockSize;
       text->setPos(textposX[0], textposY[0]);
+
 
 }
 
@@ -533,7 +590,8 @@ void MainWindow::on_checkBox2_clicked(bool checked)
 
 void MainWindow::on_btnGenReset_clicked()
 {
-    //GenerationCnt=0;        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< disabled
+    ResetCircuit();
+    GenerationCnt=1;
 }
 
 void MainWindow::on_SliderBlocksize_sliderMoved(int position)
