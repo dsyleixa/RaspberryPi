@@ -337,10 +337,10 @@ void put_GliderEaterRev(int startx, int starty, char V) {
 void put_OR(int startx, int starty) { // glider gener cyclus=30, offset=6
 
     // absolute start positions of gliderguns
-    int GGy0= starty + 1 +60, GGx0= startx +60-40;                // free space
-    int GGy1= starty + 1, GGx1= startx + 1-40 + (37+2)*1;  // A
-    int GGy2= starty + 1, GGx2= startx + 2-40 + (37+2)*2;  // B
-    int GGy3= starty +30, GGx3= startx + 2-40 + (37+2)*3 +30;  // Invert A, B 1 pont offset opt.
+    int GGy0= starty + 1 +30, GGx0= startx ;             // free space
+    int GGy1= starty + 1, GGx1= startx;                  // A
+    int GGy2= starty + 1, GGx2= startx +1 + 39;          // B
+    int GGy3= starty +30, GGx3= startx +1 + (39)*2 +30;  // Invert A, B 1 pont offset opt.
 
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
@@ -354,8 +354,8 @@ void put_OR(int startx, int starty) { // glider gener cyclus=30, offset=6
     // glidergun 0:  OR output stream
     put_GliderGun( GGx0, GGy0 );
     // Gun Eater 0: OR output INF delimiter
-    EaterX[0] =  GGx0 + 5*10 +24  +4;
-    EaterY[0] =  GGy0 + 5*10 +10  +4;
+    EaterX[0] =  GGx0 + 8*10 +24  +4;
+    EaterY[0] =  GGy0 + 8*10 +10  +4;
     put_GliderEater( EaterX[0], EaterY[0], 0);      // INF delimiter output
 
 
