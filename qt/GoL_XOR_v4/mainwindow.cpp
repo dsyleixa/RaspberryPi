@@ -297,7 +297,7 @@ void put_GliderEaterRev(int startx, int starty, char V) {
 
 //---------------------------------------------------------------------------
 
-void put_AND(int startx, int starty) {
+void put_XOR(int startx, int starty) {
 
     // absolute start positions of gliderguns
     int GGy1= starty + 1,   GGx1= startx + 39   +10;        // A
@@ -365,7 +365,7 @@ void ResetCircuit() {
     memset(board, 0, sizeof(board));
     memset(tmpboard, 0, sizeof(tmpboard));
 
-    put_AND( 0, 0 );
+    put_XOR( 0, 0 );
 }
 
 //---------------------------------------------------------------------------

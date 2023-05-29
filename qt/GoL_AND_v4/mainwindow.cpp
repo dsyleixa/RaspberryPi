@@ -401,7 +401,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(&updateTimer, SIGNAL(timeout()), this, SLOT(onUpdateTime()));
     // Start the timer
-    updateTimer.start(1003-10*updspeed);// screen refresh in msec
+    updateTimer.start(1000-10*updspeed);// screen refresh in msec
 
  }
 
@@ -430,7 +430,7 @@ MainWindow::onUpdateTime() {
 
       if(updspeed!=userUSnew) {
          updspeed=userUSnew;
-         if(updspeed>0) updateTimer.start(1003-10*updspeed);
+         if(updspeed>0) updateTimer.start(1000-10*updspeed);
       }      
       ui->labelUpdspeed->setText("Speed: "+QString::number(userUSnew));
 
@@ -449,7 +449,7 @@ MainWindow::onUpdateTime() {
       if(stateGEater[1]!=userGEater[1] && sync1)  {
           sync1=0;
       }
-      if(synctick1==19  && !sync1) {
+      if(synctick1==17  && !sync1) {
              stateGEater[1]=userGEater[1];
              put_GliderEater( EaterX[1], EaterY[1], stateGEater[1]);
              sync1=1;
@@ -460,7 +460,7 @@ MainWindow::onUpdateTime() {
       if(stateGEater[2]!=userGEater[2] && sync2)  {
           sync2=0;
       }
-      if(synctick2==19  && !sync2) {
+      if(synctick2==17  && !sync2) {
              stateGEater[2]=userGEater[2];
              put_GliderEater( EaterX[2], EaterY[2], stateGEater[2]);
              sync2=1;
