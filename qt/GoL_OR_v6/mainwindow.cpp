@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "gol_defs.h"
+#include "gol_tools.h"
 #include <wiringPi.h>
 
 
@@ -399,7 +400,10 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+    ui->setupUi(this);    
+
+    extractproname(srcfilepath);
+    this->setWindowTitle((QString)proname);
 
     scene  = new QGraphicsScene(this);
 

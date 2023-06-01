@@ -23,7 +23,8 @@ SOURCES += \
 
 HEADERS += \
     mainwindow.h \
-    gol_defs.h
+    gol_defs.h \
+    gol_tools.h
 
 FORMS += \
     mainwindow.ui
