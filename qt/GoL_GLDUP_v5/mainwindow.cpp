@@ -18,6 +18,7 @@ QPen   RedPen(Qt::red);
 
 
 /*
+
 //---------------------------------------------------------------------------
 // preferences and settings
 //---------------------------------------------------------------------------
@@ -33,7 +34,6 @@ int userBlsize = 4;
 const int GOLscrWidth = 1000;   // <~~~~~~~~~~~~ adjust screen dimensions !
 const int GOLscrHeight= 1000;
 const int frame = 10;
-
 
 
 
@@ -58,8 +58,6 @@ char tmpboard[GOLscrHeight + 2*frame][GOLscrWidth + 2*frame];
 //---------------------------------------------------------------------------
 // GoL functions
 //---------------------------------------------------------------------------
-
-
 // update speed for calcularting generations and drawing
 
 int updspeed=50;
@@ -118,198 +116,21 @@ void calculateGeneration()
 
 
 
-//---------------------------------------------------------------------------
-// GoL coordinates and patterns
-//---------------------------------------------------------------------------
-/*
-// coordinates
-int EaterX[10], EaterY[10];
-int textposX[10], textposY[10];
-
-
-// variables for program control
-int stateGEater[10] = {1} ; // current state: 0=block, 1=let Gliders pass
-int userGEater[10] = {1} ;  // optional arbitrary user setting
-*/
-
-
-
-/*
-
-//---------------------------------------------------------------------------
-void put_Clock(int startx, int starty) {    //
-  int x,y;
-
-  char sprite[4][4] = {  //
-    {0,0,1,0},
-    {1,1,0,0},
-    {0,0,1,1},
-    {0,1,0,0},
-  } ;
-
-  for(x=0; x<4; ++x) {
-    for(y=0; y<4; ++y) {
-      board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
-    }
-  }
-}
 
 
 
 //---------------------------------------------------------------------------
-// GliderGuns plus eaters
-//---------------------------------------------------------------------------
 
-void put_GliderGun(int startx, int starty) {  // Gosper Glider Gun, period=30
-
-  int x,y;
-
-  char sprite[9][37] = {  //
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
-  {0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
-  {0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-  {0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-  } ;
-
-  for(x=0; x<37; ++x) {   // NXT screen (0,0) is bottom left, not top left  !
-    for(y=0; y<9; ++y) {
-      board[starty+frame+y][startx+frame+x] = sprite[y][x] ;
-    }
-  }
-}
-
-
-
-
-//---------------------------------------------------------------------------
-void put_GliderGunRev(int startx, int starty) {  // Gosper Glider Gun, period=30
-
-  int x,y;
-
-  char sprite[9][37] = {  //
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
-  {0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
-  {0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-  {0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-  } ;
-
-  for(x=0; x<37; ++x) {   // NXT screen (0,0) is bottom left, not top left  !
-    for(y=0; y<9; ++y) {
-
-      board[starty+frame+y][startx+frame+x] = sprite[y][37-x] ;
-    }
-  }
-}
-
-
-//---------------------------------------------------------------------------
-void put_GliderReflxVert(int startx, int starty, char V) {
-  // www.conwaylife.com/wiki/P15_bouncer
-  // downleft stream to downright stream
-  // GG offset:
-  //  dX[0] =  GGx + 5  (-i*10);
-  //  dY[0] =  GGy + 1  (+i*10);
-
-  int x,y, xdim=11, ydim=22;
-
-  char sprite[ydim][xdim] = {  //
-  {0,0,1,1,0,0,0,0,0,1,1},
-  {0,0,0,1,0,0,0,0,0,1,1},
-  {0,0,0,1,0,1,0,0,0,0,0},
-  {0,0,0,0,1,1,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,1,1,0},
-  {0,0,0,0,0,0,0,1,0,1,0},
-  {0,0,0,0,0,0,0,0,1,0,0},
-
-  {0,0,0,0,0,0,0,0,0,0,0},
-
-  {1,1,1,0,0,0,0,0,0,0,0},
-  {1,1,1,0,0,0,0,0,1,0,0},
-  {0,1,0,0,0,0,0,1,0,1,0},
-  {0,1,0,0,0,0,1,0,0,0,1},
-  {0,1,0,0,0,0,1,0,1,0,1},
-  {1,0,1,0,0,0,0,0,0,0,0},
-
-  {0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0},
-
-  {1,0,1,0,0,0,0,0,0,0,0},
-  {0,1,0,0,0,0,1,0,1,0,1},
-  {0,1,0,0,0,0,1,0,0,0,1},
-  {0,1,0,0,0,0,0,1,0,1,0},
-  {1,1,1,0,0,0,0,0,1,0,0},
-  {1,1,1,0,0,0,0,0,0,0,0}
-  } ;
-
-  for(x=0; x<xdim; ++x) {
-    for(y=0; y<ydim; ++y) {
-       board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
-    }
-  }
-}
-
-
-
-//---------------------------------------------------------------------------
-void put_GliderEater(int startx, int starty, char V) {
-  int x,y;
-
-  char sprite[4][5] = {  //
-  {1 ,1 ,0 ,0 },
-  {1 ,0 ,0 ,0 },
-  {V ,1 ,1 ,1 },
-  {0 ,0 ,0 ,1 },
-  } ;
-
-  for(x=0; x<5; ++x) {
-    for(y=0; y<4; ++y) {
-       board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
-    }
-  }
-}
-
-//---------------------------------------------------------------------------
-void put_GliderEaterRev(int startx, int starty, char V) {
-  int x,y;
-
-  char sprite[4][5] = {  //
-  {0 ,0 ,1 ,1 },
-  {0 ,0 ,0 ,1 },
-  {1 ,1 ,1 ,V },
-  {1 ,0 ,0 ,0 },
-  } ;
-
-  for(x=0; x<5; ++x) {
-    for(y=0; y<4; ++y) {
-       board[starty+frame+y][startx+frame+x]=sprite[y][x] ;
-    }
-  }
-}
-
-*/
-
-
-//---------------------------------------------------------------------------
-
-void put_NAND(int startx, int starty) {
+void put_Duplic(int startx, int starty) {
 
     // absolute start positions of gliderguns
-    int GGy1= starty + 1, GGx1= startx + 1;                // A
-    int GGy2= starty + 1, GGx2= startx + 2 +(37+2)*1;  // B
-    int GGy3= starty +30 , GGx3= startx   + (37+2)*2 +30;  // Invert (y +1 dot offset opt.) <<<<<<<
-    int GGy4= starty +30 , GGx4= startx - 1 + (37+2)*3 +30;  // output (y +1 dot offset opt.) <<<<<<<
+    int GGy1= starty + 1+30,   GGx1= startx + 39   -20 +1;      // A
+    int GGy2= starty + 2+ 0,   GGx2= startx + 39*2  +4 -1;      // B
+    int GGy3= starty +30+60,   GGx3= startx + 39*2 +36+30;  // Invert (y +1 dot offset opt.)
+    int GGy4= starty +30+1+60, GGx4= startx + 1+30;
+    int GDx1, GDy1;   // duplicator
 
-    //int EaterX[10], EaterY[10];    // absolute coordinates
+
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
     stateGEater[0]=0;
@@ -320,36 +141,33 @@ void put_NAND(int startx, int starty) {
     stateGEater[5]=0;
 
 
+    // glider duplicator for INPUT A
+    EaterX[11]=GDx1=GGx1+34;  // 35
+    EaterY[11]=GDy1=GGy1+11;  // 11
+    put_GliderDuplic_LD_RUD(GDx1, GDy1);
+
+    EaterX[12]=GDx1=GGx1+108;  //
+    EaterY[12]=GDy1=GGy1+ 90;  //
+    put_GliderEater( EaterX[12], EaterY[12], 0);
+    EaterX[13]=GDx1=GGx1+108;  //
+    EaterY[13]=GDy1=starty+27; //
+    put_GliderEaterDn( EaterX[13], EaterY[13], 0);
+
+
     // glidergun 1: INPUT A
     put_GliderGun( GGx1, GGy1 );
     // Gun Eater 1        
-    EaterX[1] =  GGx1 + 24 +3;
-    EaterY[1] =  GGy1 + 10 +4;
+    EaterX[1] =  GGx1 + 27;
+    EaterY[1] =  GGy1 + 14;
     put_GliderEater( EaterX[1], EaterY[1], stateGEater[1]);  // Input A
 
 
     // glidergun 2: INPUT B
-    put_GliderGun( GGx2, GGy2 );
-    // Gun Eater 2    
-    EaterX[2] =  GGx2 + 24 +3;
-    EaterY[2] =  GGy2 + 10 +4;
-    put_GliderEater( EaterX[2], EaterY[2], stateGEater[2]); // INPUT B
-
-
-    // glidergun 3: GUN INVERT B
-    put_GliderGunRev( GGx3, GGy3 );
-    // Gun Eater 3: INF delimiter    
-    EaterX[3] =  GGx3 + 9 -4*10;
-    EaterY[3] =  GGy3 +10 +4*10;
-    put_GliderEaterRev( EaterX[3], EaterY[3], 0);
-
-
-    // glidergun 4:  NAND output stream
-    put_GliderGunRev( GGx4, GGy4 );
-    // Gun Eater 0: NAND output INF delimiter    
-    EaterX[0] =  GGx4 + 9  -8*10;
-    EaterY[0] =  GGy4 +10  +8*10;
-    put_GliderEaterRev( EaterX[0], EaterY[0], stateGEater[0]);
+    put_GliderGunRev( GGx2, GGy2 );
+    // Gun Eater 2
+    EaterX[2] =  GGx2 +  5;
+    EaterY[2] =  GGy2 + 14;
+    put_GliderEaterRev( EaterX[2], EaterY[2], stateGEater[2]); // INPUT B
 
 
 }
@@ -360,7 +178,7 @@ void ResetCircuit() {
     memset(board, 0, sizeof(board));
     memset(tmpboard, 0, sizeof(tmpboard));
 
-    put_NAND( 0, 0 );
+    put_Duplic( 0, 0 );
 }
 
 //---------------------------------------------------------------------------
@@ -379,6 +197,7 @@ MainWindow::MainWindow(QWidget *parent)
       //rectangle = scene->addRect( 0, 0, GOLscrWidth+3, GOLscrHeight+3, outlinePen, blueBrush);
 
       ResetCircuit();
+
 
       //---------------------------------------------------------------------------
       // Draw all the cells
@@ -412,7 +231,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(&updateTimer, SIGNAL(timeout()), this, SLOT(onUpdateTime()));
     // Start the timer
-    updateTimer.start(1000-10*updspeed);// screen refresh in msec
+    updateTimer.start(1003-10*updspeed);// screen refresh in msec
 
  }
 
@@ -432,6 +251,7 @@ void MainWindow::on_pushButton_clicked()
 
 
 // screen refresh
+
 void
 MainWindow::onUpdateTime() {
 
@@ -472,7 +292,7 @@ MainWindow::onUpdateTime() {
       }
       if(synctick2==16  && !sync2) {
              stateGEater[2]=userGEater[2];
-             put_GliderEater( EaterX[2], EaterY[2], stateGEater[2]);
+             put_GliderEaterRev( EaterX[2], EaterY[2], stateGEater[2]);
              sync2=1;
       }
       //ResetCircuit();
@@ -504,11 +324,10 @@ MainWindow::onUpdateTime() {
       ui->labelGen->setText("gen="+QString::number(GenerationCnt));
       if(updspeed>0) GenerationCnt++;
 
-
-      QGraphicsSimpleTextItem* text = scene->addSimpleText("   NAND\nresult stream", QFont("Arial", 14) );
+      QGraphicsSimpleTextItem* text = scene->addSimpleText("Glider Duplicator", QFont("Arial", 14) );
       text->setBrush(Qt::red);
-      textposX[0] = EaterX[0]*blockSize+8*blockSize-4;
-      textposY[0] = EaterY[0]*blockSize-4;
+      textposX[0] =(EaterX[11] +5)*blockSize +8*blockSize-4;
+      textposY[0] =(EaterY[11]+50)*blockSize-4;
       text->setPos(textposX[0], textposY[0]);
 
 }
@@ -542,7 +361,7 @@ void MainWindow::on_checkBox2_clicked(bool checked)
 
 
 void MainWindow::on_btnGenReset_clicked()
-{
+{    
     ResetCircuit();
     GenerationCnt=1;
 }
