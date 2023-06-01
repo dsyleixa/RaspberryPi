@@ -8,13 +8,11 @@ void extractproname(char *path) {
     int  l=strlen(path);
     char cstr[50], *p;
 
-    for(int i=0; i<l-3; i++ ) {
-        cstr[i]=path[i+3];
-    }
-    cstr[l-3]=0;
-    p=strrchr(cstr,'/');
+    strncpy(cstr, path, l);
+    p=strrchr(cstr, '/');
     p[0]=0;
-    strncpy(proname,cstr,strlen(cstr) );
+    p=strrchr(cstr, '/');
+    strncpy(proname, p+1, strlen(p+1));
 }
 
 
