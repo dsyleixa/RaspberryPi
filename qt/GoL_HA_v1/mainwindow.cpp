@@ -429,7 +429,7 @@ MainWindow::onUpdateTime() {
 
       QGraphicsSimpleTextItem* text3 = scene->addSimpleText("B", QFont("Arial", 14) );
       text3->setBrush(Qt::red);
-      text3->setPos(textposX[3], textposY[2]);
+      text3->setPos(textposX[3], textposY[3]);
 
       QGraphicsSimpleTextItem* text4 = scene->addSimpleText("A AND B \n   carry", QFont("Arial", 14) );
       text4->setBrush(Qt::red);
