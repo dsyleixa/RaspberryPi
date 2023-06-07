@@ -163,7 +163,7 @@ void put_Duplic(int startx, int starty) {
     //int GGy3= starty + 4 +1,       GGx3= startx + 39*3  +4  +1 +2;   // B blockt exakt, A Chaos    
     //int GGy3= starty + 4 +1,       GGx3= startx + 39*3  +4  +1 +3;   // B blockt exakt, A Chaos
 
-    int GDx1, GDy1, GDx2, GDy2;   // duplicator
+    int GDx1, GDy1, GDx2, GDy2;   // duplicator    
 
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
@@ -228,13 +228,37 @@ void put_Duplic(int startx, int starty) {
     EaterY[2] =  GGy2 + 14;
     put_GliderEaterRev( EaterX[2], EaterY[2], stateGEater[2]); // INPUT B
 
-
+    // XOR pattern for A,B duplicator downstreams
     put_XOR(startx+75-15, starty+100+15, 0);
 
     put_GliderGunRev(GGx3,GGy3);  // INVERT A&B upper streams
     EaterX[3] =  GGx3 +  5 -30;
     EaterY[3] =  GGy3 + 14 +30;
     put_GliderEaterRev( EaterX[3], EaterY[3], 0); // INPUT B
+
+
+    //
+    textposX[0] =(EaterX[12]-50+28)*blockSize ;  // A duplicator
+    textposY[0] =(EaterY[12]+10-8) *blockSize-4;
+
+    textposX[1] =(EaterX[14]+110-12)*blockSize ; // B duplicator
+    textposY[1] =(EaterY[14]+10-8) *blockSize-4;
+
+    textposX[2] =(EaterX[1])*blockSize ;         // A duplicator
+    textposY[2] =(EaterY[1]-20)*blockSize-4;
+
+    textposX[3] =(EaterX[2]+12)*blockSize ;      // B
+    textposY[3] =(EaterY[2]-20)*blockSize-4;
+
+    textposX[4] =(EaterX[3]-50)*blockSize ;      // A&B top
+    textposY[4] =(EaterY[3]-25)*blockSize-4;
+
+    textposX[5] =(EaterX[4]+10)*blockSize ;      // A XOR B
+    textposY[5] =(EaterY[4]+2)*blockSize-4;
+
+    textposX[6] =(EaterX[4]-120)*blockSize ;     // A&B bottom
+    textposY[6] =(EaterY[4]-60)*blockSize-4;
+
 
 
 }
@@ -393,44 +417,30 @@ MainWindow::onUpdateTime() {
 
       QGraphicsSimpleTextItem* text0 = scene->addSimpleText("   Glider \nDuplicator", QFont("Arial", 14) );
       text0->setBrush(Qt::red);
-      textposX[0] =(EaterX[12]-50+28)*blockSize ;
-      textposY[0] =(EaterY[12]+10-8) *blockSize-4;
       text0->setPos(textposX[0], textposY[0]);
 
       QGraphicsSimpleTextItem* text1 = scene->addSimpleText("   Glider \nDuplicator", QFont("Arial", 14) );
       text1->setBrush(Qt::red);
-      textposX[1] =(EaterX[14]+110-12)*blockSize ;
-      textposY[1] =(EaterY[14]+10-8) *blockSize-4;
       text1->setPos(textposX[1], textposY[1]);
 
       QGraphicsSimpleTextItem* text2 = scene->addSimpleText("A", QFont("Arial", 14) );
       text2->setBrush(Qt::red);
-      textposX[2] =(EaterX[1])*blockSize ;
-      textposY[2] =(EaterY[1]-20)*blockSize-4;
       text2->setPos(textposX[2], textposY[2]);
 
       QGraphicsSimpleTextItem* text3 = scene->addSimpleText("B", QFont("Arial", 14) );
       text3->setBrush(Qt::red);
-      textposX[3] =(EaterX[2]+45)*blockSize ;
-      textposY[3] =(EaterY[2]-20)*blockSize-4;
       text3->setPos(textposX[3], textposY[2]);
 
       QGraphicsSimpleTextItem* text4 = scene->addSimpleText("A AND B \n   carry", QFont("Arial", 14) );
       text4->setBrush(Qt::red);
-      textposX[4] =(EaterX[3]-50)*blockSize ;
-      textposY[4] =(EaterY[3]-25)*blockSize-4;
       text4->setPos(textposX[4], textposY[4]);
 
       QGraphicsSimpleTextItem* text5 = scene->addSimpleText("A XOR B \n   sum", QFont("Arial", 14) );
       text5->setBrush(Qt::red);
-      textposX[5] =(EaterX[4]+10)*blockSize ;
-      textposY[5] =(EaterY[4]+2)*blockSize-4;
       text5->setPos(textposX[5], textposY[5]);
 
       QGraphicsSimpleTextItem* text6 = scene->addSimpleText("A AND B \n  carry", QFont("Arial", 14) );
       text6->setBrush(Qt::red);
-      textposX[6] =(EaterX[4]-120)*blockSize ;
-      textposY[6] =(EaterY[4]-60)*blockSize-4;
       text6->setPos(textposX[6], textposY[6]);
 
       if(StepMode) {
