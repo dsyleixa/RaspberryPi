@@ -1,7 +1,7 @@
 #ifndef GOL_DEFS_H
 #define GOL_DEFS_H
 
-char version[10]="v4.1";  // sprites for Duplicator (L/R)  and Reflector (LUp/Dn, RUp)
+char version[10]="v4.2";  // sprites for Duplicator (L/R)  and Reflector (LUp/Dn, RUp), new index
 
 
 //---------------------------------------------------------------------------
@@ -18,7 +18,7 @@ int userBlsize = 4;
 
 const int GOLscrWidth = 2000;   // <~~~~~~~~~~~~ adjust screen dimensions !
 const int GOLscrHeight= 2000;
-const int frame = 10;
+const int frame = 2;
 
 
 

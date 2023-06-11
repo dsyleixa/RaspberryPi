@@ -421,23 +421,40 @@ MainWindow::onUpdateTime() {
           // Clear the board for the next generation
           memset(tmpboard, 0, sizeof(tmpboard));
 
-          int y1=yrows/4, y2=2*yrows/4, y3=3*yrows/4;
+          //int y1=yrows/4, y2=2*yrows/4, y3=3*yrows/4, y4=yrows;
 
-          /*
+
+          int y1=yrows/8, y2=2*yrows/8, y3=3*yrows/8, y4=4*yrows/8,
+            y5=5*yrows/8, y6=6*yrows/8, y7=7*yrows/8, y8=yrows;
+
+
+/*
           std::thread first (calculateGenerationThrFun,  1,   500);
           std::thread secnd (calculateGenerationThrFun,  500, yrows);
-          */
+*/
 
 
           std::thread first (calculateGenerationThrFun,    0, y1);
           std::thread secnd (calculateGenerationThrFun,   y1, y2);
           std::thread third (calculateGenerationThrFun,   y2, y3);
-          std::thread forth (calculateGenerationThrFun,   y3, yrows);
+          std::thread forth (calculateGenerationThrFun,   y3, y4);
+
+          std::thread fifth (calculateGenerationThrFun,   y4, y5);
+          std::thread sixth (calculateGenerationThrFun,   y5, y6);
+          std::thread sevth (calculateGenerationThrFun,   y6, y7);
+          std::thread eight (calculateGenerationThrFun,   y7, yrows);
 
           first.join();
           secnd.join();
           third.join();
           forth.join();
+
+          fifth.join();
+          sixth.join();
+          sevth.join();
+          eight.join();
+
+
 
 
           // Copy the new board to the old one

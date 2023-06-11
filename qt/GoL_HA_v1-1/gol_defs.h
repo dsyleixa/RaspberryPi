@@ -1,7 +1,7 @@
 #ifndef GOL_DEFS_H
 #define GOL_DEFS_H
 
-char version[10]="v4.1";  // sprites for Duplicator (L/R)  and Reflector (LUp/Dn, RUp)
+char version[10]="v4.2";  // sprites for Duplicator (L/R)  and Reflector (LUp/Dn, RUp), new index
 
 
 //---------------------------------------------------------------------------

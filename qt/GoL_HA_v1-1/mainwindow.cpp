@@ -70,7 +70,7 @@ void calculateGeneration()
       if(aliveNeighbours == 3 && board[yrow][xcol]==0)
         tmpboard[yrow][xcol] = 1;
 
-      // Any live cell with more than three live neighbours dies, as if by overcyrowding
+      // Any live cell with more than three live neighbours dies, as if by overcrowding
       if(aliveNeighbours > 3)
         tmpboard[yrow][xcol] = 0;
     }
