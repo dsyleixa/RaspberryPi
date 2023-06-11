@@ -24,7 +24,7 @@ QPen   RedPen(Qt::red);
 //---------------------------------------------------------------------------
 // update speed for calcularting generations and drawing
 
-int updspeed=50, updspeedOld=50;
+int updspeed=50, updspeedSav=50;
 int userUSnew=updspeed;
 
 uint32_t GenerationCnt=1;
@@ -155,9 +155,7 @@ void put_Duplic(int startx, int starty) {
 
     //int GGy3= starty + 4,          GGx3= startx + 39*3  +4  +1 ;     // B blockt exakt, A Chaos.
     //int GGy3= starty + 4,          GGx3= startx + 39*3  +4  +1 +1;   // B Doppelblock , A Chaos
-
     int GGy3= starty + 4,          GGx3= startx + 39*3  +4  +1 +2;   // B blockt exakt, A KurzFeuerwerk
-
     //int GGy3= starty + 4,          GGx3= startx + 39*3  +4  +1 +3;   // B blockt exakt, A Chaos
     //int GGy3= starty + 4,          GGx3= startx + 39*3  +4  +1 +4;   // B Chaos, A blockt exakt
     //int GGy3= starty + 4 +1,       GGx3= startx + 39*3  +4  +1 +2;   // B blockt exakt, A Chaos    
@@ -191,10 +189,10 @@ void put_Duplic(int startx, int starty) {
     GDx2=GGx2-34 + 1;  //
     GDy2=GGy2+11 -15;  //
     put_GliderDuplic_RD_LUD(GDx2, GDy2);
-    EaterX[13]=GDx2-68;  // 54
+    EaterX[13]=GDx2-68;  //
     EaterY[13]=GDy2+35 ;
     //put_GliderEaterDnRev(EaterX[13]+45,EaterY[13]-45,0);
-    EaterX[14]=GDx2-63;  // 49
+    EaterX[14]=GDx2-63;  //
     EaterY[14]=GDy1+25;
     //put_GliderEaterRev(EaterX[14]+45,EaterY[14]+45,0);
 
@@ -202,9 +200,9 @@ void put_Duplic(int startx, int starty) {
     //put_GliderReflxVertUpR(GDx2-22,GDy2-13);
     put_GliderReflxVertUpL(GDx1+61,GDy1-13);
 
-    // A&B downstream for carry flag
+    // A&B stream for carry flag
     // upper A stream NW to SW
-    put_GliderReflxHorizDnR_1(startx+67, starty + 4);
+    put_GliderReflxHorizDnR_1(startx+67, starty + 4);  // 1.1.0 top left
     // upper A stream SW to SE
     put_GliderReflxVertDnR_1(startx+8 , starty + 75 );
     // upper A stream SE to SW
@@ -237,29 +235,6 @@ void put_Duplic(int startx, int starty) {
     put_GliderEaterRev( EaterX[3], EaterY[3], 0); // INPUT B
 
 
-    //
-    textposX[0] =(EaterX[12]-50+28)*blockSize ;  // A duplicator
-    textposY[0] =(EaterY[12]+10-8) *blockSize-4;
-
-    textposX[1] =(EaterX[14]+110-12)*blockSize ; // B duplicator
-    textposY[1] =(EaterY[14]+10-8) *blockSize-4;
-
-    textposX[2] =(EaterX[1])*blockSize ;         // A duplicator
-    textposY[2] =(EaterY[1]-20)*blockSize-4;
-
-    textposX[3] =(EaterX[2]+12)*blockSize ;      // B
-    textposY[3] =(EaterY[2]-20)*blockSize-4;
-
-    textposX[4] =(EaterX[3]-50)*blockSize ;      // A&B top
-    textposY[4] =(EaterY[3]-25)*blockSize-4;
-
-    textposX[5] =(EaterX[4]+10)*blockSize ;      // A XOR B
-    textposY[5] =(EaterY[4]+2)*blockSize-4;
-
-    textposX[6] =(EaterX[4]-120)*blockSize ;     // A&B bottom
-    textposY[6] =(EaterY[4]-60)*blockSize-4;
-
-
 
 }
 
@@ -285,7 +260,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     scene  = new QGraphicsScene(this);
 
-      //rectangle = scene->addRect( 0, 0, GOLscrWidth+3, GOLscrHeight+3, outlinePen, blueBrush);
+      rectangle = scene->addRect( 0, 0, GOLscrWidth+3, GOLscrHeight+3, outlinePen, blueBrush);
 
       ResetCircuit();
 
@@ -297,12 +272,13 @@ MainWindow::MainWindow(QWidget *parent)
       ui->graphicsView->setScene(scene);
       scene->clear();
 
-      outlinePen.setWidth(1);
+      outlinePen.setWidth(2);
 
       // paint border
-      rectangle = scene->addRect( 1, 1, GOLscrWidth+frame, GOLscrHeight+frame, outlinePen, transpBrush);
+      rectangle = scene->addRect( 2, 2, GOLscrWidth*blockSize, GOLscrHeight*blockSize, outlinePen, transpBrush);
 
       // paint GoL screen
+      /*
       for (int yrow=frame; yrow <(yrows-frame); yrow++) {
         for (int xcol=frame; xcol<(xcols-frame); xcol++)  {
           // Draw all the "live" cells.
@@ -310,6 +286,16 @@ MainWindow::MainWindow(QWidget *parent)
             rectangle = scene->addRect( (xcol-frame+1)*blockSize, (yrow-frame+1)*blockSize,
                                         blockSize, blockSize, outlinePen, blueBrush);
         }        
+      }
+      */
+
+      for (int yrow=frame; yrow < GOLscrHeight; yrow++) {
+        for (int xcol=frame; xcol < GOLscrWidth; xcol++)  {
+          // Draw all the "live" cells.
+          if (board[yrow][xcol] )
+              rectangle = scene->addRect( xcol*blockSize,  yrow*blockSize ,
+                                          blockSize, blockSize, outlinePen, blueBrush);
+        }
       }
 
 
@@ -397,11 +383,13 @@ MainWindow::onUpdateTime() {
 
       // clear and redraw scene
       scene->clear();
+      outlinePen.setWidth(2);
 
       // draw GoL screen border
-      //rectangle = scene->addRect( 1, 1, GOLscrWidth+frame, GOLscrHeight+frame, outlinePen, transpBrush);
+      rectangle = scene->addRect( 2, 2, GOLscrWidth*blockSize, GOLscrHeight*blockSize, outlinePen, transpBrush);
 
       // draw GoL screen dots
+      /*
       for (int yrow=frame; yrow <(yrows-frame); yrow++) {
         for (int xcol=frame; xcol<(xcols-frame); xcol++)  {
           // Draw all the "live" cells.
@@ -410,10 +398,46 @@ MainWindow::onUpdateTime() {
                                         blockSize, blockSize,  outlinePen, blackBrush);
         }
       }
+      */
+
+      for (int yrow=frame; yrow < GOLscrHeight; yrow++) {
+        for (int xcol=frame; xcol < GOLscrWidth; xcol++)  {
+          // Draw all the "live" cells.
+          if (board[yrow][xcol] )
+              rectangle = scene->addRect( xcol*blockSize,  yrow*blockSize ,
+                                      blockSize, blockSize, outlinePen, blueBrush);
+        }
+      }
+
 
       // generation monitor
       ui->labelGen->setText("gen="+QString::number(GenerationCnt));
       if(updspeed>0) GenerationCnt++;
+
+
+      textposX[0] =(EaterX[12] )*blockSize ;       // A duplicator
+      textposY[0] =(EaterY[12]+40)*blockSize-4;
+
+      textposX[1] =(EaterX[14]+80)*blockSize ;     // B duplicator
+      textposY[1] =(EaterY[14]+40)*blockSize-4;
+
+      textposX[2] =(EaterX[1]+8)*blockSize ;       // A
+      textposY[2] =(EaterY[1]-17)*blockSize-8;
+
+      textposX[3] =(EaterX[2]+6)*blockSize ;       // B
+      textposY[3] =(EaterY[2]-17)*blockSize-8;
+
+      textposX[4] =(EaterX[3]-60)*blockSize ;      // A&B top
+      textposY[4] =(EaterY[3]-25)*blockSize-4;
+
+      textposX[5] =(EaterX[4]+25)*blockSize ;      // A XOR B
+      textposY[5] =(EaterY[4]+15)*blockSize;
+
+      textposX[6] =(EaterX[4]-100)*blockSize ;     // A&B bottom
+      textposY[6] =(EaterY[4]-25)*blockSize-4;
+
+
+
 
       QGraphicsSimpleTextItem* text0 = scene->addSimpleText("   Glider \nDuplicator", QFont("Arial", 14) );
       text0->setBrush(Qt::red);
@@ -461,7 +485,7 @@ void MainWindow::on_SliderUpdateSpeed_sliderMoved(int position)
 void MainWindow::on_SliderUpdateSpeed_valueChanged(int value)
 {
     userUSnew=value;
-    if(value!=0) updspeedOld = value;  //  <<<< new!
+    if(value!=0) updspeedSav = value;  //  <<<< neu!
 }
 
 
@@ -498,7 +522,7 @@ void MainWindow::on_SliderBlocksize_valueChanged(int value)
 
 void MainWindow::on_pushButton_2_clicked()   // pause
 {
-    if(updspeed!=0) updspeedOld = updspeed;
+    if(updspeed!=0) updspeedSav = updspeed;
     userUSnew = 0;
     StepMode=false;
     ui->labelUpdspeed->setText("Speed: "+QString::number(userUSnew));
@@ -506,7 +530,7 @@ void MainWindow::on_pushButton_2_clicked()   // pause
 
 void MainWindow::on_pushButton_3_clicked()   // play
 {
-    if(updspeedOld!=0) updspeed = updspeedOld;
+    if(updspeedSav!=0) updspeed = updspeedSav;
     if(updspeed!=0) userUSnew = updspeed;
     StepMode=false;
     ui->labelUpdspeed->setText("Speed: "+QString::number(userUSnew));
@@ -515,7 +539,7 @@ void MainWindow::on_pushButton_3_clicked()   // play
 
 void MainWindow::on_pushButton_4_clicked()   // 1 step
 {
-    if(updspeedOld!=0) updspeed = updspeedOld;
+    if(updspeedSav!=0) updspeed = updspeedSav;
     userUSnew = updspeed;
     StepMode=true;
     ui->labelUpdspeed->setText("Speed: "+QString::number(userUSnew));
