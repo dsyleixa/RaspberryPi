@@ -434,7 +434,7 @@ MainWindow::onUpdateTime() {
 */
 
 
-          std::thread first (calculateGenerationThrFun,    0, y1);
+          std::thread first (calculateGenerationThrFun,    1, y1);
           std::thread secnd (calculateGenerationThrFun,   y1, y2);
           std::thread third (calculateGenerationThrFun,   y2, y3);
           std::thread forth (calculateGenerationThrFun,   y3, y4);
