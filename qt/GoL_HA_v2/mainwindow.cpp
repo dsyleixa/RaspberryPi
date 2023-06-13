@@ -307,7 +307,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     scene  = new QGraphicsScene(this);
 
-      rectangle = scene->addRect( 0, 0, GOLscrWidth+3, GOLscrHeight+3, outlinePen, blueBrush);
+      //rectangle = scene->addRect( 0, 0, GOLscrWidth+3, GOLscrHeight+3, outlinePen, blueBrush);
 
       ResetCircuit();
 
@@ -319,12 +319,13 @@ MainWindow::MainWindow(QWidget *parent)
       ui->graphicsView->setScene(scene);
       scene->clear();
 
-      outlinePen.setWidth(2);
+      //outlinePen.setWidth(2);
 
       // paint border
-      rectangle = scene->addRect( 2, 2, GOLscrWidth*blockSize, GOLscrHeight*blockSize, outlinePen, transpBrush);
+      //rectangle = scene->addRect( 2, 2, GOLscrWidth*blockSize, GOLscrHeight*blockSize, outlinePen, transpBrush);
 
       // paint GoL screen     
+      /*
       for (int yrow=frame; yrow < GOLscrHeight; yrow++) {
         for (int xcol=frame; xcol < GOLscrWidth; xcol++)  {
           // Draw all the "live" cells.
@@ -333,6 +334,7 @@ MainWindow::MainWindow(QWidget *parent)
                                           blockSize, blockSize, outlinePen, blueBrush);
         }
       }
+      */
 
 
 
@@ -413,52 +415,29 @@ MainWindow::onUpdateTime() {
       ui->labelOut1->setText(QString::number(userGEater[1]));
       ui->labelOut2->setText(QString::number(userGEater[2]));
 
-      // GoL: calculate next Generation
-      // if(updspeed>0) calculateGeneration();
+
       // GoL: calculate next Generation
       if(updspeed>0) {
-          //calculateGeneration();
-          // Clear the board for the next generation
-          memset(tmpboard, 0, sizeof(tmpboard));
 
-          //int y1=yrows/4, y2=2*yrows/4, y3=3*yrows/4, y4=yrows;
+         // Clear the temp board for the next generation
+         memset(tmpboard, 0, sizeof(tmpboard));
 
+         const int par=8;
+         int yn[par+1];
 
-          int y1=yrows/8, y2=2*yrows/8, y3=3*yrows/8, y4=4*yrows/8,
-            y5=5*yrows/8, y6=6*yrows/8, y7=7*yrows/8, y8=yrows;
+         yn[0]=1;
+         for (int i=1; i<=par; i++) { yn[i]= i*(yrows/par); }
 
+         //calculate next Generations in threads
+         std::thread* cthr[par];
+         // launch all threads
+         for (int i = 0; i < par; i++)
+             cthr[i] = new std::thread(calculateGenerationThrFun, yn[i], yn[i+1]);
+         // join threads when calcs finished
+         for (int i = 0; i < par; i++) cthr[i]->join();
 
-/*
-          std::thread first (calculateGenerationThrFun,  1,   500);
-          std::thread secnd (calculateGenerationThrFun,  500, yrows);
-*/
-
-
-          std::thread first (calculateGenerationThrFun,    1, y1);
-          std::thread secnd (calculateGenerationThrFun,   y1, y2);
-          std::thread third (calculateGenerationThrFun,   y2, y3);
-          std::thread forth (calculateGenerationThrFun,   y3, y4);
-
-          std::thread fifth (calculateGenerationThrFun,   y4, y5);
-          std::thread sixth (calculateGenerationThrFun,   y5, y6);
-          std::thread sevth (calculateGenerationThrFun,   y6, y7);
-          std::thread eight (calculateGenerationThrFun,   y7, yrows);
-
-          first.join();
-          secnd.join();
-          third.join();
-          forth.join();
-
-          fifth.join();
-          sixth.join();
-          sevth.join();
-          eight.join();
-
-
-
-
-          // Copy the new board to the old one
-          memcpy(board, tmpboard, sizeof(tmpboard));
+         // Copy the new board to the old one
+         memcpy(board, tmpboard, sizeof(tmpboard));
       }
 
       // clear and redraw scene
@@ -466,25 +445,14 @@ MainWindow::onUpdateTime() {
       outlinePen.setWidth(2);
 
       // draw GoL screen border
-      rectangle = scene->addRect( 2, 2, GOLscrWidth*blockSize, GOLscrHeight*blockSize, outlinePen, transpBrush);
+      rectangle = scene->addRect( 0, 0, GOLscrWidth*blockSize+2, GOLscrHeight*blockSize+2, outlinePen, transpBrush);
 
       // draw GoL screen dots
-      /*
-      for (int yrow=frame; yrow <(yrows-frame); yrow++) {
-        for (int xcol=frame; xcol<(xcols-frame); xcol++)  {
-          // Draw all the "live" cells.
-          if (board[yrow][xcol])
-            rectangle = scene->addRect( (xcol-frame+1)*blockSize, (yrow-frame+1)*blockSize,
-                                        blockSize, blockSize,  outlinePen, blackBrush);
-        }
-      }
-      */
-
-      for (int yrow=frame; yrow < GOLscrHeight; yrow++) {
-        for (int xcol=frame; xcol < GOLscrWidth; xcol++)  {
+      for (int yrow=frame; yrow < frame+GOLscrHeight; yrow++) {
+        for (int xcol=frame; xcol < frame+GOLscrWidth; xcol++)  {
           // Draw all the "live" cells.
           if (board[yrow][xcol] )
-              rectangle = scene->addRect( xcol*blockSize,  yrow*blockSize ,
+              rectangle = scene->addRect( (xcol-frame)*blockSize,  (yrow-frame)*blockSize ,
                                       blockSize, blockSize, outlinePen, blueBrush);
         }
       }

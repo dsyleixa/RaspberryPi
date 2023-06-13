@@ -1,12 +1,12 @@
 #pragma once
 
 
-char srcfilepath[50] = __FILE__ ;
-char proname[50]="";
+char srcfilepath[100] = __FILE__ ;
+char proname[100]="";
 
 void extractproname(char *path) {
     int  l=strlen(path);
-    char cstr[50], *p;
+    char cstr[100], *p;
 
     strncpy(cstr, path, l);
     p=strrchr(cstr, '/');

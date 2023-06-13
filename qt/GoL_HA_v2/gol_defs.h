@@ -18,7 +18,7 @@ int userBlsize = 4;
 
 const int GOLscrWidth = 1000;   // <~~~~~~~~~~~~ adjust screen dimensions !
 const int GOLscrHeight= 1000;
-const int frame = 10;
+const int frame = 5;
 
 
 
