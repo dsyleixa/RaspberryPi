@@ -131,19 +131,22 @@ void calculateGenerationThrFun(int starty, int stopy)
 //---------------------------------------------------------------------------
 void put_XOR(int startx, int starty, char GGunsTrue=1) {
 
+    static int EaterX[20], EaterY[20];
+    static int stateGEater[20] = {1} ; // current state: 0=block, 1=let Gliders pass
+
     // absolute start positions of gliderguns
     int GGy1= starty + 1,   GGx1= startx + 39   + 9;      // A
     int GGy2= starty + 2,   GGx2= startx + 39*2 + 9;      // B
-    int GGy3= starty +30,   GGx3= startx + 39*2 +35 +10;    // Invert (y +1 dot offset opt.)
-    int GGy4= starty +30+1, GGx4= startx + 2 -10;           // output
+    int GGy3= starty +10 -10,   GGx3= startx + 39*2 +35 +20;    // Invert (y +1 dot offset opt.)
+    int GGy4= starty +10 -10+1, GGx4= startx + 2  +20;           // output
 
 
 
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
     stateGEater[0]=0;
-    if(GGunsTrue) stateGEater[1]=userGEater[1];
-    if(GGunsTrue) stateGEater[2]=userGEater[2];
+    if(GGunsTrue) stateGEater[1]=userGEaterglob[1];
+    if(GGunsTrue) stateGEater[2]=userGEaterglob[2];
     stateGEater[3]=0;
     stateGEater[4]=0;
     stateGEater[5]=0;
@@ -152,8 +155,8 @@ void put_XOR(int startx, int starty, char GGunsTrue=1) {
       //glidergun 1: INPUT A
       put_GliderGun( GGx1, GGy1 );
       //Gun Eater 1
-      EaterX[1] =  GGx1 + 24 +3;
-      EaterY[1] =  GGy1 + 10 +4;
+      EaterXglob[1] = EaterX[1] =  GGx1 + 24 +3;
+      EaterYglob[1] = EaterY[1] =  GGy1 + 10 +4;
       put_GliderEater( EaterX[1], EaterY[1], stateGEater[1]);  // Input A
     }
 
@@ -161,8 +164,8 @@ void put_XOR(int startx, int starty, char GGunsTrue=1) {
       //glidergun 2: INPUT B
       put_GliderGunRev( GGx2, GGy2 );
       //Gun Eater 2
-      EaterX[2] =  GGx2 +  5;
-      EaterY[2] =  GGy2 + 14;
+      EaterXglob[2] = EaterX[2] =  GGx2 +  5;
+      EaterYglob[2] = EaterY[2] =  GGy2 + 14;
       put_GliderEaterRev( EaterX[2], EaterY[2], stateGEater[2]); // INPUT B
     }
 
@@ -174,12 +177,12 @@ void put_XOR(int startx, int starty, char GGunsTrue=1) {
     //EaterY[3] =  GGy3 +10 +10;
     //put_GliderEaterRev( EaterX[3], EaterY[3], 0);
 
-
+/*
     int GRx0=GGx2 -45+15 -1;
     int GRy0=GGy2 +45-15 +6;
     put_GliderReflxVert(GRx0,GRy0);
 
-
+*/
     // glidergun 4: output
     put_GliderGun( GGx4, GGy4 );
     // Gun Eater 4: INF delimiter
@@ -195,6 +198,8 @@ void put_XOR(int startx, int starty, char GGunsTrue=1) {
 //---------------------------------------------------------------------------
 
 void put_HA(int startx, int starty) {
+    static int EaterX[20], EaterY[20];
+    static int stateGEater[20] = {1} ; // current state: 0=block, 1=let Gliders pass
 
     // absolute start positions of gliderguns
     int GGy1= starty + 1+60,       GGx1= startx + 39   +11;     // A
@@ -213,8 +218,8 @@ void put_HA(int startx, int starty) {
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
     stateGEater[0]=0;
-    stateGEater[1]=userGEater[1];
-    stateGEater[2]=userGEater[2];
+    stateGEater[1]=stateGEaterglob[1]=userGEaterglob[1];
+    stateGEater[2]=stateGEaterglob[2]=userGEaterglob[2];
     stateGEater[3]=0;
     stateGEater[4]=0;
     stateGEater[5]=0;
@@ -261,16 +266,16 @@ void put_HA(int startx, int starty) {
     // glidergun 1: INPUT A
     put_GliderGun( GGx1, GGy1 );
     // Gun Eater 1        
-    EaterX[1] =  GGx1 + 27;
-    EaterY[1] =  GGy1 + 14;
+    EaterXglob[1] = EaterX[1] =  GGx1 + 27;
+    EaterYglob[1] = EaterY[1] =  GGy1 + 14;
     put_GliderEater( EaterX[1], EaterY[1], stateGEater[1]);  // Input A
 
 
     // glidergun 2: INPUT B
     put_GliderGunRev( GGx2, GGy2 );
     // Gun Eater 2
-    EaterX[2] =  GGx2 +  5;
-    EaterY[2] =  GGy2 + 14;
+    EaterXglob[2] = EaterX[2] =  GGx2 +  5;
+    EaterYglob[2] = EaterY[2] =  GGy2 + 14;
     put_GliderEaterRev( EaterX[2], EaterY[2], stateGEater[2]); // INPUT B
 
     // XOR pattern for A,B duplicator downstreams
@@ -281,7 +286,12 @@ void put_HA(int startx, int starty) {
     EaterY[3] =  GGy3 + 14 +30;
     put_GliderEaterRev( EaterX[3], EaterY[3], 0); // INPUT B
 
+}
 
+
+void put_VA(int startx, int starty) {
+
+    put_HA( 0, 0 );
 
 }
 
@@ -291,7 +301,7 @@ void ResetCircuit() {
     memset(board, 0, sizeof(board));
     memset(tmpboard, 0, sizeof(tmpboard));
 
-    put_HA( 0, 0 );
+    put_VA( 0, 0 );
 }
 
 //---------------------------------------------------------------------------
@@ -391,29 +401,29 @@ MainWindow::onUpdateTime() {
       synctick1=(GenerationCnt-8+30)%30;  // sync-in for quick runtime input changes
       synctick2=(GenerationCnt-8+30)%30;  // 30=GGG_period, 8=GE_offset
 
-      if(stateGEater[1]!=userGEater[1] && sync1)  {
+      if(stateGEaterglob[1]!=userGEaterglob[1] && sync1)  {
           sync1=0;
       }
       if(synctick1==16  && !sync1) {
-             stateGEater[1]=userGEater[1];
-             put_GliderEater( EaterX[1], EaterY[1], stateGEater[1]);
+             stateGEaterglob[1]=userGEaterglob[1];
+             put_GliderEater( EaterXglob[1], EaterYglob[1], stateGEaterglob[1]);
              sync1=1;
       }
       //ResetCircuit();
 
 
-      if(stateGEater[2]!=userGEater[2] && sync2)  {
+      if(stateGEaterglob[2]!=userGEaterglob[2] && sync2)  {
           sync2=0;
       }
       if(synctick2==16  && !sync2) {
-             stateGEater[2]=userGEater[2];
-             put_GliderEaterRev( EaterX[2], EaterY[2], stateGEater[2]);
+             stateGEaterglob[2]=userGEaterglob[2];
+             put_GliderEaterRev( EaterXglob[2], EaterYglob[2], stateGEaterglob[2]);
              sync2=1;
       }
       //ResetCircuit();
 
-      ui->labelOut1->setText(QString::number(userGEater[1]));
-      ui->labelOut2->setText(QString::number(userGEater[2]));
+      ui->labelOut1->setText(QString::number(userGEaterglob[1]));
+      ui->labelOut2->setText(QString::number(userGEaterglob[2]));
 
 
       // GoL: calculate next Generation
@@ -422,7 +432,7 @@ MainWindow::onUpdateTime() {
          // Clear the temp board for the next generation
          memset(tmpboard, 0, sizeof(tmpboard));
 
-         const int par=8;
+         const int par=50; // array parts, parallel threads
          int yn[par+1];
 
          yn[0]=1;
@@ -462,12 +472,12 @@ MainWindow::onUpdateTime() {
       ui->labelGen->setText("gen="+QString::number(GenerationCnt));
       if(updspeed>0) GenerationCnt++;
 
-
-      textposX[0] =(EaterX[12] )*blockSize ;       // A duplicator
-      textposY[0] =(EaterY[12]+40)*blockSize-4;
+      /*
+      textposX[0] =(EaterX[12]-2 )*blockSize ;     // A duplicator
+      textposY[0] =(EaterY[12]+22)*blockSize-4;
 
       textposX[1] =(EaterX[14]+80)*blockSize ;     // B duplicator
-      textposY[1] =(EaterY[14]+40)*blockSize-4;
+      textposY[1] =(EaterY[14]+22)*blockSize-4;
 
       textposX[2] =(EaterX[1]+8)*blockSize ;       // A
       textposY[2] =(EaterY[1]-17)*blockSize-8;
@@ -478,8 +488,8 @@ MainWindow::onUpdateTime() {
       textposX[4] =(EaterX[3]-60)*blockSize ;      // A&B top
       textposY[4] =(EaterY[3]-25)*blockSize-4;
 
-      textposX[5] =(EaterX[4]+25)*blockSize ;      // A XOR B
-      textposY[5] =(EaterY[4]+15)*blockSize;
+      textposX[5] =(EaterX[4]-50)*blockSize ;      // A XOR B
+      textposY[5] =(EaterY[4]+5)*blockSize;
 
       textposX[6] =(EaterX[4]-100)*blockSize ;     // A&B bottom
       textposY[6] =(EaterY[4]-25)*blockSize-4;
@@ -515,6 +525,8 @@ MainWindow::onUpdateTime() {
       text6->setBrush(Qt::red);
       text6->setPos(textposX[6], textposY[6]);
 
+      */
+
       if(StepMode) {
           StepMode=false;
           userUSnew = 0;
@@ -539,15 +551,15 @@ void MainWindow::on_SliderUpdateSpeed_valueChanged(int value)
 
 void MainWindow::on_checkBox1_clicked(bool checked)
 {
-    if (checked) userGEater[1]=1;
-    else userGEater[1]=0;
+    if (checked) userGEaterglob[1]=1;
+    else userGEaterglob[1]=0;
 
 }
 
 void MainWindow::on_checkBox2_clicked(bool checked)
 {
-    if (checked) userGEater[2]=1;
-    else userGEater[2]=0;
+    if (checked) userGEaterglob[2]=1;
+    else userGEaterglob[2]=0;
 }
 
 
