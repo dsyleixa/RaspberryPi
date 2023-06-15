@@ -129,10 +129,10 @@ void calculateGenerationThrFun(int starty, int stopy)
 
 
 //---------------------------------------------------------------------------
-void put_XOR(int startx, int starty, char GGunsTrue=1) {
+void put_XOR(int startx, int starty, char put_UI_Input=1) {
 
     static int EaterX[20], EaterY[20];
-    static int stateGEater[20] = {1} ; // current state: 0=block, 1=let Gliders pass
+    static int stateGEater[20] = {0} ; // current state: 0=block, 1=let Gliders pass
 
     // absolute start positions of gliderguns
     int GGy1= starty + 1,   GGx1= startx + 39   + 9;      // A
@@ -144,14 +144,10 @@ void put_XOR(int startx, int starty, char GGunsTrue=1) {
 
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
-    stateGEater[0]=0;
-    if(GGunsTrue) stateGEater[1]=userGEaterglob[1];
-    if(GGunsTrue) stateGEater[2]=userGEaterglob[2];
-    stateGEater[3]=0;
-    stateGEater[4]=0;
-    stateGEater[5]=0;
+    if(put_UI_Input) stateGEater[1]=userInputGlobal[1];
+    if(put_UI_Input) stateGEater[2]=userInputGlobal[2];
 
-    if(GGunsTrue) {
+    if(put_UI_Input) {
       //glidergun 1: INPUT A
       put_GliderGun( GGx1, GGy1 );
       //Gun Eater 1
@@ -160,7 +156,7 @@ void put_XOR(int startx, int starty, char GGunsTrue=1) {
       put_GliderEater( EaterX[1], EaterY[1], stateGEater[1]);  // Input A
     }
 
-    if(GGunsTrue) {
+    if(put_UI_Input) {
       //glidergun 2: INPUT B
       put_GliderGunRev( GGx2, GGy2 );
       //Gun Eater 2
@@ -177,12 +173,11 @@ void put_XOR(int startx, int starty, char GGunsTrue=1) {
     //EaterY[3] =  GGy3 +10 +10;
     //put_GliderEaterRev( EaterX[3], EaterY[3], 0);
 
-/*
-    int GRx0=GGx2 -45+15 -1;
-    int GRy0=GGy2 +45-15 +6;
+    int GRx0=GGx2  -1 ;
+    int GRy0=GGy2  +6 ;
     put_GliderReflxVert(GRx0,GRy0);
 
-*/
+
     // glidergun 4: output
     put_GliderGun( GGx4, GGy4 );
     // Gun Eater 4: INF delimiter
@@ -197,33 +192,31 @@ void put_XOR(int startx, int starty, char GGunsTrue=1) {
 
 //---------------------------------------------------------------------------
 
-void put_HA(int startx, int starty) {
+void put_HA(int startx, int starty, char put_UI_Input=1) {
     static int EaterX[20], EaterY[20];
-    static int stateGEater[20] = {1} ; // current state: 0=block, 1=let Gliders pass
+    static int stateGEater[20] = {0} ; // current state: 0=block, 1=let Gliders pass
 
     // absolute start positions of gliderguns
     int GGy1= starty + 1+60,       GGx1= startx + 39   +11;     // A
     int GGy2= starty + 2+60,       GGx2= startx + 39*6 -27;     // B
 
-    //int GGy3= starty + 4,          GGx3= startx + 39*3  +4  +1 ;     // B blockt exakt, A Chaos.
-    //int GGy3= starty + 4,          GGx3= startx + 39*3  +4  +1 +1;   // B Doppelblock , A Chaos
-    int GGy3= starty + 4,          GGx3= startx + 39*3  +4  +1 +2;   // B blockt exakt, A KurzFeuerwerk
-    //int GGy3= starty + 4,          GGx3= startx + 39*3  +4  +1 +3;   // B blockt exakt, A Chaos
-    //int GGy3= starty + 4,          GGx3= startx + 39*3  +4  +1 +4;   // B Chaos, A blockt exakt
-    //int GGy3= starty + 4 +1,       GGx3= startx + 39*3  +4  +1 +2;   // B blockt exakt, A Chaos    
-    //int GGy3= starty + 4 +1,       GGx3= startx + 39*3  +4  +1 +3;   // B blockt exakt, A Chaos
+    //int GGy3= starty + 4,        GGx3= startx + 39*3  +5 ;   // B blockt exakt, A Chaos.
+    //int GGy3= starty + 4,        GGx3= startx + 39*3  +6;    // B Doppelblock , A Chaos
+    int GGy3= starty + 4,        GGx3= startx + 39*3  +7;    // B blockt exakt, A KurzFeuerwerk
+    //int GGy3= starty + 5,        GGx3= startx + 39*3  +6;    // B Chaos, A exakt
+    //int GGy3= starty + 6,        GGx3= startx + 39*3  +6;    // B , A Chaos
+    //int GGy3= starty + 6,        GGx3= startx + 39*3  +5 ;   // B , A Chaos
+    //int GGy3= starty + 4,        GGx3= startx + 39*3  +8;    // B blockt exakt, A Chaos
+    //int GGy3= starty + 4,        GGx3= startx + 39*3  +9;    // B Chaos, A blockt exakt
+    //int GGy3= starty + 5,        GGx3= startx + 39*3  +7;    // B blockt exakt, A Chaos
+    //int GGy3= starty + 5,        GGx3= startx + 39*3  +8;    // B blockt exakt, A Chaos
 
     int GDx1, GDy1, GDx2, GDy2;   // duplicator    
 
 
     // 0: GliderEater solid (active) - 1: GliderEater vanishes (inactive)
-    stateGEater[0]=0;
-    stateGEater[1]=stateGEaterglob[1]=userGEaterglob[1];
-    stateGEater[2]=stateGEaterglob[2]=userGEaterglob[2];
-    stateGEater[3]=0;
-    stateGEater[4]=0;
-    stateGEater[5]=0;
-
+    stateGEater[1]=stateGEaterglob[1]=userInputGlobal[1];
+    stateGEater[2]=stateGEaterglob[2]=userInputGlobal[2];
 
     // glider duplicator for INPUT A
     GDx1=GGx1+34 -15;  // 34
@@ -255,13 +248,6 @@ void put_HA(int startx, int starty) {
     // A&B stream for carry flag
     // upper A stream NW to SW
     put_GliderReflxHorizDnR_1(startx+67, starty + 4);  // 1.1.0 top left
-    // upper A stream SW to SE
-    put_GliderReflxVertDnR_1(startx+8 , starty + 75 );
-    // upper A stream SE to SW
-    put_GliderReflxVertDnL_1(startx+48, starty + 101);
-    // upper A stream SW to SE
-    put_GliderReflxVertDnR_1(startx+8 , starty +75 +52 );
-
 
     // glidergun 1: INPUT A
     put_GliderGun( GGx1, GGy1 );
@@ -290,8 +276,18 @@ void put_HA(int startx, int starty) {
 
 
 void put_VA(int startx, int starty) {
+    int HA1x, HA1y, HA2x, HA2y;
+    HA1x=0;
+    HA1y=0;
+    put_HA( HA1x, HA1y, 1 );
 
-    put_HA( 0, 0 );
+    // upper A stream SW to SE
+    put_GliderReflxVertDnR_1(HA1x+8 , HA1y + 75 );
+    // upper A stream SE to SW
+    put_GliderReflxVertDnL_1(HA1x+48, HA1y + 101);
+    // upper A stream SW to SE
+    put_GliderReflxVertDnR_1(HA1x+8 , HA1y +75 +52 );
+
 
 }
 
@@ -401,29 +397,29 @@ MainWindow::onUpdateTime() {
       synctick1=(GenerationCnt-8+30)%30;  // sync-in for quick runtime input changes
       synctick2=(GenerationCnt-8+30)%30;  // 30=GGG_period, 8=GE_offset
 
-      if(stateGEaterglob[1]!=userGEaterglob[1] && sync1)  {
+      if(stateGEaterglob[1]!=userInputGlobal[1] && sync1)  {
           sync1=0;
       }
       if(synctick1==16  && !sync1) {
-             stateGEaterglob[1]=userGEaterglob[1];
+             stateGEaterglob[1]=userInputGlobal[1];
              put_GliderEater( EaterXglob[1], EaterYglob[1], stateGEaterglob[1]);
              sync1=1;
       }
       //ResetCircuit();
 
 
-      if(stateGEaterglob[2]!=userGEaterglob[2] && sync2)  {
+      if(stateGEaterglob[2]!=userInputGlobal[2] && sync2)  {
           sync2=0;
       }
       if(synctick2==16  && !sync2) {
-             stateGEaterglob[2]=userGEaterglob[2];
+             stateGEaterglob[2]=userInputGlobal[2];
              put_GliderEaterRev( EaterXglob[2], EaterYglob[2], stateGEaterglob[2]);
              sync2=1;
       }
       //ResetCircuit();
 
-      ui->labelOut1->setText(QString::number(userGEaterglob[1]));
-      ui->labelOut2->setText(QString::number(userGEaterglob[2]));
+      ui->labelOut1->setText(QString::number(userInputGlobal[1]));
+      ui->labelOut2->setText(QString::number(userInputGlobal[2]));
 
 
       // GoL: calculate next Generation
@@ -551,15 +547,15 @@ void MainWindow::on_SliderUpdateSpeed_valueChanged(int value)
 
 void MainWindow::on_checkBox1_clicked(bool checked)
 {
-    if (checked) userGEaterglob[1]=1;
-    else userGEaterglob[1]=0;
+    if (checked) userInputGlobal[1]=1;
+    else userInputGlobal[1]=0;
 
 }
 
 void MainWindow::on_checkBox2_clicked(bool checked)
 {
-    if (checked) userGEaterglob[2]=1;
-    else userGEaterglob[2]=0;
+    if (checked) userInputGlobal[2]=1;
+    else userInputGlobal[2]=0;
 }
 
 

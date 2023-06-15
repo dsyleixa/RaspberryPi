@@ -46,9 +46,9 @@ char tmpboard[GOLscrHeight + 2*frame][GOLscrWidth + 2*frame];
 
 // variables for program control
 int EaterXglob[20], EaterYglob[20];
-int stateGEaterglob[20] = {1} ; // current state: 0=block, 1=let Gliders pass
+int stateGEaterglob[20] = {0} ; // current state: 0=block, 1=let Gliders pass
 
-int userGEaterglob[20] = {1} ;  // optional arbitrary user setting
+int userInputGlobal[20] = {0} ;  // optional arbitrary user setting
 
 int textposX[20], textposY[20];
 
