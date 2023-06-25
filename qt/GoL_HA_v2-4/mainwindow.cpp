@@ -432,7 +432,7 @@ MainWindow::onUpdateTime() {
          int yn[par+1];
 
          yn[0]=1;
-         for (int i=1; i<=par; i++) { yn[i]= i*(yrows/par); }
+         for (int32_t i=1; i<=par; i++) { yn[i]= (i*yrows)/par; }
 
          //calculate next Generations in threads
          std::thread* cthr[par];
