@@ -668,10 +668,10 @@ MainWindow::onUpdateTime() {
       textposX[8] =(70)*blockSize ;          // [ HA1 or HA2]
       textposY[8] =(120+15)*blockSize;
 
-      textposX[9] =(5)*blockSize ;           // HA2 carry2
+      textposX[9] =(5)*blockSize ;           // FA carry
       textposY[9] =(240)*blockSize;
 
-      textposX[10] =(160+20)*blockSize ;     // HA2 sum2
+      textposX[10] =(160+20)*blockSize ;     // FA sum2
       textposY[10] =(220+160)*blockSize;
 
 
@@ -710,11 +710,11 @@ MainWindow::onUpdateTime() {
       text8->setBrush(Qt::red);
       text8->setPos(textposX[8], textposY[8]);
 
-      QGraphicsSimpleTextItem* text9 = scene->addSimpleText(" HA_2\ncarry_2", QFont("Arial", 14) );
+      QGraphicsSimpleTextItem* text9 = scene->addSimpleText(" FA\ncarry", QFont("Arial", 14) );
       text9->setBrush(Qt::red);
       text9->setPos(textposX[9], textposY[9]);
 
-      QGraphicsSimpleTextItem* text10 = scene->addSimpleText(" HA_2 \nsum_2", QFont("Arial", 14) );
+      QGraphicsSimpleTextItem* text10 = scene->addSimpleText(" FA \nsum", QFont("Arial", 14) );
       text10->setBrush(Qt::red);
       text10->setPos(textposX[10], textposY[10]);
 
