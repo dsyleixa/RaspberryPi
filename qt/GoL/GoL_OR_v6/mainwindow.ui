@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>720</width>
+    <height>917</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QGraphicsView" name="graphicsView">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>110</y>
+      <width>640</width>
+      <height>640</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>770</y>
+      <width>81</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Quit</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="SliderUpdateSpeed">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>770</y>
+      <width>121</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>0</number>
+    </property>
+    <property name="maximum">
+     <number>100</number>
+    </property>
+    <property name="value">
+     <number>50</number>
+    </property>
+    <property name="sliderPosition">
+     <number>50</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+    <property name="invertedAppearance">
+     <bool>false</bool>
+    </property>
+    <property name="invertedControls">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelUpdspeed">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>790</y>
+      <width>121</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>updspeed</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelOut1">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>70</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1 OnOff</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelOut2">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>70</y>
+      <width>71</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>2 OnOff</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBox1">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>40</y>
+      <width>101</width>
+      <height>33</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 75 16pt &quot;PibotoLt&quot;;</string>
+    </property>
+    <property name="text">
+     <string>signal A</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBox2">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>40</y>
+      <width>101</width>
+      <height>33</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>signal B</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelGen">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>770</y>
+      <width>111</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Gen  Cnt x</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelBlocksize">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>790</y>
+      <width>121</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>block size</string>
+    </property>
+   </widget>
+   <widget class="QSlider" name="SliderBlocksize">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>770</y>
+      <width>121</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
+    <property name="maximum">
+     <number>10</number>
+    </property>
+    <property name="pageStep">
+     <number>2</number>
+    </property>
+    <property name="value">
+     <number>4</number>
+    </property>
+    <property name="sliderPosition">
+     <number>4</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+    <property name="invertedAppearance">
+     <bool>false</bool>
+    </property>
+    <property name="invertedControls">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btnGenReset">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>810</y>
+      <width>101</width>
+      <height>38</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>reset</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>720</width>
+     <height>34</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
