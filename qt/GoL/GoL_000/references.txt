@@ -1,0 +1,6 @@
+Qt Quick TableView examples - Conway’s Game of Life:
+https://doc.qt.io/qt-5.12/qtquick-tableview-gameoflife-example.html
+
+TableView QML Type:
+https://doc.qt.io/qt-5.12/qml-qtquick-tableview.html
+
