@@ -25,10 +25,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     MyRect.cpp \
-    Bullet.cpp
+    Bullet.cpp \
+    Enemy.cpp
 
 HEADERS  += \
     MyRect.h \
-    Bullet.h
+    Bullet.h \
+    Enemy.h
 
 FORMS    +=
