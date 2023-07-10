@@ -1,0 +1,11 @@
+github
+https://github.com/MeLikeyCode/QtGameTutorial/tree/master/tutorial1
+youtube
+https://www.youtube.com/watch?v=8ntEQpg7gck&list=PLyb40eoxkelOa5xCB9fvGrkoBf8JzEwtV
+
+
+
+github
+https://github.com/MeLikeyCode/QtGameEngine
+youtube
+https://www.youtube.com/watch?v=MfMuob8VWuY&list=PLMgDVIa0Pg8Wglcri_5zQjhoOVONbSVAJ
