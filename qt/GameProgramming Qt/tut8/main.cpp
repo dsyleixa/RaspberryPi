@@ -1,5 +1,6 @@
 #include <QApplication>
 #include "Game.h"
+#include <stdlib.h>
 
 /*
 Tutorial Topics:
@@ -14,5 +15,6 @@ int main(int argc, char *argv[]){
     game = new Game();
     game->show();
 
+    srand( time(0) );
     return a.exec();
 }

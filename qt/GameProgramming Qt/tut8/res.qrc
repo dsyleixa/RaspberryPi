@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/sounds">
         <file>bullet.wav</file>
+        <file>bgsound.mp3</file>
     </qresource>
     <qresource prefix="/images">
         <file>bg.png</file>
