@@ -2,12 +2,14 @@
 #include "Game.h"
 #include <stdlib.h>
 
+
 /*
 Tutorial Topics:
 -QGraphicsPixmapItem, QPixmap, QImage
 */
 
 Game * game;
+
 
 int main(int argc, char *argv[]){
     QApplication a(argc, argv);

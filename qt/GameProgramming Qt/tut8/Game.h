@@ -7,6 +7,8 @@
 #include "Player.h"
 #include "Score.h"
 #include "Health.h"
+#include <QMediaPlayer>
+
 
 class Game: public QGraphicsView{
 public:

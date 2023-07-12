@@ -6,6 +6,7 @@
 #include <QMediaPlayer>
 #include <QBrush>
 #include <QImage>
+#include <QMediaPlaylist>
 
 
 Game::Game(QWidget *parent){
@@ -20,6 +21,7 @@ Game::Game(QWidget *parent){
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(800,600);
+
 
     // create the player
     player = new Player();
@@ -43,10 +45,17 @@ Game::Game(QWidget *parent){
     timer->start(2000);
 
     // play background music
+    QMediaPlaylist * playlist = new QMediaPlaylist();
+    playlist->addMedia(QUrl("qrc:/sounds/bgsound.mp3"));
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
+
     QMediaPlayer * music = new QMediaPlayer();
-    music->setMedia(QUrl("qrc:/sounds/bgsound.mp3"));
+    //music->setMedia(QUrl("qrc:/sounds/bgsound.mp3"));
     music->setVolume(20);
+    music->setPlaylist(playlist);
     music->play();
 
     show();
 }
+
+
