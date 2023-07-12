@@ -8,6 +8,7 @@ Player::Player(QGraphicsItem *parent): QGraphicsPixmapItem(parent){
     // set bullet sound
     bulletsound = new QMediaPlayer();
     bulletsound->setMedia(QUrl("qrc:/sounds/bullet.wav"));
+    bulletsound->setVolume(40);
 
     // set graphic
     setPixmap(QPixmap(":/images/player.png"));
@@ -35,6 +36,7 @@ void Player::keyPressEvent(QKeyEvent *event){
             bulletsound->setPosition(0);
         }
         else if (bulletsound->state() == QMediaPlayer::StoppedState){
+            bulletsound->setVolume(30);
             bulletsound->play();
         }
 

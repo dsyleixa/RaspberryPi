@@ -7,6 +7,7 @@
 #include <QBrush>
 #include <QImage>
 
+
 Game::Game(QWidget *parent){
     // create the scene
     scene = new QGraphicsScene();
@@ -43,8 +44,9 @@ Game::Game(QWidget *parent){
 
     // play background music
     QMediaPlayer * music = new QMediaPlayer();
-    //music->setMedia(QUrl("qrc:/sounds/bgsound.mp3"));
-    //music->play();
+    music->setMedia(QUrl("qrc:/sounds/bgsound.mp3"));
+    music->setVolume(20);
+    music->play();
 
     show();
 }
