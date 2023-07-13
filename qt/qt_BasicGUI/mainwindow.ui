@@ -26,6 +26,9 @@
     <property name="text">
      <string>Quit</string>
     </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
