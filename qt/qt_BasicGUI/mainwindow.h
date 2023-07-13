@@ -16,8 +16,6 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    //QPushButton * pushButton1;
-
 private slots:
     void on_pushButton1_clicked();
 
