@@ -6,13 +6,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {   
-    ui->setupUi(this);
-    /*
-    QPushButton * pushButton1 = new QPushButton();
-    pushButton1->disconnect();
-    */
+    ui->setupUi(this);    
     ui->pushButton1->setFocusPolicy(Qt::NoFocus);
-
 }
 
 MainWindow::~MainWindow()
