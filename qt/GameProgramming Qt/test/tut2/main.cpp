@@ -5,8 +5,6 @@
 #include <QGraphicsView>
 #include <QKeyEvent>
 
-#include <QDebug>
-
 
 int main(int argc, char *argv[])
 {
@@ -20,11 +18,8 @@ int main(int argc, char *argv[])
     rect->setFlag(QGraphicsItem::ItemIsFocusable);
     rect->setFocus();
 
-
     QGraphicsView * view = new QGraphicsView(scene);
     view->show();
-
-
 
 
     return a.exec();
