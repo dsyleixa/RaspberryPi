@@ -1,3 +1,4 @@
+// main.cpp
 
 #include <QApplication>
 #include <QGraphicsScene>
