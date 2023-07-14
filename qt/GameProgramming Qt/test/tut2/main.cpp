@@ -2,7 +2,7 @@
 
 #include <QApplication>
 #include <QGraphicsScene>
-#include "myrect.h"
+#include "MyRect.h"
 #include <QGraphicsView>
 #include <QKeyEvent>
 
