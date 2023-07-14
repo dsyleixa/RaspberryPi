@@ -6,8 +6,6 @@
 #include <QGraphicsView>
 #include <QKeyEvent>
 
-#include <QDebug>
-
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,7 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     scene  = new QGraphicsScene(this);
-    scene->clear();
 
     MyRect * rect = new MyRect();  // custom rect derived from QGraphicsItem
     rect->setRect(0,0, 100,100);
@@ -29,15 +26,4 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 
-MainWindow::~MainWindow()
-{
-    delete ui;    
-}
-
-
-
-void MainWindow::on_pushButton1_clicked()
-{
-    close();
-    //QCoreApplication::quit();
-}
+//...
