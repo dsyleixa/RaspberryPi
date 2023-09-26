@@ -1,7 +1,7 @@
-g++ -Wall -pthread -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads -c "%f" -lshapes -lwiringPi -lrt -lpigpio -lArduiPi_OLED
+g++  -fwrapv -Wall -pthread -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads -c "%f" -lshapes -lwiringPi -lrt -lpigpio -lArduiPi_OLED
 
 
-g++ -Wall -pthread -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads -o "%e" "%f" -lshapes -L/opt/vc/lib -lOpenVG -lEGL -lwiringPi -lrt -lpigpio -lArduiPi_OLED 
+g++  -fwrapv -Wall -pthread -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads -o "%e" "%f" -lshapes -L/opt/vc/lib -lOpenVG -lEGL -lwiringPi -lrt -lpigpio -lArduiPi_OLED 
 
 
 sudo "./%e"
