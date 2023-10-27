@@ -12,6 +12,9 @@ repo, examples:
 https://github.com/raspberrypi/libcamera-apps/tree/main
 https://github.com/raspberrypi/libcamera-apps/tree/main/apps
 
+Ref:
+https://pi-buch.info/fotos-und-videos-mit-den-libcamera-tools-aufnehmen/
+
 
 
 
