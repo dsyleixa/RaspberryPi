@@ -1,0 +1,17 @@
+install:
+https://www.raspberrypi.com/documentation/computers/camera_software.html#building-libcamera-and-libcamera-apps
+# basic
+sudo apt install -y libcamera-dev libepoxy-dev libjpeg-dev libtiff5-dev 
+# qt preview additionally
+sudo apt install -y qtbase5-dev libqt5core5a libqt5gui5 libqt5widgets5
+# libav support in libcamera-vid, additionally:
+sudo apt install libavcodec-dev libavdevice-dev libavformat-dev libswresample-dev
+
+
+repo, examples:
+https://github.com/raspberrypi/libcamera-apps/tree/main
+https://github.com/raspberrypi/libcamera-apps/tree/main/apps
+
+
+
+
