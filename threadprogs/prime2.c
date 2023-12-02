@@ -31,7 +31,7 @@
         {
             if (isPrime(s) > 0)
             {
-                printf("%d\n",s);
+                fprintf(stderr, "%d\n",s);
                 c++;
             }
         }
@@ -42,7 +42,7 @@
     {
         int c;
         c=calcPrimes(3, 100000, 8); //stepping 8 numbers for 4 cores
-        printf("thread1 found %d primes.\n",c);
+        fprintf(stderr, "thread1 found %d primes.\n",c);
         return NULL;
     }
 
@@ -52,7 +52,7 @@
         int c;
         c=calcPrimes(5, 100000, 8); //starting thread 2 at the next odd
                                     //number jumping 8 spaces for 4 cores
-        printf("thread2 found %d primes.\n",c);
+        fprintf(stderr, "thread2 found %d primes.\n",c);
         return NULL;
     }
 
@@ -61,7 +61,7 @@
         int c;
         c=calcPrimes(7, 100000, 8); //starting thread 2 at the next odd
                                     //number and jumping 8 spaces
-        printf("thread3 found %d primes.\n",c);
+        fprintf(stderr, "thread3 found %d primes.\n",c);
         return NULL;
     }
 
@@ -69,7 +69,7 @@
     {
         int c;
         c=calcPrimes(9, 100000, 8); // think you get it.
-        printf("thread4 found %d primes.\n",c);
+        fprintf(stderr, "thread4 found %d primes.\n",c);
         return NULL;
     }
 
@@ -78,7 +78,7 @@
 		unsigned long  timerms;
 		  
         printf("Calculate Prime Numbers\n");
-        printf("==================================================\n\n");
+        fprintf(stderr, "==================================================\n\n");
         
         timerms=millis(); 
         //create the threads
@@ -98,7 +98,7 @@
         
         timerms=millis()-timerms;
         
-        printf("runtime= %ld", timerms);
+        fprintf(stderr, "runtime= %ld", timerms);
 
         return 0;
     }
