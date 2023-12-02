@@ -2,15 +2,14 @@
 #include <stdio.h>
 
 #ifdef __cplusplus
-#include <atomic>
-using namespace std;
-static atomic_int myval(1);
-static atomic_bool flag(true);
+   #include <atomic>
+   using namespace std;
+   static atomic_int myval(1);
+   static atomic_bool flag(true);
 #else      
-#include <stdatomic.h>
-static atomic_int myval = 1;
-static atomic_bool flag = true;
-
+   #include <stdatomic.h>
+   static atomic_int myval = 1;
+   static atomic_bool flag = true;
 #endif
 
 
