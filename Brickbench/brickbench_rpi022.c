@@ -8,7 +8,7 @@
 // für kommerzielle Zwecke nur nach schriftlicher Genehmigung durch den Autor.
 // protected under the friendly Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License
 // http://creativecommons.org/licenses/by-nc-sa/3.0/
-// version 2.2 2018-07-14
+// version 2.21 2018-07-14
 // feat. GPIO toggle r/w test
 
 
@@ -195,8 +195,8 @@ int compare_int (const int *a, const int *b)
 int test_Int_Add() {
    int i=1, j=11, k=112, l=1111, m=11111, n=-1, o=-11, p=-111, q=-1112, r=-11111;
    int x;
-   volatile long s=0;
-   for(x=0;x<5000000;++x) { // *1000: 100,000,000 int add
+   volatile long s=digitalRead(tpin3);
+   for(x=0;x<5000000;++x) { // 5,000,000 * 10 int add
      s+=i; s+=j; s+=k; s+=l; s+=m; s+=n; s+=o; s+=p; s+=q; s+=r;
    }
    return s;
@@ -205,12 +205,12 @@ int test_Int_Add() {
 
 //--------------------------------------------
 long test_Int_Mult() {
-  int x,y;
-  volatile long s;
+  int x,y; 
+  volatile long t, s=(long)digitalRead(tpin3) +1; 
 
-  for(y=0;y<500000;++y) { // *500: 20,000,000 int mult/div
-    s=1;
-    for(x=1;x<=10;++x) { s*=x;} //1 3->10
+  for(y=0;y<500000;++y) { //  500,000 * 20 int mult/div ops
+    s=t;
+    for(x=1;x<=10;++x) { s*=x;} 
     for(x=10;x>0;--x) { s/=x;}
 
   }
@@ -223,10 +223,10 @@ long test_Int_Mult() {
 //--------------------------------------------
 double test_double_math() {
 
-  volatile double s=PI;
+  volatile double s=(double)digitalRead(tpin3) + PI; 	
   int y;
 
-  for(y=0;y<500000;++y) { // *1000:  4,000,000 float op
+  for(y=0;y<500000;++y) { // 500,000 * 4 double ops
      s*=sqrt(s);
      s=sin(s);
      s=exp(s);
@@ -237,10 +237,10 @@ double test_double_math() {
 
 float test_float_math() {
 
-  volatile float s=(float)PI;
+  volatile float s=(float)digitalRead(tpin3) + (float)PI; 		
   int y;
 
-  for(y=0;y<500000;++y) { // *1000:  4,000,000 float op
+  for(y=0;y<500000;++y) { //  500,000 * 4 float ops
      s*=sqrtf(s);
      s=sinf(s);
      s=expf(s);
@@ -255,7 +255,7 @@ long test_rand_MT(){
   volatile unsigned long s;
   int y;
 
-  for(y=0;y<2500000;++y) { // *1000: 5,00,000 random u_long + 500,000 modulo
+  for(y=0;y<2500000;++y) { //  2,500,000 rand + modulo
      s=randM()%10001;
   }
   return s;
@@ -272,32 +272,31 @@ double test_matrix_math() {
 
   double A[2][2], B[2][2], C[2][2];
   double S[3][3], T[3][3];
-  volatile unsigned long s;
+  volatile double s=0;
+  volatile double t=(double)digitalRead(tpin3);
 
-  for(x=0;x<50000;++x) { // *1000: 75000 matrix op (mult,det,det)
+  for(x=0;x<50000;++x) { // 50,000 * 4 matrix op (mult,det,det)
 
-    A[0][0]=1;   A[0][1]=3;
-    A[1][0]=2;   A[1][1]=4;
+    A[0][0]=1.0;   A[0][1]=3.0;
+    A[1][0]=2.0;   A[1][1]=4.0+t;
 
-    B[0][0]=10;  B[0][1]=30;
-    B[1][0]=20;  B[1][1]=40;
+    B[0][0]=10.0;  B[0][1]=30.0;
+    B[1][0]=20.0;  B[1][1]=40.0;
 
     MatrixMatrixMult(2, 2, 2, A[0], B[0], C[0]);  
 
-    A[0][0]=1;   A[0][1]=3;
-    A[1][0]=2;   A[1][1]=4;
+    A[0][0]=1.0;   A[0][1]=3.0;
+    A[1][0]=2.0;   A[1][1]=4.0+t;
     
     MatrixDet(2, A[0]);                          
 
-    S[0][0]=1;   S[0][1]=4;  S[0][2]=7;
-    S[1][0]=2;   S[1][1]=5;  S[1][2]=8;
-    S[2][0]=3;   S[2][1]=6;  S[2][2]=9;
+    S[0][0]=1.0;   S[0][1]=4.0;  S[0][2]=7.0;
+    S[1][0]=2.0;   S[1][1]=5.0;  S[1][2]=8.0;
+    S[2][0]=3.0;   S[2][1]=6.0;  S[2][2]=9.0+t;
 
     MatrixDet(3, S[0]);      
-    
-    s=(S[0][0]*S[1][1]*S[2][2]);                    
-
   }
+  s=(S[0][0]*S[1][1]*S[2][2]); 	
   return s;
 }
 
