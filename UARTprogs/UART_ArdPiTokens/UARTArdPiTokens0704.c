@@ -229,7 +229,7 @@ void* UART_thr( void* ) {
      char formatstr[MSGLEN];     
 
      // debug, cut-down:
-     strcpy(formatstr, "ง");
+     strcpy(formatstr, "ยง");
      strcat(formatstr, "&i0=%d;&i1=%d;&i2=%d;&i3=%d;\n");
      sprintf(mbuf, formatstr, i0,i1,i2,i3);
                     
@@ -295,7 +295,20 @@ void* UART_thr( void* ) {
        if(strlen(cval)>0) {          
           sprintf (cstr,  "i2=%d \n", (int32_t)atol(cval));
           fprintf(stderr, cstr);
-       }       
+       }      
+       // etc... 
+
+       cstringarg(mbuf, "a0", cval); //    
+       if(strlen(cval)>0) {          
+          sprintf (cstr,  "a0=%d \n", (int32_t)atol(cval));
+          fprintf(stderr, cstr);
+       }     
+      cstringarg(mbuf, "a1", cval); //    
+       if(strlen(cval)>0) {          
+          sprintf (cstr,  "a1=%d \n", (int32_t)atol(cval));
+          fprintf(stderr, cstr);
+       }     
+       // etc... 
        
        
        inputString="";
