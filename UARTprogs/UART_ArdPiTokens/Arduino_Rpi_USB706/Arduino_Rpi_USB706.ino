@@ -3,7 +3,7 @@
 
 
 // history:
-// 0706
+// 0706  analogRead
 // 0705  debug value (i2) from Raspi
 // 0704  Serial.readStringUntil(), debug value (i0) from Arduino
 // 0703  simple msg str 
@@ -144,15 +144,21 @@ void loop() {
   if(strlen(cval)>0) {          
      i2=(int32_t)atol(cval);
   }
-    
 
-  //----------------------    
-  inputString="";
+  inputString="";   
+
+  //----------------------  
+  // get variants 
+
+  a0 = analogRead(A0);
+  a1 = analogRead(A1);
+  a2 = analogRead(A2);
+  a3 = analogRead(A3);
+  a4 = analogRead(A4);
+  a5 = analogRead(A5); 
 
   //delay 
   delay(1);
-  
-
   
   //-------------------------------------------------------------
   // send  
