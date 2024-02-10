@@ -9,6 +9,7 @@
  
  /*
   * change log
+  * 0705: analogReads
   * 0704: extra console thread
   * 0703: pthread MT
   * 0702: debug value (i2) from Raspi
