@@ -4,7 +4,7 @@
    send/receive string of tokens
    *     
    Raspberry Pi  master
-   ver 0704
+   ver 0705
  */
  
  /*
@@ -230,7 +230,7 @@ void* UART_thr( void* ) {
      char formatstr[MSGLEN];     
 
      // debug, cut-down:
-     strcpy(formatstr, "ง");
+     strcpy(formatstr, "ยง");
      strcat(formatstr, "&i0=%d;&i1=%d;&i2=%d;&i3=%d;\n");
      sprintf(mbuf, formatstr, i0,i1,i2,i3);
                     
