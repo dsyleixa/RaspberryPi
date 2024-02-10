@@ -295,7 +295,20 @@ void* UART_thr( void* ) {
        if(strlen(cval)>0) {          
           sprintf (cstr,  "i2=%d \n", (int32_t)atol(cval));
           fprintf(stderr, cstr);
-       }       
+       }      
+       // etc... 
+
+       cstringarg(mbuf, "a0", cval); //    
+       if(strlen(cval)>0) {          
+          sprintf (cstr,  "a0=%d \n", (int32_t)atol(cval));
+          fprintf(stderr, cstr);
+       }     
+      cstringarg(mbuf, "a1", cval); //    
+       if(strlen(cval)>0) {          
+          sprintf (cstr,  "a1=%d \n", (int32_t)atol(cval));
+          fprintf(stderr, cstr);
+       }     
+       // etc... 
        
        
        inputString="";
@@ -372,5 +385,3 @@ int main() {
     serialClose( Serial);
     exit(0);
 }
-
-
