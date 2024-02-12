@@ -197,9 +197,10 @@ void loop() {
 
   Serial.flush();
    
-   //delay?
+  // delay?
   delay(1);
-    
+
+  // check, debug 
   i0++;
 
   
