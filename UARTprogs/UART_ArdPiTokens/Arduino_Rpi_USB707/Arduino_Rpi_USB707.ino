@@ -167,13 +167,6 @@ void loop() {
   
   //-------------------------------------------------------------
   // send  
-  
-  a0 = analogRead(A0);
-  a1 = analogRead(A1);
-  a2 = analogRead(A2);
-  a3 = analogRead(A3);
-  a4 = analogRead(A4);
-  a5 = analogRead(A5);
    
   char formatstr[MSGLEN];
   
