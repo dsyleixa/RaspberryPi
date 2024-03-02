@@ -137,15 +137,7 @@ void loop() {
        inputString.toCharArray(mbuf, min( (int)inputString.length(), MSGLEN-1) );     
   }
     
-  //----------------------
-  // process mbuf!
-
-  // debug: check for changed i2 by Raspi
-  cstringarg(mbuf, "i2", cval); //    
-  if(strlen(cval)>0) {          
-     i2=(int32_t)atol(cval);
-  }
-    
+   
 
   //----------------------
   // process mbuf!
