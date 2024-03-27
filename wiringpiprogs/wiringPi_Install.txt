@@ -8,9 +8,19 @@ git clone https://github.com/WiringPi/WiringPi
 cd WiringPi
 ./build debian
 ls debian-template/*deb
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+new Repo fork:
+Those who were declared dead obviously live longer.
+under construction:
+https://github.com/WiringPi/WiringPi
+https://github.com/GrazerComputerClub/WiringPi/issues/21
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 when you already have an old apt-package and want to upgrade by gitclone, then 1st of all better make a clean uninstall of the old one.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 Links:
 formerly by the original developer:
