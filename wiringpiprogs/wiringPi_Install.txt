@@ -8,6 +8,13 @@ git clone https://github.com/WiringPi/WiringPi
 cd WiringPi
 ./build debian
 ls debian-template/*deb
+
+update:
+
+How to Get WiringPi 3.4:
+You can download the latest release from our GitHub repository: WiringPi 3.4 Releases https://github.com/WiringPi/WiringPi/releases/tag/3.4
+Make sure to choose the correct version for your system architecture (32-bit or 64-bit Bookworm) 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 new Repo fork:
