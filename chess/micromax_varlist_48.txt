@@ -1,0 +1,64 @@
+per Google KI angepasste Variablen-Liste für microMax 4.8 (unter Vorbehalt)
+
+Da die Version 4.8 (speziell die WinBoard-Version 4.8w) auf extremer Kompression basiert, wurden einige Variablen aus 3.2/4.0 umfunktioniert, um neue Features wie MVV/LVA Move Ordering und eine verbesserte Quiescence Search zu integrieren.
+Kleingeschrieben (Lower Case)
+Var	Typ / Kontext	Bedeutung in Version 4.8
+a	_ *	Pointer auf den Hash-Tabellen-Eintrag der aktuellen Stellung.
+b	char[]	Das Schachbrett im 0x88-Format. Ungültige Felder enthalten die PST (Piece-Square Table).
+c	int	In main(): Temporäre Variable für die Eingabeverarbeitung (ASCII-Konvertierung).
+d	int (D)	Suchtiefe (Depth) oder Distanz-Indikator.
+e	int (D)	Argument für den En-passant-Status (Feldnummer oder Flag).
+f	char (D)	Quellfeld des "Threat Move" (Drohung).
+g	char (D)	Zielfeld des "Threat Move".
+h	int	Temporär: Berechnung der Resttiefe oder Hash-Index.
+i	int	Neu in 4.8: Wert der geschlagenen Figur (Victim) für MVV/LVA Sortierung.
+j	int	Schleifenzähler für die Zugrichtungen der Figuren.
+k	int (D)	Wer ist am Zug? (8=Weiß, 16=Schwarz).
+l	int (D)	Beta-Grenze (Upper Window Limit).
+m	int (D)	Bester Score bisher oder Stand-Pat Score in der Quiescence Search.
+n	int (D)	Aktueller Material-Score der Stellung (differenziell aktualisiert).
+o	char[]	Kombiniertes Array: Move-Vektoren und initiale Board-Aufstellung.
+p	int	Neu in 4.8: Wert der schlagenden Figur (Attacker) für MVV/LVA Sortierung (i-p).
+q	int (D)	Alpha-Grenze (Lower Window Limit).
+r	int (D)	Aktueller Schritt-Vektor (Ray) in der Zuggenerierung.
+s	-	In 4.8 meist ungenutzt oder durch Makros ersetzt.
+t	char (D)	Die geschlagene Figur bei dem aktuell geprüften Zug.
+u	char (D)	Die ziehende Figur bei dem aktuell geprüften Zug.
+v	int	Temporärer Score-Wert für den aktuell untersuchten Zweig.
+w	char[]	Relative Figurenwerte (Pawn = 1, etc.).
+x	char (D)	Quellfeld des aktuell generierten Zugs.
+y	char (D)	Zielfeld des aktuell generierten Zugs.
+z	int (D)	Zielquadrat des vorherigen Zugs (wichtig für EP und Double-Pawn-Moves).
+Großgeschrieben (Upper Case)
+Var	Typ / Kontext	Bedeutung in Version 4.8
+A	_[]	Die Hash-Tabelle (Transposition Table).
+B	char	Startfeld für den Board-Scan (Zuggenerierung).
+C	int	Konstante 799 (ASCII-Korrektur und Basiswert Dame).
+D	int()	Die zentrale, rekursive Haupt-Suchfunktion.
+E	-	Oft ersetzt durch Parameterübergabe in D.
+F	int	En-passant Flag (Feld, das beim Doppelschritt übersprungen wurde).
+G	int	Hilfsvariable für Rochade-Logik (Eckfeld).
+H	char	Feld, auf dem die geschlagene Figur steht (wichtig für EP).
+I	int	Konstante 8000 (Unendlich/Matt-Score).
+J	int (D)	Argument: Hash-Key #1 (Zobrist).
+K	int	Quellfeld des User-Inputs (z.B. 'e' aus e2e4).
+L	int	Zielfeld des User-Inputs (z.B. '4' aus e2e4).
+M	int	Konstante 0x88 (Board-Maske).
+N	int	Knotenzähler (Nodes) für Zeitmessung.
+O	-	Meist in globaler Statusvariable integriert.
+P	int	Null-Move Score oder temporärer Materialwert.
+Q	int	Aktueller Gesamt-Score, der an den nächsten Zug übergeben wird.
+R	char	Rückgabe: Quellfeld des besten gefundenen Zugs.
+S	int	Konstante 0x80 (128). Markiert Spezialzustände (z.B. Rochade-Verlust).
+T	int[]	Random Numbers (Zobrist-Werte), oft platzsparend in char gepackt.
+U	MACRO	Hash-Tabellen-Größe (z.B. 1<<20).
+V	int	Konstante 0x70 (Reihen-Maske).
+W	char	Rückgabe: Zielfeld des besten gefundenen Zugs.
+X	char (D)	Aktueller Best-Move (Quelle) innerhalb eines Suchknotens.
+Y	char (D)	Aktueller Best-Move (Ziel) innerhalb eines Suchknotens.
+Z	int (D)	Argument: Hash-Key #2 (Zobrist).
+_	struct	Struktur des Hash-Eintrags (D, K, V, X, Y).
+Wesentliche Änderungen von 3.2 zu 4.8:
+
+    Move Ordering: In 3.2 war die Zugfolge primitiv. 4.8 nutzt i (Victim) und p (Attacker), um Schlagzüge nach MVV/LVA (Most Valuable Victim, Least Valuable Attacker) zu sortieren H.G. Muller Blog.
+    Quiescence Search: Die Variable m wird nun intensiver genutzt, um den "Stand-Pat" Score (Bewertung ohne weiteren Schlagzug) zu halten, bevor die Schlagzugsuche beginnt.
